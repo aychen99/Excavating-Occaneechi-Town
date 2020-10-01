@@ -1,0 +1,73 @@
+## Jinja2 template for EOT sidebar generation
+## Added to page templates with {% include "sidebar.html.jinja" %}
+## -----------------------------------------------------------------------------
+## Required parameters:
+##
+##  chapters
+## -----------------------------------------------------------------------------
+##  chapters : list of 'chapter' elements, defined as
+##    chapter : class with the following properties
+##          name    : str
+##          href    : str
+##          active  : boolean
+##          modules : list of 'module' elements,  defined as
+##
+##      module : class with the following properties
+##            fullTitle  : str
+##            shortTitle : str
+##            href       : str
+##            active     : boolean
+##            sections   : list of at least one 'section' elements, defined as
+##
+##        section : class with the following properties
+##              pageTitle   : str
+##              pageNumber  : str
+##              href        : str
+##              active      : boolean
+##              subsections : list of 'section' elements
+## -----------------------------------------------------------------------------
+<div class="col-md-3 eot-sidebar">
+  <nav class="nav flex-column">
+  # for chapter in chapters:
+    # if chapter.active:
+    <div class="active"> <!-- Current chapter -->
+      <a href="{{ chapter.href }}">{{ chapter.name }}</a>
+      <ul class="nav"> <!-- Current chapter modules list -->
+      # for module in chapter.modules:
+        # if module.active:
+        <li class="active">
+          <a href="{{ module.href }}">{{ module.fullTitle }}</a>
+          <p id="author">{{ module.author }}</p>
+          <ul class="nav"> <!-- Current chapter section list-->
+          # for section in module.sections:
+            <li {% if section.active %}class="active"{% endif %}>
+              <a href="{{ section.href }}">{{ section.pageTitle }}</a>
+              # if section.subsections:
+                <ul>
+                # for subsection in section.subsections:
+                  <li {% if subsection.active %}class="active"{% endif %}>
+                    <a href="{{ subsection.href }}">{{ subsection.pageTitle }}</a>
+                  </li>
+                # endfor ## subsections loop
+                </ul>
+              # endif
+            </li>
+          # endfor ## sections loop
+          </ul>
+        </li>
+        # else:
+        <li>
+          <a href="{{ module.href }}">{{ module.shortTitle }}</a>
+        </li>
+        # endif
+      # endfor ## modules loop
+      </ul>
+    </div>
+    # else:
+    <div>
+      <a href="{{ chapter.href }}">{{ chapter.name }}</a>
+    </div>
+    # endif
+  # endfor ## chapters loop
+  </nav>
+</div>
