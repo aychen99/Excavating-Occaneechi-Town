@@ -151,6 +151,24 @@ def test_extract_sidebar():
     assert extracted['moduleAuthor'] == 'by Mary Ann Holm'
     assert extracted['sections'] == test2_sections
 
+def test_extract_topbar():
+    test_data = """<html><body><b>
+                   Archaeology |
+                   <a target="_parent" href="tab1.html">History (1525-1725)</a> |
+                   <a target="_parent" href="tab2.html">History (1725-present)</a> |
+                   <a target="_parent" href="../index.html">Home</a> |
+                   <a target="_parent" href="../copyright.html">Copyright</a>
+                   </b></body></html>"""
+    assert standard_text_chapter.extract_topbar(test_data, '/dig/html/part2', 'tab0.html') == [{
+        "moduleShortName": "Archaeology",
+        "path": "/dig/html/part2/tab0.html"
+    }, {
+        "moduleShortName": "History (1525-1725)",
+        "path": "/dig/html/part2/tab1.html"
+    }, {
+        "moduleShortName": "History (1725-present)",
+        "path": "/dig/html/part2/tab2.html"
+    }]
 
 def test_extract_frames():
     def readfile(filename):

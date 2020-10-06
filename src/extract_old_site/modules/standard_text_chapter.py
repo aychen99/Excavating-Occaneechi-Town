@@ -79,8 +79,31 @@ def extract_sidebar(html_string, folder_path, parent_body_page_name):
         'sections': sections
     }
 
-def extract_topbar():
-    pass
+def extract_topbar(html_string, folder_path, parent_tab_page_name):
+    """Extract info on the modules of a chapter from a tabs*.html file."""
+    soup = BeautifulSoup(html_string, 'html5lib')
+    links_contents = soup.body.b.contents
+
+    modules = []
+    for element in links_contents:
+        if isinstance(element, str):
+            stripped_string = element.replace('|', '').strip()
+            if stripped_string != '':
+                # Is the current module, without a link to it
+                modules.append({
+                    'moduleShortName': 'Archaeology',
+                    'path': str(pathlib.PurePosixPath(folder_path) / parent_tab_page_name)
+                })
+        elif element.name == 'a':
+            if 'index.html' in element['href'] or 'copyright.html' in element['href']:
+                pass
+            else:
+                modules.append({
+                    'moduleShortName': str(element.string).strip(),
+                    'path': str(pathlib.PurePosixPath(folder_path) / element['href'])
+                })
+
+    return modules
 
 def extract_full_page():
     pass
