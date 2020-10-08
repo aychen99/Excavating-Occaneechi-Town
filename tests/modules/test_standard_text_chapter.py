@@ -103,6 +103,7 @@ def test_extract_sidebar():
     assert extracted['currentModuleFullName'] == 'Archaeological Background'
     assert extracted['moduleAuthor'] == 'by Dickens, Roy S., Jr., H. Trawick Ward, and R. P. Stephen Davis, Jr.'
     assert extracted['sections'] == test1_sections
+    assert extracted['currentSection'] == extracted['sections'][1]
 
     test_data2 = """<html><body><p>
                     <b>Animal Remains: 1983-1984 Excavations</b><br><p>
@@ -203,6 +204,7 @@ def test_extract_sidebar():
     assert extracted['currentModuleFullName'] == 'Animal Remains: 1983-1984 Excavations'
     assert extracted['moduleAuthor'] == 'by Mary Ann Holm'
     assert extracted['sections'] == test2_sections
+    assert extracted['currentSection'] == extracted['sections'][1]['subsections'][2]
 
 def test_extract_topbar():
     test_data = """<html><body><b>
@@ -212,7 +214,8 @@ def test_extract_topbar():
                    <a target="_parent" href="../index.html">Home</a> |
                    <a target="_parent" href="../copyright.html">Copyright</a>
                    </b></body></html>"""
-    assert standard_text_chapter.extract_topbar(test_data, '/dig/html/part2', 'tab0.html') == [{
+    results = standard_text_chapter.extract_topbar(test_data, '/dig/html/part2', 'tab0.html')
+    assert results['modules'] == [{
         "moduleShortName": "Archaeology",
         "path": "/dig/html/part2/tab0.html"
     }, {
@@ -222,6 +225,7 @@ def test_extract_topbar():
         "moduleShortName": "History (1725-present)",
         "path": "/dig/html/part2/tab2.html"
     }]
+    assert results['currentModule'] == results['modules'][0]
 
 def test_extract_frames():
     def readfile(filename, full_current_dir_path):
@@ -363,5 +367,6 @@ def test_get_tab_page_html_contents():
         'sidebar_html': index0_6_html_str,
         'reporta_html': report38a_html_str,
         'reportb_html': report38b_html_str,
-        'reportc_html': report38c_html_str
+        'reportc_html': report38c_html_str,
+        'body_page_name': 'body0_6.html'
     }

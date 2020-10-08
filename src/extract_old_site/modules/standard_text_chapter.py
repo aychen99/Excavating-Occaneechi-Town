@@ -58,6 +58,7 @@ def extract_sidebar(html_string, folder_path, parent_body_page_name):
     currentModuleFullName = str(paragraphs[0].b.string).strip()
     moduleAuthor = None
     sections = None
+    current_section = None
     p_tag_with_sections = -1
     if len(paragraphs) == 1:
         # Only the full module name is in this sidebar, no links or sections.
@@ -93,6 +94,7 @@ def extract_sidebar(html_string, folder_path, parent_body_page_name):
                     'path': str(pathlib.PurePosixPath(folder_path) / parent_body_page_name),
                     'subsections': []
                 }
+                current_section = section_object
 
             if section_object:
                 if i != 0 and ('\xa0' in links_contents[i-1] or '\xa0' in content):
@@ -108,7 +110,8 @@ def extract_sidebar(html_string, folder_path, parent_body_page_name):
     return {
         'currentModuleFullName': currentModuleFullName,
         'moduleAuthor': moduleAuthor,
-        'sections': sections
+        'sections': sections,
+        'currentSection': current_section
     }
 
 def extract_topbar(html_string, folder_path, parent_tab_page_name):
@@ -117,15 +120,18 @@ def extract_topbar(html_string, folder_path, parent_tab_page_name):
     links_contents = soup.body.b.contents
 
     modules = []
+    current_module = None
     for element in links_contents:
         if isinstance(element, str):
             stripped_string = element.replace('|', '').strip()
             if stripped_string != '':
                 # Is the current module, without a link to it
-                modules.append({
+                module_obj = {
                     'moduleShortName': 'Archaeology',
                     'path': str(pathlib.PurePosixPath(folder_path) / parent_tab_page_name)
-                })
+                }
+                modules.append(module_obj)
+                current_module = module_obj
         elif element.name == 'a':
             if 'index.html' in element['href'] or 'copyright.html' in element['href']:
                 pass
@@ -135,7 +141,10 @@ def extract_topbar(html_string, folder_path, parent_tab_page_name):
                     'path': str(pathlib.PurePosixPath(folder_path) / element['href'])
                 })
 
-    return modules
+    return {
+        "modules": modules,
+        "currentModule": current_module
+    }
 
 def extract_frames(html_string, full_current_dir_path, readfile):
     """Read in data from the contained frames in a report#.html page."""
@@ -193,7 +202,8 @@ def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_pat
         'sidebar_html': body_html_content['sidebar_html'],
         'reporta_html': body_html_content['reporta_html'],
         'reportb_html': body_html_content['reportb_html'],
-        'reportc_html': body_html_content['reportc_html']
+        'reportc_html': body_html_content['reportc_html'],
+        'body_page_name': frames[1]['src']
     }
 
 def extract_full_module():
