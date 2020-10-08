@@ -1,9 +1,41 @@
 from bs4 import BeautifulSoup
 import pathlib
 
-def extract_page_content():
+def extract_page_content(html_string):
     """Extract contents of a page from a report*b.html file."""
-    pass
+    soup = BeautifulSoup(html_string, 'html5lib')
+
+    extracted = []
+    for content in soup.body.contents:
+        if isinstance(content, str) and content.strip() == '':
+            # Skip processing an '\n' character
+            pass
+        elif content.name == 'p':
+            inner_html = str(content).replace('<p>', '').replace('</p>', '')
+            if (inner_html.strip() == '' or inner_html == 'None'):
+                # Skip processing an empty <p> tag
+                pass
+            else:
+                p_contents = [item for item in content.contents if str(item).strip() != '']
+                if len(p_contents) == 1 and p_contents[0].name == 'i':
+                    extracted.append({
+                        'type': 'italic-title',
+                        'content': str(p_contents[0].string)
+                    })
+                else:
+                    lines = str(content).split('\n')
+                    lines = [line.replace('<p>', '').replace('</p>', '') for line in lines]
+                    lines = [line.replace('  ', ' ').strip() for line in lines if line.strip() != '']
+                    p_html = ' '.join(lines)
+                    extracted.append({
+                        'type': 'paragraph',
+                        'content': p_html
+                    })
+        else:
+            # TODO
+            pass
+
+    return extracted
 
 def extract_page_title(html_string):
     """Extract the page title from a report*a.html file."""

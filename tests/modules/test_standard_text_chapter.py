@@ -1,5 +1,57 @@
 from src.extract_old_site.modules import standard_text_chapter
 
+def test_extract_page_content():
+    test_data = """
+    <html><body bgcolor=white>
+    <p>
+        Because the Fredricks site was discovered late in the 1983 field season,
+    investigations that summer were relatively brief.  A limited excavation of 800
+    sq ft revealed a portion of a cemetery lying just outside the village (see
+    <a href="../excavations/slid_bbd.html" target="body"><u>photo</u></a>) and a
+    segment of the village palisade (see <a href="../excavations/slid_bba.html" target="body"><u>photo</u></a>).  Three human burials within the cemetery were
+    excavated.  All three pits were rectangular with sharp corners (indicating that
+    they probably were excavated with metal tools) and contained numerous artifacts
+    of Euroamerican manufacture.  A fourth pit excavated within the cemetery
+    contained neither human remains nor grave associations (see photos of
+    <a href="../excavations/slid_bbv.html" target="body"><u>sifting plowed soil</u></a>, <a href="../excavations/slid_bbf.html" target="body"><u>burial excavation</u></a>).<p>
+    <p>
+    <i>Field Methods</i><p>
+    <p>
+        Following completion of each field season, the excavation was immediately
+    backfilled using a front-end loader.<p>
+    </body></html>
+    """
+    assert standard_text_chapter.extract_page_content(test_data) == [{
+        "type": "paragraph",
+        # Note: all double spaces, '  ', are removed in the extracted data.
+        "content": 'Because the Fredricks site was discovered late in the '
+                   '1983 field season, investigations that summer were '
+                   'relatively brief. A limited excavation of 800 sq ft '
+                   'revealed a portion of a cemetery lying just outside the '
+                   'village (see <a href="../excavations/slid_bbd.html" '
+                   'target="body"><u>photo</u></a>) and a segment of the '
+                   'village palisade '
+                   '(see <a href="../excavations/slid_bba.html" '
+                   'target="body"><u>photo</u></a>). Three human burials '
+                   'within the cemetery were excavated. All three pits were '
+                   'rectangular with sharp corners (indicating that they '
+                   'probably were excavated with metal tools) and contained '
+                   'numerous artifacts of Euroamerican manufacture. A fourth '
+                   'pit excavated within the cemetery contained neither human '
+                   'remains nor grave associations (see photos of '
+                   '<a href="../excavations/slid_bbv.html" target="body">'
+                   '<u>sifting plowed soil</u></a>, '
+                   '<a href="../excavations/slid_bbf.html" target="body"><u>'
+                   'burial excavation</u></a>).'
+    }, {
+        "type": "italic-title",
+        "content": "Field Methods"
+    }, {
+        "type": "paragraph",
+        "content": 'Following completion of each field season, the excavation '
+                   'was immediately backfilled using a front-end loader.'
+    }]
+
 def test_extract_page_title():
     test_data = "<html><body><center><i>Historical Background</i></center></body></html>"
     assert standard_text_chapter.extract_page_title(test_data) == "Historical Background"
