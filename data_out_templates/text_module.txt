@@ -1,0 +1,16 @@
+{
+  "location": "",
+  "parentChapter": "",
+  "shortTitle": "",
+  "fullTitle": "",
+  "author": "",
+  "sections": [
+    {
+      "pageTitle": "",
+      "pageNumber": "",
+      "paragraphs": ["", ...],
+      "subsections": [ { }, ...]
+    },
+    ...
+  ]
+}

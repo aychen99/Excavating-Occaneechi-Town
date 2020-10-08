@@ -1,0 +1,17 @@
+[
+  {
+    "path": "",
+    "title": "",
+    "pageNumber": "",
+    "entries": [
+      {
+        "author": "",
+        "nameAttr": "",
+        "citations": ""
+      },
+      ...
+    ]
+  },
+  {...},
+  {...}
+]
