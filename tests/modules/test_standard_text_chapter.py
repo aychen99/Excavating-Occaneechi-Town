@@ -1,4 +1,5 @@
 from src.extract_old_site.modules import standard_text_chapter
+import pathlib
 
 def test_extract_page_content():
     test_data = """
@@ -223,7 +224,7 @@ def test_extract_topbar():
     }]
 
 def test_extract_frames():
-    def readfile(filename):
+    def readfile(filename, full_current_dir_path):
         if filename == 'report33a.html':
             return "a"
         elif filename == 'report33b.html':
@@ -236,4 +237,131 @@ def test_extract_frames():
                     <frame src="report33b.html" marginwidth=1 marginheight=1>
                     <frame scrolling="no" src="report33c.html" marginwidth=1 marginheight=1>
                     </frameset><noframes>you need frames</noframes></html>"""
-    assert standard_text_chapter.extract_frames(test_data, readfile) == ["a", "b", "c"]
+    assert standard_text_chapter.extract_frames(test_data, 'n/a', readfile) == ["a", "b", "c"]
+
+index0_6_html_str = """
+    <html><body><p>
+    <b>Archaeological Background</b><br><p>
+    by Dickens, Roy S., Jr., H. Trawick Ward, and R. P. Stephen Davis, Jr.<p>
+    <a target="main" href="body0_1.html">Historical Background</a><br>
+    <a target="main" href="body0_2.html">Siouan Archaeology</a><br>
+    <a target="main" href="body0_3.html">Fredricks Site Discovery</a><br>
+    <a target="main" href="body0_4.html">Fredricks Site Excavation</a><br>
+    <a target="main" href="body0_5.html">List of Figures</a><br>
+    Sources<br>
+    </body></html>
+    """
+report38_html_str = """
+    <html><frameset rows="28,*,28" border=1>
+    <frame scrolling="no" src="report38a.html" marginwidth=1 marginheight=1>
+    <frame src="report38b.html" marginwidth=1 marginheight=1>
+    <frame scrolling="no" src="report38c.html" marginwidth=1 marginheight=1>
+    </frameset><noframes>you need frames</noframes></html>
+    """
+report38a_html_str = """
+    <html><body><center><i>Sources</i>
+    </center></body></html>
+    """
+report38b_html_str = """
+    <html><body bgcolor=white>
+    <p>
+        This article was adapted from the following sources:<p>
+    <p>
+    Introduction, by Roy S. Dickens, Jr., H. Trawick Ward, and R. P. Stephen Davis,
+    Jr.  In The Siouan Project: Seasons I and II, edited by Roy S. Dickens, Jr., H.
+    Trawick Ward, and R. P. Stephen Davis, Jr., Monograph Series No. 1, Research
+    Laboratories of Anthropology, University of North Carolina, Chapel Hill, 1987,
+    pp. 1-17.<p>
+    <p>
+    Introduction, by H. Trawick Ward and R. P. Stephen Davis, Jr.  In Archaeology
+    of the Historic Occaneechi Indians, edited by H. Trawick Ward and R. P. Stephen
+    Davis, Jr., Southern Indian Studies 36-37:1-10, 1988.<p>
+    <p>
+        They are reprinted here with permission of the Research Laboratories of
+    Anthropology at the University of North Carolina at Chapel Hill and the North
+    Carolina Archaeological Society.<p>
+    </body></html>
+    """
+report38c_html_str = "<html><body><center>Page 6</center></body></html>"
+tabs0_html_str = """
+    <html><body><b>
+    Introduction |
+    <a target="_parent" href="tab1.html">Pottery</a> |
+    <a target="_parent" href="tab2.html">Stone Tools</a> |
+    <a target="_parent" href="tab3.html">Shell Ornaments</a> |
+    <a target="_parent" href="tab4.html">European Trade Artifacts</a> |
+    <a target="_parent" href="../index.html">Home</a> |
+    <a target="_parent" href="../copyright.html">Copyright</a>
+    </b></body></html>
+    """
+
+def test_get_body_page_html_contents():
+    test_data = """
+        <html><frameset cols="240,*" border=1>
+        <frame name="choice" src="index0_6.html" marginwidth=1 marginheight=1>
+        <frame name="body" src="../split/report38.html" marginwidth=1 marginheight=1>
+        </frameset></html>
+        """
+    def readfile(filename, current_dir_path):
+        if filename == 'index0_6.html':
+           return index0_6_html_str
+        elif filename == '../split/report38.html':
+            return report38_html_str
+        elif filename == 'report38a.html':
+            return report38a_html_str
+        elif filename == 'report38b.html':
+            return report38b_html_str
+        elif filename == 'report38c.html':
+            return report38c_html_str
+    results = standard_text_chapter.get_body_page_html_contents(test_data,
+                                                                '/dig/html/part2',
+                                                                pathlib.Path(''),
+                                                                readfile)
+    assert results == {
+        'sidebar_html': index0_6_html_str,
+        'reporta_html': report38a_html_str,
+        'reportb_html': report38b_html_str,
+        'reportc_html': report38c_html_str
+    }
+
+def test_get_tab_page_html_contents():
+    test_data = """
+    <html><head><title>Excavating Occaneechi Town - [Background]</title></head>
+    <frameset rows="28,*">
+    <frame name="tabs" scrolling="no" src="tabs0.html" marginwidth=1 marginheight=1>
+    <frame name="main" src="body0_6.html" marginwidth=1 marginheight=1>
+    </frameset><noframes>you need frames</noframes></html>
+    """
+    
+    def readfile(filename, current_dir_path):
+        if filename == 'index0_6.html':
+           return index0_6_html_str
+        elif filename == '../split/report38.html':
+            return report38_html_str
+        elif filename == 'report38a.html':
+            return report38a_html_str
+        elif filename == 'report38b.html':
+            return report38b_html_str
+        elif filename == 'report38c.html':
+            return report38c_html_str
+        elif filename == 'tabs0.html':
+            return tabs0_html_str
+        elif filename == 'body0_6.html':
+            return """
+                <html><frameset cols="240,*" border=1>
+                <frame name="choice" src="index0_6.html" marginwidth=1 marginheight=1>
+                <frame name="body" src="../split/report38.html" marginwidth=1 marginheight=1>
+                </frameset></html>
+                """
+    
+    results = standard_text_chapter.get_tab_page_html_contents(test_data,
+                                                               '/dig/html/part2',
+                                                               pathlib.Path(''),
+                                                               readfile)
+    assert results == {
+        'topbar_html': tabs0_html_str,
+        'sidebar_html': index0_6_html_str,
+        'reporta_html': report38a_html_str,
+        'reportb_html': report38b_html_str,
+        'reportc_html': report38c_html_str
+    }

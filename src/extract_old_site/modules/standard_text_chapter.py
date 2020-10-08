@@ -137,16 +137,70 @@ def extract_topbar(html_string, folder_path, parent_tab_page_name):
 
     return modules
 
-def extract_full_page():
-    pass
-
-def extract_frames(html_string, readfile):
+def extract_frames(html_string, full_current_dir_path, readfile):
+    """Read in data from the contained frames in a report#.html page."""
     soup = BeautifulSoup(html_string, 'html.parser')
     data = []
     frames = soup.frameset.find_all(['frame'])
     for frame in frames:
-        data.append(readfile(frame['src']))
+        data.append(readfile(frame['src'], full_current_dir_path))
     return data
+
+def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
+    """Extract all parts of a body*_*.html page and its contained frames.
+    
+    Parameters
+    ----------
+    html_string : str
+        Result of reading a body*_*.html file
+    current_dir_path : str
+        Directory of the body*_*.html file in Posix Path format
+        (e.g. "/dig/html/part2").
+    dig_parent_dir_path : Path
+        Containing directory of the /dig folder as a Path object, e.g.
+        if body0_1.html is found in "C:\\Users\\Dev\\dig\\html\\part2",
+        then dig_parent_dir_path is a WindowsPath('C:/Users/Dev').
+    readfile : function
+        Function to read any file based on the file name or folder path.
+    """
+
+    soup = BeautifulSoup(html_string, 'html5lib')
+    frames = soup.find_all('frame')
+    full_current_dir_path = dig_parent_dir_path / current_dir_path
+    sidebar_html_string = readfile(frames[0]['src'], full_current_dir_path)
+    report_html_string = readfile(frames[1]['src'], full_current_dir_path)
+    report_abc_content = extract_frames(report_html_string, full_current_dir_path, readfile)
+
+    return {
+        'sidebar_html': sidebar_html_string,
+        'reporta_html': report_abc_content[0],
+        'reportb_html': report_abc_content[1],
+        'reportc_html': report_abc_content[2]
+    }
+
+def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
+    """Extract all parts of a tab*.html or tab*_*.html page and its frames."""
+    soup = BeautifulSoup(html_string, 'html5lib')
+    frames = soup.find_all('frame')
+    full_current_dir_path = dig_parent_dir_path / current_dir_path
+    topbar_html_string = readfile(frames[0]['src'], full_current_dir_path)
+    body_html_content = get_body_page_html_contents(readfile(frames[1]['src'], full_current_dir_path),
+                                                    current_dir_path,
+                                                    dig_parent_dir_path,
+                                                    readfile)
+    return {
+        'topbar_html': topbar_html_string,
+        'sidebar_html': body_html_content['sidebar_html'],
+        'reporta_html': body_html_content['reporta_html'],
+        'reportb_html': body_html_content['reportb_html'],
+        'reportc_html': body_html_content['reportc_html']
+    }
+
+def extract_full_module():
+    pass
+
+def extract_full_chapter():
+    pass
 
 def extract_text_chapter_page(html_as_string, data_dict=None, page_number=None):
     pass
