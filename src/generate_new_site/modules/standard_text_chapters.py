@@ -9,12 +9,16 @@ def generate_chapters(chapters_dir):
     Define the structure of the site's text chapters for sidebar.
     Populates a list, 'chapters', with the basic chapter structure information
     required to generate page sidebars.
+    Parameters
+    ----------
+    chapters_dir : str
+        Pathlike string containing the path to the directory with the chapter
+        data files.
     Returns
     -------
-    chapters : list
-        List of dicts containing strs 'name' and 'href' for a chapter, and the
-        bool 'active' which is used in the sidebar generation logic, and is
-        False by default.
+    chapters : List of 'Chapter' objects
+        List of 'Chapter' objects, each decorated with all of the old site data
+        for that chapter.
     """
 
     chapters = []
@@ -80,10 +84,11 @@ def generate_chapter_modules(chapters, chapter_path):
     Chapter instance.
     Parameters
     ----------
-    chapter : Chapter
-        Pointer to the Chapter instance that will be decorated with data
+    chapters : list of 'Chapter'
+        List of 'Chapter' objects, each decorated with all of the old site data
+        for that chapter.
     chapter_path : str
-        Str paths to .json file containing the relevant chapter data
+        Str path to .json file containing the relevant chapter data
     """
 
     # Load the extracted chapter data
