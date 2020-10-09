@@ -328,3 +328,17 @@ def extract_full_chapter(all_module_file_names, current_dir_path, dig_parent_pat
             extracted['pages'][page_num] = page_obj
 
     return extracted
+
+def extract_standard_part(part_folder_name, dig_parent_dir, readfile):
+    """Extract an entire chapter based on folder name, e.g. /dig/html/part2."""
+    # Get all tab*.html or tab*_*.html files, which are starting points for
+    # the extraction process
+    folder_to_extract_full_path = pathlib.Path(dig_parent_dir) / "./dig/html" / part_folder_name
+    tab_filenames = []
+    for filepath in folder_to_extract_full_path.iterdir():
+        if "tab" in filepath.name and "tabs" not in filepath.name:
+            tab_filenames.append(filepath.name)
+    return extract_full_chapter(tab_filenames,
+                                "/dig/html/" + part_folder_name,
+                                pathlib.Path(dig_parent_dir),
+                                readfile)
