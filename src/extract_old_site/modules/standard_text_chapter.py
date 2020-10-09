@@ -204,7 +204,8 @@ def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_pat
     frames = soup.find_all('frame')
     full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
     topbar_html_string = readfile(frames[0]['src'], full_current_dir_path)
-    body_html_content = get_body_page_html_contents(readfile(frames[1]['src'], full_current_dir_path),
+    body_html_content = get_body_page_html_contents(readfile(frames[1]['src'],
+                                                    full_current_dir_path),
                                                     current_dir_path,
                                                     dig_parent_dir_path,
                                                     readfile)
@@ -217,11 +218,113 @@ def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_pat
         'body_page_name': frames[1]['src']
     }
 
-def extract_full_module():
-    pass
+def process_tab_html_contents(
+    html_strings, current_tab_page_name,
+    current_dir_path, dig_parent_dir_path, readfile
+):
+    """Turn the raw html_strings from reading a tab.html file into a dict."""
+    title = extract_page_title(html_strings['reporta_html'])
+    content = extract_page_content(html_strings['reportb_html'])
+    page_num = extract_page_number(html_strings['reportc_html'])
+    sidebar_info = extract_sidebar(html_strings['sidebar_html'],
+                                   current_dir_path,
+                                   html_strings['body_page_name'])
+    topbar_info = extract_topbar(html_strings['topbar_html'],
+                                 current_dir_path,
+                                 current_tab_page_name)
 
-def extract_full_chapter():
-    pass
+    processed = {
+        "page": {
+            "parentModuleShortTitle": topbar_info['currentModule']['moduleShortName'],
+            "pageNum": page_num,
+            "pageTitle": title,
+            "content": content,
+        },
+        "module": {
+            "path": topbar_info['currentModule']['path'],
+            "shortTitle": topbar_info['currentModule']['moduleShortName'],
+            "fullTitle": sidebar_info['currentModuleFullName'],
+            "author": sidebar_info['moduleAuthor'],
+            "sections": sidebar_info['sections']
+        },
+        "additionalSectionInfo": {
+            "currentSection": sidebar_info['currentSection'],
+            "pageNum": page_num
+        }
+    }
+    return processed
 
-def extract_text_chapter_page(html_as_string, data_dict=None, page_number=None):
-    pass
+def validate_tab_html_extraction_results(results):
+    baseline_module = results[0]['module']
+    noError = True
+    for result in results:
+        if not result['module'] == baseline_module:
+            print('Difference in these modules: \n'
+                  + str(result['module']) + '\n'
+                  + str(baseline_module))
+            noError = False
+    
+    return noError
+
+def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path, readfile):
+    """Extract content from one module in a chapter and store in a dict."""
+    extracted = {
+        "module": {},
+        "pages": {}
+    }
+    full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
+    processed_pages = []
+    for filename in module_file_names:
+        tab_html_str = readfile(filename, full_current_dir_path)
+        extracted_contents = get_tab_page_html_contents(tab_html_str, current_dir_path,
+                                                        dig_parent_dir_path, readfile)
+        processed_page = process_tab_html_contents(extracted_contents, filename,
+                                                   current_dir_path, dig_parent_dir_path, readfile)
+        processed_pages.append(processed_page)
+    
+    if not validate_tab_html_extraction_results(processed_pages):
+        return "Failed: inconsistency in pages within module " + module_file_names[0]
+
+    sectionsToPageNums = {}
+    for processed_page in processed_pages:
+        sectionInfo = processed_page['additionalSectionInfo']
+        if sectionInfo['currentSection']['name'] in sectionsToPageNums:
+            return "Failed: Two sections with the same name"
+        sectionsToPageNums[sectionInfo['currentSection']['name']] = sectionInfo['pageNum']
+    
+    extracted['module'] = processed_pages[0]['module']
+    for processed_page in processed_pages:
+        pageNum = processed_page['page'].pop('pageNum', None)
+        extracted['pages'][pageNum] = processed_page['page']
+
+    for section in extracted['module']['sections']:
+        section['pageNum'] = sectionsToPageNums[section['name']]
+    
+    return extracted
+
+def extract_full_chapter(all_module_file_names, current_dir_path, dig_parent_path, readfile):
+    """Extract an entire chapter by going through all tab*_*.html files."""
+    filenames = sorted(all_module_file_names)
+    module_start_tab_names = [filename for filename in filenames if "_" not in filename]
+    print(module_start_tab_names)
+    extracted = {
+        "path": current_dir_path,
+        "modules": [],
+        "pages": {}
+    }
+    # Sort so that the lowest numbered modules are extracted and added
+    # to the "modules" array first.
+    module_start_tab_names = sorted(module_start_tab_names)
+    for tab_name in module_start_tab_names:
+        current_module_file_names = [filename for filename in filenames
+                                     if tab_name.split('.')[0] in filename]
+        print(current_module_file_names)
+        module_object = extract_full_module(current_module_file_names, 
+                                            current_dir_path, dig_parent_path, readfile)
+        extracted['modules'].append(module_object)
+    for module in extracted['modules']:
+        pages = module.pop('pages')
+        for page_num, page_obj in pages.items():
+            extracted['pages'][page_num] = page_obj
+
+    return extracted
