@@ -1,37 +1,40 @@
-## Jinja2 template for EOT textpage (section) generation
+{# Jinja2 template for EOT textpage (section) generation
 ## -----------------------------------------------------------------------------
 ## Included templates:
 ##  navbar.html.jinja
 ##  sidebar.html.jinja
 ## -----------------------------------------------------------------------------
 ## Required parameters:
-##  page
+##  this_section
 ## -----------------------------------------------------------------------------
-##  page : class with the following properties
-##      title      : str
-##      number     : str
-##      paragraphs : list of str
+##  this_section : Section, defined in text_classes.py
 ## -----------------------------------------------------------------------------
+#}
 {% extends "base.html.jinja" %}
 
-{% block title %}{{ page.title }}{% endblock %}
+{% block title %}{{ this_section['name'] }}{% endblock %}
 
 {% block styles %}
   {{ super() }}
-  <link href="textpage.css" rel="stylesheet">
+  <link href="css/textpage.css" rel="stylesheet">
 {% endblock %}
 
-{% block pagebody %}
-  {% include "navbar.html.jinja %}
+{% block page_body %}
+  {% include "shared_elements/navbar.html.jinja" %}
   <div class="container-fluid">
     <div class="row">
-      {% include "sidebar.html.jinja %}
+      {% include "shared_elements/sidebar.html.jinja" %}
       <div class="col-md" style="overflow-y: scroll;">
-        <h1>{{ page.title }}</h1>
-        # for paragraph in page.paragraphs:
-        <p>{{ paragraph }}</p>
+        <h1>{{ this_section.name }}</h1>
+        # for content in this_section.content:
+          # if content.type == "paragraph"
+          <p>{{ content.content }}</p>
+          # endif
+          # if content.type == "italic-title"
+          <p><i>{{ content.content }}</i></p>
+          # endif
         # endfor
-        ## !!TODO!! page navigation
+        ## !!TODO!! pagination
       </div>
     </div>
   </div>

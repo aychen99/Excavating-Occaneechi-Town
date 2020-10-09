@@ -1,4 +1,4 @@
-## Jinja2 basic template for EOT pages
+{# Jinja2 basic template for EOT pages
 ## Extend with other template files by using {% extends "base.html.jinja" %}
 ## -----------------------------------------------------------------------------
 ## Constituent blocks:
@@ -10,6 +10,7 @@
 ## Required parameters:
 ##  none
 ## -----------------------------------------------------------------------------
+#}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,7 +22,7 @@
 
     {% block styles %}
 
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     {% endblock %}
 
