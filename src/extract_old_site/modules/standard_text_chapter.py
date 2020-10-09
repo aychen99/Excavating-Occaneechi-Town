@@ -118,6 +118,12 @@ def extract_topbar(html_string, folder_path, parent_tab_page_name):
     """Extract info on the modules of a chapter from a tabs*.html file."""
     soup = BeautifulSoup(html_string, 'html5lib')
     links_contents = soup.body.b.contents
+    # Change the parent_tab_page_name so the extraction always uses the first
+    # page of a module (tab0.html, tab1.html, etc.), rather than pages like
+    # tab0_3.html, when recording the module's path.
+    part_nums = parent_tab_page_name.split('_')
+    if len(part_nums) > 1:
+        parent_tab_page_name = part_nums[0] + ".html"
 
     modules = []
     current_module = None
@@ -127,7 +133,7 @@ def extract_topbar(html_string, folder_path, parent_tab_page_name):
             if stripped_string != '':
                 # Is the current module, without a link to it
                 module_obj = {
-                    'moduleShortName': 'Archaeology',
+                    'moduleShortName': stripped_string,
                     'path': str(pathlib.PurePosixPath(folder_path) / parent_tab_page_name)
                 }
                 modules.append(module_obj)
@@ -135,6 +141,10 @@ def extract_topbar(html_string, folder_path, parent_tab_page_name):
         elif element.name == 'a':
             if 'index.html' in element['href'] or 'copyright.html' in element['href']:
                 pass
+            elif '/' in element['href']:
+                raise Exception('/ character found in hyperlink in the topbar of '
+                                + str(pathlib.PurePosixPath(folder_path) / parent_tab_page_name)
+                                + 'when it was not supposed to be.')
             else:
                 modules.append({
                     'moduleShortName': str(element.string).strip(),
@@ -175,10 +185,11 @@ def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_pa
 
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
-    full_current_dir_path = dig_parent_dir_path / current_dir_path
+    full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
     sidebar_html_string = readfile(frames[0]['src'], full_current_dir_path)
     report_html_string = readfile(frames[1]['src'], full_current_dir_path)
-    report_abc_content = extract_frames(report_html_string, full_current_dir_path, readfile)
+    report_folder_path = (full_current_dir_path / frames[1]['src']).parent
+    report_abc_content = extract_frames(report_html_string, report_folder_path, readfile)
 
     return {
         'sidebar_html': sidebar_html_string,
@@ -191,7 +202,7 @@ def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_pat
     """Extract all parts of a tab*.html or tab*_*.html page and its frames."""
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
-    full_current_dir_path = dig_parent_dir_path / current_dir_path
+    full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
     topbar_html_string = readfile(frames[0]['src'], full_current_dir_path)
     body_html_content = get_body_page_html_contents(readfile(frames[1]['src'], full_current_dir_path),
                                                     current_dir_path,
