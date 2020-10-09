@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import json
-import glob
+import pathlib
 import modules.text_classes as tc
 
 
@@ -41,7 +41,7 @@ def generate_chapters(chapters_dir):
     for name, link in chapter_names_links:
         chapters.append(tc.Chapter(name, link))
 
-    chapter_paths = glob.glob(chapters_dir + "/*.json")
+    chapter_paths = pathlib.Path(chapters_dir).glob("*.json")
     for chapter_path in chapter_paths:
         generate_chapter_modules(chapters, chapter_path)
 
@@ -87,12 +87,12 @@ def generate_chapter_modules(chapters, chapter_path):
     chapters : list of 'Chapter'
         List of 'Chapter' objects, each decorated with all of the old site data
         for that chapter.
-    chapter_path : str
-        Str path to .json file containing the relevant chapter data
+    chapter_path : Path
+        Pathlib path to .json file containing the relevant chapter data.
     """
 
     # Load the extracted chapter data
-    f = open(chapter_path)
+    f = chapter_path.open()
     module_data = json.load(f)
     f.close()
 
