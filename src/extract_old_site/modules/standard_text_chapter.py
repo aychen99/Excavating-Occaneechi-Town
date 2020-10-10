@@ -54,15 +54,31 @@ def extract_sidebar(html_string, folder_path, parent_body_page_name):
     # tags, this function depends on using html5lib for proper parsing.
     soup = BeautifulSoup(html_string, 'html5lib')
     paragraphs = soup.body.find_all('p')
+    # Remove empty paragraphs
+    paragraphs = [p for p in paragraphs 
+                  if str(p).replace('<p>', '').replace('</p>', '').strip() != '']
 
     currentModuleFullName = str(paragraphs[0].b.string).strip()
     moduleAuthor = None
-    sections = None
+    sections = []
     current_section = None
     p_tag_with_sections = -1
     if len(paragraphs) == 1:
+        # Deal with the edge case of the foreword in part 0
+        if paragraphs[0].find('br'):
+            moduleAuthor = str(paragraphs[0]).split('<br/>')[-1].split('<br>')[-1]
+            moduleAuthor = moduleAuthor.replace('</p>', '').strip()
         # Only the full module name is in this sidebar, no links or sections.
-        pass
+        # Thus, create one section object to represent this one section.
+        # Note that this may lead to inconsistency between the names
+        # in report*a.html, tabs*.html, and this sidebar index*.html.
+        section_object = {
+            'name': currentModuleFullName,
+            'path': str(pathlib.PurePosixPath(folder_path) / parent_body_page_name),
+            'subsections': []
+        }
+        current_section = section_object
+        sections.append(section_object)
     elif len(paragraphs) == 2:
         # Check to see if it's a combination of the module title & author(s),
         # or of the module title and section links.
@@ -75,7 +91,6 @@ def extract_sidebar(html_string, folder_path, parent_body_page_name):
         p_tag_with_sections = 2
 
     if p_tag_with_sections > 0:
-        sections = []
         links_contents = paragraphs[p_tag_with_sections].contents
         i = 0
         while i < len(links_contents) - 1:
@@ -288,9 +303,11 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
     sectionsToPageNums = {}
     for processed_page in processed_pages:
         sectionInfo = processed_page['additionalSectionInfo']
-        if sectionInfo['currentSection']['name'] in sectionsToPageNums:
-            return "Failed: Two sections with the same name"
-        sectionsToPageNums[sectionInfo['currentSection']['name']] = sectionInfo['pageNum']
+        pageNumDictKey = (sectionInfo['currentSection']['path'] 
+                          + '-' + sectionInfo['currentSection']['name'])
+        if pageNumDictKey in sectionsToPageNums:
+            return "Failed: Two sections with the same path + name"
+        sectionsToPageNums[pageNumDictKey] = sectionInfo['pageNum']
     
     extracted['module'] = processed_pages[0]['module']
     for processed_page in processed_pages:
@@ -298,7 +315,11 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
         extracted['pages'][pageNum] = processed_page['page']
 
     for section in extracted['module']['sections']:
-        section['pageNum'] = sectionsToPageNums[section['name']]
+        section['pageNum'] = sectionsToPageNums[section['path'] + '-' + section['name']]
+        if len(section['subsections']) > 0:
+            for subsection in section['subsections']:
+                subsection['pageNum'] = sectionsToPageNums[subsection['path'] 
+                                                           + '-' + subsection['name']]
     
     return extracted
 
