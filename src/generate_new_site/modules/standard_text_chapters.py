@@ -35,7 +35,7 @@ def generate_chapters(chapters_dir):
         ("Artifacts", "3_artifacts.html"),
         ("Food Remains", "4_food_remains.html"),
         ("Interpretations", "5_interpretations.html"),
-        ("Electric Dig", "https://electronicdig.sites.oasis.unc.edu/")
+        ("Electronic Dig", "https://electronicdig.sites.oasis.unc.edu/")
     ]
 
     for name, link in chapter_names_links:
@@ -64,7 +64,7 @@ def get_chapter_from_path(chapters, chapter_path):
     """
     path_translator = {
         '/dig/html/part0': "Introduction",
-        # '/dig/html/part1': "Contents", # TODO Special case
+        '/dig/html/part1': "Contents", # TODO Special case
         '/dig/html/part2': "Background",
         '/dig/html/part3': "Artifacts",
         '/dig/html/part4': "Food Remains",
@@ -111,17 +111,18 @@ def generate_chapter_modules(chapters, chapter_path):
             this_section = tc.Section(
                 name=section['name'],
                 pageNum=section['pageNum'],
-                href=sec_href.replace(' ', '_'),  # TODO temporary solution
+                href=sec_href.replace(' ', '_').replace('/', '_'),  # TODO temporary solution
                 content=module_data['pages'][section['pageNum']]['content']
             )
             for subsection in section['subsections']:
                 subsec_href = (subsection['pageNum'] + subsection['name'] + ".html")
-                this_section.add_subsection(
+                new_subsection = tc.Section(
                     name=subsection['name'],
                     pageNum=subsection['pageNum'],
-                    href=subsec_href.replace(' ', '_'),  # TODO temporary solution
+                    href=subsec_href.replace(' ', '_').replace('/', '_'),  # TODO temporary solution
                     content=module_data['pages'][subsection['pageNum']]['content']
                 )
+                this_section.add_subsection(new_subsection)
             module.add_section(this_section)
 
         # Add the module subtree as child of the chapter
