@@ -19,11 +19,13 @@ def extract_image_page(html_string, img_page_parent_dir, dig_parent_dir):
     clickable_areas = []
     for area_def in map_coords:
         coords = area_def['coords'].split(',')
+        linked_path = str(pathlib.PurePosixPath(img_page_parent_dir) / area_def['href'])
         clickable_areas.append({
             "x1": int(coords[0]),
             "y1": int(coords[1]),
             "x2": int(coords[2]),
             "y2": int(coords[3]),
+            "path": linked_path
         })
 
     return {

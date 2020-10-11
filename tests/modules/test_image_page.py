@@ -20,11 +20,16 @@ import pytest
         "path": "/dig/html/images/x16/x6801.jpeg",
         "caption": "Figure 1038. Structure 1 at top of subsoil (view to southwest).",
         "clickableAreas": [
-            {"x1": 43, "y1": 102, "x2": 193, "y2": 152},
-            {"x1": 22, "y1": 151, "x2": 113, "y2": 219},
-            {"x1": 194, "y1": 118, "x2": 243, "y2": 220},
-            {"x1": 16, "y1": 220, "x2": 237, "y2": 298},
-            {"x1": 114, "y1": 152, "x2": 196, "y2": 223}
+            {"x1": 43, "y1": 102, "x2": 193, "y2": 152,
+             "path": "/dig/html/excavations/exc_is.html"},
+            {"x1": 22, "y1": 151, "x2": 113, "y2": 219,
+             "path": "/dig/html/excavations/exc_is.html"},
+            {"x1": 194, "y1": 118, "x2": 243, "y2": 220,
+             "path": "/dig/html/excavations/exc_is.html"},
+            {"x1": 16, "y1": 220, "x2": 237, "y2": 298,
+             "path": "/dig/html/excavations/exc_is.html"},
+            {"x1": 114, "y1": 152, "x2": 196, "y2": 223,
+             "path": "/dig/html/excavations/exc_cl.html"}
         ],
         "originalDimensions": {
             "width": 251,
