@@ -12,7 +12,9 @@ def extract_image_page(html_string, img_page_parent_dir, dig_parent_dir):
     path = pathlib.Path(img_page_parent_dir) / soup.body.img['src']
     path = str(pathlib.Path(os.path.normpath(path)).as_posix())
     full_path = str(pathlib.PurePosixPath(dig_parent_dir) / ("." + path))
-    caption = soup.body.center.text.strip()
+    figure_num_and_caption = soup.body.center.text.strip().split('.', 1)
+    figure_num = int(figure_num_and_caption[0].replace("Figure", "").strip())
+    caption = figure_num_and_caption[1].strip()
     img_dimensions = get_image_dimensions(full_path)
 
     map_coords = soup.body.map.find_all('area')
@@ -30,6 +32,7 @@ def extract_image_page(html_string, img_page_parent_dir, dig_parent_dir):
 
     return {
         "path": path,
+        "figureNum": figure_num,
         "caption": caption,
         "clickableAreas": clickable_areas,
         "originalDimensions": {

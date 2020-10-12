@@ -18,7 +18,8 @@ import pytest
     "/dig/html/excavations",
     {
         "path": "/dig/html/images/x16/x6801.jpeg",
-        "caption": "Figure 1038. Structure 1 at top of subsoil (view to southwest).",
+        "figureNum": "1038",
+        "caption": "Structure 1 at top of subsoil (view to southwest).",
         "clickableAreas": [
             {"x1": 43, "y1": 102, "x2": 193, "y2": 152,
              "path": "/dig/html/excavations/exc_is.html"},
