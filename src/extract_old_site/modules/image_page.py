@@ -48,3 +48,7 @@ def get_image_dimensions(img_path):
         "width": width,
         "height": height
     }
+
+def extract_video_image_page(html_string):
+    """Extract info from a slid_***.mov.html or slid_***.mpg.html file."""
+    pass
