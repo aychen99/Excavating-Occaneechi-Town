@@ -1,7 +1,7 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import json
 import pathlib
-import modules.text_classes as tc
+import site_data_structs.text as text
 
 
 def generate_chapters(chapters_dir):
@@ -39,7 +39,7 @@ def generate_chapters(chapters_dir):
     ]
 
     for name, link in chapter_names_links:
-        chapters.append(tc.Chapter(name, link))
+        chapters.append(text.Chapter(name, link))
 
     chapter_paths = pathlib.Path(chapters_dir).glob("*.json")
     for chapter_path in chapter_paths:
@@ -101,14 +101,14 @@ def generate_chapter_modules(chapters, chapter_path):
 
     # Decorate the module-section-subsection subtree with data
     for module_entry in module_data['modules']:
-        module = tc.Module(
+        module = text.Module(
             shortTitle=module_entry['module']['shortTitle'],
             fullTitle=module_entry['module']['fullTitle'],
             author=module_entry['module']['author']
         )
         for section in module_entry['module']['sections']:
             sec_href = (section['pageNum'] + section['name'] + ".html")
-            this_section = tc.Section(
+            this_section = text.Section(
                 name=section['name'],
                 pageNum=section['pageNum'],
                 href=sec_href.replace(' ', '_').replace('/', '_'),  # TODO temporary solution
@@ -116,7 +116,7 @@ def generate_chapter_modules(chapters, chapter_path):
             )
             for subsection in section['subsections']:
                 subsec_href = (subsection['pageNum'] + subsection['name'] + ".html")
-                new_subsection = tc.Section(
+                new_subsection = text.Section(
                     name=subsection['name'],
                     pageNum=subsection['pageNum'],
                     href=subsec_href.replace(' ', '_').replace('/', '_'),  # TODO temporary solution
