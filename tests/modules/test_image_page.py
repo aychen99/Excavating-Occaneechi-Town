@@ -3,7 +3,7 @@ from unittest import mock
 import pytest
 
 @pytest.mark.parametrize(
-    "html_string,img_page_parent_dir,expected", 
+    "html_string,img_page_parent_dir,current_page_name,expected", 
     [("""<html><body><map name="hotlinks">
         <area coords="43,102,193,152" target="_top" href="exc_is.html">
         <area coords="22,151,113,219" target="_top" href="exc_is.html">
@@ -16,9 +16,11 @@ import pytest
         </body></html>
     """, 
     "/dig/html/excavations",
+    "slid_bdo.html",
     {
         "path": "/dig/html/images/x16/x6801.jpeg",
-        "figureNum": "1038",
+        "htmlPagePath": "/dig/html/excavations/slid_bdo.html",
+        "figureNum": 1038,
         "caption": "Structure 1 at top of subsoil (view to southwest).",
         "clickableAreas": [
             {"x1": 43, "y1": 102, "x2": 193, "y2": 152,
@@ -37,7 +39,7 @@ import pytest
             "height": 390
         }
     })])
-def test_extract_image_page(html_string, img_page_parent_dir, expected):
+def test_extract_image_page(html_string, img_page_parent_dir, current_page_name, expected):
     def mock_get_img_dims(img_path):
         print(img_path)
         if img_path == "/content/dig/html/images/x16/x6801.jpeg":
@@ -46,4 +48,5 @@ def test_extract_image_page(html_string, img_page_parent_dir, expected):
             return None
 
     with mock.patch("src.extract_old_site.modules.image_page.get_image_dimensions", mock_get_img_dims):
-        assert image_page.extract_image_page(html_string, img_page_parent_dir, "/content") == expected
+        assert image_page.extract_image_page(html_string, img_page_parent_dir,
+                                             "/content", current_page_name) == expected

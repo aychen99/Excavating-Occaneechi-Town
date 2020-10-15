@@ -57,7 +57,8 @@ def extract_info_page(html_string, current_dir_path, dig_parent_dir_path, readfi
             return
         else:
             image_page_html = readfile(link['href'], full_current_dir_path)
-            image = extract_image_page(image_page_html, current_dir_path, dig_parent_dir_path)
+            image = extract_image_page(image_page_html, current_dir_path,
+                                       dig_parent_dir_path, link['href'])
             images.append(image)
     
     artifacts_path = None

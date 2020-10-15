@@ -3,7 +3,7 @@ from PIL import Image
 import pathlib
 import os
 
-def extract_image_page(html_string, img_page_parent_dir, dig_parent_dir):
+def extract_image_page(html_string, img_page_parent_dir, dig_parent_dir, current_page_name):
     """Extract an image and its clickable map from a slid_***.html file."""
     soup = BeautifulSoup(html_string, 'html5lib')
 
@@ -32,6 +32,7 @@ def extract_image_page(html_string, img_page_parent_dir, dig_parent_dir):
 
     return {
         "path": path,
+        "htmlPagePath": str((pathlib.Path(img_page_parent_dir) / current_page_name).as_posix()),
         "figureNum": figure_num,
         "caption": caption,
         "clickableAreas": clickable_areas,
