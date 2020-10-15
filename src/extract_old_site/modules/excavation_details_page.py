@@ -93,7 +93,6 @@ def get_ctrl_page_contents(html_string, current_dir_path, dig_parent_dir_path, r
 
 def get_exc_page_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
     """Extract the html contents linked to from within a exc_**.html file."""
-    # Essentially do the exact same as for the ctrl page for now.
     full_current_dir_path = pathlib.Path(dig_parent_dir_path) / ("." + current_dir_path)
 
     frames = BeautifulSoup(html_string, 'html5lib').find_all('frame')
@@ -107,6 +106,7 @@ def extract_all_exc_pages(dig_parent_dir, readfile):
         if 'exc' in filepath.name:
             html_string = readfile(filepath.name, filepath.parent)
             page_contents = get_exc_page_contents(html_string, "/dig/html/excavations", dig_parent_dir, readfile)
+            page_contents['path'] = str((pathlib.Path("/dig/html/excavations") / filepath.name).as_posix())
             excavations_pages.append(page_contents)
 
     return excavations_pages
