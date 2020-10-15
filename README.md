@@ -12,3 +12,8 @@ command
 
 From the root directory (the one containing both the src and tests folders),
 simply run "pytest" in the command line to run the tests in the tests folder.
+
+## Running extraction
+Rename the provided "config_example.json" file to just "config.json", change
+the variables inside as needed, make sure config.json is located in your
+working directory, and run extract.py to extract everything.

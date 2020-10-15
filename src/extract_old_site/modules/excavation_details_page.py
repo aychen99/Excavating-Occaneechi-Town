@@ -99,3 +99,14 @@ def get_exc_page_contents(html_string, current_dir_path, dig_parent_dir_path, re
     frames = BeautifulSoup(html_string, 'html5lib').find_all('frame')
     ctrl_html_string = readfile(frames[1]['src'], full_current_dir_path)
     return get_ctrl_page_contents(ctrl_html_string, current_dir_path, dig_parent_dir_path, readfile)
+
+def extract_all_exc_pages(dig_parent_dir, readfile):
+    excavations_dir = pathlib.Path(dig_parent_dir) / "./dig/html/excavations"
+    excavations_pages = []
+    for filepath in excavations_dir.iterdir():
+        if 'exc' in filepath.name:
+            html_string = readfile(filepath.name, filepath.parent)
+            page_contents = get_exc_page_contents(html_string, "/dig/html/excavations", dig_parent_dir, readfile)
+            excavations_pages.append(page_contents)
+
+    return excavations_pages

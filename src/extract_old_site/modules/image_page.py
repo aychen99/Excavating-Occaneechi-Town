@@ -53,3 +53,34 @@ def get_image_dimensions(img_path):
 def extract_video_image_page(html_string):
     """Extract info from a slid_***.mov.html or slid_***.mpg.html file."""
     pass
+
+def extract_all_images(dig_parent_dir, readfile):
+    """Return a dictionary of images and their metadata by file path."""
+    extracted_images = {}
+    for filepath in (pathlib.Path(dig_parent_dir) / "dig/html/excavations").iterdir():
+        if 'slid' in filepath.name and '.mpg' not in filepath.name and '.mov' not in filepath.name:
+            html_string = readfile(filepath.name, filepath.parent)
+            image_details = extract_image_page(html_string, "/dig/html/excavations", dig_parent_dir, filepath.name)
+            extracted_images[image_details['path']] = image_details
+    return extracted_images
+
+def generate_metadata_dicts(extracted_images):
+    image_path_to_figure_num = {}
+    slid_path_to_figure_num = {}
+    figure_num_to_image_path = {}
+    figure_num_to_slid_path = {}
+    for image in extracted_images.values():
+        num = image['figureNum']
+        image_path = image['path']
+        slid_path = image['htmlPagePath']
+        image_path_to_figure_num[image_path] = num
+        slid_path_to_figure_num[slid_path] = num
+        figure_num_to_image_path[num] = image_path
+        figure_num_to_slid_path[num] = slid_path
+
+    return {
+        "imagePathToFigureNum": image_path_to_figure_num,
+        "slidPathToFigureNum": slid_path_to_figure_num,
+        "figureNumToImagePath": figure_num_to_image_path,
+        "figureNumToSlidPath": figure_num_to_slid_path
+    }
