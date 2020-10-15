@@ -77,10 +77,25 @@ def extract_info_page(html_string, current_dir_path, dig_parent_dir_path, readfi
         "descriptionPath": description_path
     }
 
-def get_ctrl_page_contents(html_string):
+def get_ctrl_page_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
     """Extract the html contents linked to from within a ctrl_**.html file."""
-    pass
+    full_current_dir_path = pathlib.Path(dig_parent_dir_path) / ("." + current_dir_path)
+    
+    soup = BeautifulSoup(html_string, 'html5lib')
+    frames = soup.find_all('frame')
 
-def get_exc_page_contents(html_string):
+    info_page_html = readfile(frames[0]['src'], full_current_dir_path)
+    zoom_page_html = readfile(frames[1]['src'], full_current_dir_path)
+
+    extracted = extract_info_page(info_page_html, current_dir_path, dig_parent_dir_path, readfile)
+    extracted['relatedElements'] = extract_zoom_to(zoom_page_html)
+    return extracted
+
+def get_exc_page_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
     """Extract the html contents linked to from within a exc_**.html file."""
-    pass
+    # Essentially do the exact same as for the ctrl page for now.
+    full_current_dir_path = pathlib.Path(dig_parent_dir_path) / ("." + current_dir_path)
+
+    frames = BeautifulSoup(html_string, 'html5lib').find_all('frame')
+    ctrl_html_string = readfile(frames[1]['src'], full_current_dir_path)
+    return get_ctrl_page_contents(ctrl_html_string, current_dir_path, dig_parent_dir_path, readfile)
