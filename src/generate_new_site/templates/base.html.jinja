@@ -20,14 +20,19 @@
 
     <title>{% block title %}{% endblock %} - Excavating Occaneechi Town</title>
     {% block styles %}
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     {% endblock %}
   </head>
 
   <body>
     {% block header %}
-    <header class="navbar navbar-dark flex-column align-items-start bg-dark eot-navbar">
-      <a class="navbar-brand">Excavating Occaneechi Town</a>
+    <header class="container-fluid sticky-top bg-dark">
+      <div class="navbar navbar-dark flex-column flex-md-row align-items-start bg-dark eot-navbar">
+        <a class="navbar-brand">Excavating Occaneechi Town</a>
+        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar">
+          Toggle Sidebar
+        </button>
+      </div>
     </header>
     {% endblock %}
     {% block page_body %}{% endblock %}

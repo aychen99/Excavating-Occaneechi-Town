@@ -13,7 +13,7 @@
 {% extends "base.html.jinja" %}
 {% block title %}{{ excavation_element['name'] }}{% endblock %}
 {% block styles %}
-    <link href="css/excavation_element.css" rel="stylesheet">
+    <link href="../../assets/css/excavation_element.css" rel="stylesheet">
     {{ super() }}
 {% endblock %}
 {% block header %}
@@ -37,7 +37,7 @@
 {% block page_body %}
     <div class="container-fluid">
       <div class="row">
-        {% include "shared_elements/sidebar.html.jinja" %}
+        {% include "shared_elements/sidebar_collapsed.html.jinja" %}
         <div class="col-md" style="overflow-y: scroll;">
           <div class="row">
             <div class="col-md align-items-center">

@@ -13,10 +13,10 @@
 {% extends "base.html.jinja" %}
 {% block title %}Figure {{ figure['figure_num'] }}{% endblock %}
 {% block styles %}
-    <link href="css/figure.css" rel="stylesheet">
+    <link href="../../assets/css/figure.css" rel="stylesheet">
     {{ super() }}
 {% endblock %}
-{% block header %}{% endblock %}
+{% block header %}{{ super() }}{% endblock %}
 {% block page_body %}
     <div class="container-fluid">
       <div class="row">

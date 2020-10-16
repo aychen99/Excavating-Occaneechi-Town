@@ -13,10 +13,12 @@
 {% extends "base.html.jinja" %}
 {% block title %}{{ this_section['name'] }}{% endblock %}
 {% block styles %}
-    <link href="css/textpage.css" rel="stylesheet">
+    <link href="../../assets/css/textpage.css" rel="stylesheet">
     {{ super() }}
 {% endblock %}
-{% block header %}{% endblock %}
+{% block header %}
+{{ super() }}
+{% endblock %}
 {% block page_body %}
     <div class="container-fluid">
       <div class="row">
