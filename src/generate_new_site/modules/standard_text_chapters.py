@@ -44,7 +44,7 @@ def process_chapters(chapter_paths, out_dir, tables):
     for name in chapter_names:
         if name == "Electronic Dig":
             ch = text.Chapter(name, None)
-            ch.set_href("https://electronicdig.sites.oasis.unc.edu/")
+            ch.set_href(pathlib.Path("https://electronicdig.sites.oasis.unc.edu/"))
             chapters.append(ch)
         else:
             chapter_path = out_dir / name.lower().replace(' ', '')
