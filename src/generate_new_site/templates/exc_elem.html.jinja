@@ -1,0 +1,113 @@
+{# Jinja2 template for EOT excavation element page generation (w/o description)
+## -----------------------------------------------------------------------------
+## Included templates:
+##  navbar.html.jinja
+##  sidebar.html.jinja
+## -----------------------------------------------------------------------------
+## Required parameters:
+##  excavation_element
+## -----------------------------------------------------------------------------
+##  excavation_element : ExcavationElement, defined in excavation.py
+## -----------------------------------------------------------------------------
+#}
+{% extends "base.html.jinja" %}
+{% block title %}{{ excavation_element['name'] }}{% endblock %}
+{% block styles %}
+    <link href="css/excavation_element.css" rel="stylesheet">
+    {{ super() }}
+{% endblock %}
+{% block header %}
+    <header class="container-fluid sticky-top bg-dark">
+      <div class="navbar navbar-dark flex-column flex-md-row align-items-start bg-dark eot-navbar">
+        <a class="navbar-brand">Excavating Occaneechi Town</a>
+        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar">
+          Toggle Sidebar
+        </button>
+      </div>
+      <div class="row bg-secondary">
+        <div class="col-auto">
+          <a href="" class="text-light">Return to map view</a>
+        </div>
+        <div class="col-auto ml-auto">
+          <a href="" class="text-light">View {{ excavation_element['name'] }} artifact inventory</a>
+        </div>
+      </div>
+    </header>
+{% endblock %}
+{% block page_body %}
+    <div class="container-fluid">
+      <div class="row">
+        {% include "shared_elements/sidebar.html.jinja" %}
+        <div class="col-md" style="overflow-y: scroll;">
+          <div class="row">
+            <div class="col-md align-items-center">
+              {# Generate first figure on left panel #}
+              <figure class="figure d-block">
+                <img src="{{ excavation_element.figures[0].img_path }}" class="d-block w-100 img-fluid" alt="Figure {{ excavation_element.figures[0].figure_num }}">
+                <figcaption class="figure-caption">Figure {{ excavation_element.figures[0].figure_num }}. {{ excavation_element.figures[0].caption }}</figcaption>
+              </figure>
+              <div class="row">
+                <div class="col">
+                  <p>Type: {{ excavation_element.info.type }}</p>
+                  <p>Dimensions</p>
+                  <p>&emsp;Length: {{ excavation_element.info.dimensions.length }}</p>
+                  <p>&emsp;Width: {{ excavation_element.info.dimensions.width }}</p>
+                  <p>&emsp;Depth: {{ excavation_element.info.dimensions.depth }}</p>
+                  <p>Volume: {{ excavation_element.info.volume }}</p>
+                  <p>Area: {{ excavation_element.info.area }}</p>
+                </div>
+                <div class="col d-flex align-items-center justify-content-center">
+                  <img src="{{ excavation_element.mini_map_path }}" class="img-fluid" alt="Excavation minimap">
+                </div>
+                <div class="col">
+                  <p>Related Elements:</p>
+                  {% for e in excavation_element.related_elements %}
+                  <p><a href="{{ e.path }}">{{ e.name }}</a></p>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="col-md">
+              <h1>{{ excavation_element.name }}</h1>
+              {% if excavation_element.figures|length > 2 %}{# Generate a carousel if there's more than one figure #}
+              <div id="carouselFigures" class="carousel slide p-3" data-ride="carousel">
+                <ol class="carousel-indicators">
+                  {% for figure in excavation_element.figures %}
+                  {% if loop.index0 > 0 %}{# Don't include first figure #}
+                  <li data-target="#carouselFigures" data-slide-to="{{ loop.index0 - 1 }}" class="bg-secondary{% if loop.index0 == 1 %} active{% endif %}"></li>
+                  {% endif %}
+                  {% endfor %}
+                </ol>
+                <div class="carousel-inner">
+                  {% for figure in excavation_element.figures %}
+                  {% if loop.index0 > 0 %}{# Don't include first figure #}
+                  <div class="carousel-item{% if loop.index0 == 1 %} active{% endif %}">
+                    <figure class="figure d-block">
+                      <img src="{{ figure.img_path }}" class="d-block w-100 img-fluid" alt="Figure {{ figure.figure_num }}">
+                      <figcaption class="figure-caption">Figure {{ figure.figure_num }}. {{ figure.caption }}</figcaption>
+                    </figure>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#carouselFigures" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselFigures" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+              {% elif excavation_element.figures|length == 2 %}{# Generate a single figure if there's only one additional one #}
+              <figure class="figure d-block">
+                <img src="{{ excavation_element.figures[1].img_path }}" class="d-block w-100 img-fluid" alt="Figure {{ excavation_element.figures[1].figure_num }}">
+                <figcaption class="figure-caption">Figure {{ excavation_element.figures[1].figure_num }}. {{ excavation_element.figures[1].caption }}</figcaption>
+              </figure>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

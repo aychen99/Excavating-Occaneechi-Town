@@ -1,19 +1,19 @@
-{# Jinja2 template for EOT textpage (section) generation
+{# Jinja2 template for EOT figure page generation
 ## -----------------------------------------------------------------------------
 ## Included templates:
+##  navbar.html.jinja
 ##  sidebar.html.jinja
-##  pagination.html.jinja
 ## -----------------------------------------------------------------------------
 ## Required parameters:
-##  this_section
+##  figure
 ## -----------------------------------------------------------------------------
-##  this_section : Section, defined in text_classes.py
+##  figure : Figure, defined in figure.py
 ## -----------------------------------------------------------------------------
 #}
 {% extends "base.html.jinja" %}
-{% block title %}{{ this_section['name'] }}{% endblock %}
+{% block title %}Figure {{ figure['figure_num'] }}{% endblock %}
 {% block styles %}
-    <link href="css/textpage.css" rel="stylesheet">
+    <link href="css/figure.css" rel="stylesheet">
     {{ super() }}
 {% endblock %}
 {% block header %}{% endblock %}
@@ -22,16 +22,12 @@
       <div class="row">
         {% include "shared_elements/sidebar.html.jinja" %}
         <div class="col-md" style="overflow-y: scroll;">
-          <h1>{{ this_section.name }}</h1>
-          {% for content in this_section.content %}
-            {% if content.type == "paragraph" %}
-            <p>{{ content.content }}</p>
-            {% endif %}
-            {% if content.type == "italic-title" %}
-            <p><i>{{ content.content }}</i></p>
-            {% endif %}
-          {% endfor %}
-          {% include "shared_elements/pagination.html.jinja" %}
+          ## !!TODO!! image map resizing
+          <figure class="figure">
+            <img src="{{ path_table.get_rel_path(this_path, path_table.get_path(figure['img_path'])) }}" class="img-fluid" alt="Responsive image">
+            <figcaption class="figure-caption">Figure {{ figure['figure_num'] }}. {{ figure['caption'] }}</figcaption>
+          </figure>
+          ## !!TODO!! pagination
         </div>
       </div>
     </div>

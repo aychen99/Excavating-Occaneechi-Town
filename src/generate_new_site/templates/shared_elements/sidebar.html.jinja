@@ -4,54 +4,54 @@
 ## Required parameters:
 ##  chapters, this_chapter, this_module, this_section
 ## -----------------------------------------------------------------------------
-##  chapters     : list of 'Chapter', defined in text_classes.py
-##  this_chapter : Chapter, defined in text_classes.py
-##  this_module  : Module, defined in text_classes.py
-##  this_section : Section, defined in text_classes.py
+##  chapters          : list of 'Chapter', defined in text_classes.py
+##  this_chapter_name : str, equal to chapter['name'] for the current chapter
+##  this_module_name  : str, equal to module['full_title'] for the current module
+##  this_section_name : str, equal to section['name'] for the current section
 ## -----------------------------------------------------------------------------
 #}
-<div class="col-md-3 eot-sidebar">
+<div class="col-md-3 eot-sidebar collapse" id="eot-sidebar">
   <nav class="nav flex-column">
-  # for chapter in chapters:
-    # if chapter is sameas this_chapter:
+  {% for chapter in chapters %}
+    {% if chapter.name == this_chapter_name %}
     <div class="sidebar-active sidebar-chapter"> <!-- Current chapter -->
       <a href="{{ chapter.href }}">{{ chapter.name }}</a>
       <ul class="nav"> <!-- Current chapter modules list -->
-      # for module in chapter.modules:
-        # if module is sameas this_module:
+      {% for module in chapter.modules %}
+        {% if module.full_title == this_module_name %}
         <li class="sidebar-active sidebar-module">
-          <a href="{{ module.href }}">{{ module.fullTitle }}</a>
-          <p id="author">{{ module.author }}</p>
+          <a href="{{ module.href }}">{{ module.full_title }}</a>
+          {% if module.author %}<p id="author">{{ module.author }}</p>{% endif %}
           <ul class="nav"> <!-- Current chapter section list-->
-          # for section in module.sections:
-            <li class="{% if section is sameas this_section %}sidebar-active {% endif %}sidebar-section">
+          {% for section in module.sections %}
+            <li class="{% if section.name == this_section_name %}sidebar-active {% endif %}sidebar-section">
               <a href="{{ section.href }}">{{ section.name }}</a>
-              # if section.subsections:
+              {% if section.subsections %}
                 <ul>
-                # for subsection in section.subsections:
-                  <li class="{% if subsection is sameas this_section %}sidebar-active {% endif %}sidebar-subsection">
+                {% for subsection in section.subsections %}
+                  <li class="{% if subsection.name == this_section_name %}sidebar-active {% endif %}sidebar-subsection">
                     <a href="{{ subsection.href }}">{{ subsection.name }}</a>
                   </li>
-                # endfor
+                {% endfor %}
                 </ul>
-              # endif
+              {% endif %}
             </li>
-          # endfor
+          {% endfor %}
           </ul>
         </li>
-        # else:
+        {% else %}
         <li class="sidebar-module">
-          <a href="{{ module.href }}">{{ module.shortTitle }}</a>
+          <a href="{{ module.href }}">{{ module.short_title }}</a>
         </li>
-        # endif
-      # endfor
+        {% endif %}
+      {% endfor %}
       </ul>
     </div>
-    # else:
+    {% else %}
     <div class="sidebar-chapter">
       <a href="{{ chapter.href }}">{{ chapter.name }}</a>
     </div>
-    # endif
-  # endfor
+    {% endif %}
+  {% endfor %}
   </nav>
 </div>

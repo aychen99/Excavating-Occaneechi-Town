@@ -1,49 +1,60 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from os.path import relpath
 import json
 import pathlib
 import site_data_structs.text as text
+import utilities
 
 
-def generate_chapters(chapters_dir):
+def process_chapters(chapter_paths, out_dir, tables):
     """
     Define the structure of the site's text chapters for sidebar.
     Populates a list, 'chapters', with the basic chapter structure information
     required to generate page sidebars.
     Parameters
     ----------
-    chapters_dir : str
-        Pathlike string containing the path to the directory with the chapter
-        data files.
+    chapters_dir : Path
+        Path to the directory with the chapter data files.
     Returns
     -------
     chapters : List of 'Chapter' objects
-        List of 'Chapter' objects, each decorated with all of the old site data
+        List of 'Chapter' objects, each populated with all of the old site data
         for that chapter.
     """
+
+    print("Processing text chapter data.")
 
     chapters = []
 
     # TODO: reconsider chapter structure hardcoding
-    # TODO: settle how we name hrefs, placeholders for now, most replaced below
-    chapter_names_links = [
-        ("Getting Started", "001_getting_started.html"),
-        ("Archaeology Primer", "002_archaeology_primer.html"),
-        ("Introduction", "01_introduction.html"),
-        ("Contents", "02_contents.html"),
-        ("Background", "1_background.html"),
-        ("Excavations", "2_excavations.html"),
-        ("Artifacts", "3_artifacts.html"),
-        ("Food Remains", "4_food_remains.html"),
-        ("Interpretations", "5_interpretations.html"),
-        ("Electronic Dig", "https://electronicdig.sites.oasis.unc.edu/")
+    chapter_names = [
+        "Getting Started",
+        "Archaeology Primer",
+        "Introduction",
+        "Contents",
+        "Background",
+        "Excavations",
+        "Artifacts",
+        "Food Remains",
+        "Interpretations",
+        "Electronic Dig"
     ]
 
-    for name, link in chapter_names_links:
-        chapters.append(text.Chapter(name, link))
+    # Create all chapter objects
+    for name in chapter_names:
+        if name == "Electronic Dig":
+            ch = text.Chapter(name, None)
+            ch.set_href("https://electronicdig.sites.oasis.unc.edu/")
+            chapters.append(ch)
+        else:
+            chapter_path = out_dir / name.lower().replace(' ', '')
+            chapters.append(text.Chapter(name, chapter_path))
 
-    chapter_paths = pathlib.Path(chapters_dir).glob("*.json")
+    # Process data per chapter
     for chapter_path in chapter_paths:
-        generate_chapter_modules(chapters, chapter_path)
+        process_chapter(chapters, chapter_path, tables)
+
+    print("Finished processing text chapter data.")
 
     return chapters
 
@@ -55,28 +66,52 @@ def get_chapter_from_path(chapters, chapter_path):
     ----------
     chapters : list of 'Chapter'
         Contains the Chapters that are searched for a match to the path
-    chapter_path : str
-        POSIX path to a chapter directory
+    chapter_path : Path
+        Path to a chapter directory
     Returns
     -------
     chapter : Chapter
         The chapter in chapters corresponding to chapter_path
     """
+
     path_translator = {
         '/dig/html/part0': "Introduction",
-        '/dig/html/part1': "Contents", # TODO Special case
+        '/dig/html/part1': "Contents",
         '/dig/html/part2': "Background",
         '/dig/html/part3': "Artifacts",
         '/dig/html/part4': "Food Remains",
         '/dig/html/part5': "Interpretations"
     }
-    target = path_translator[chapter_path]
+    target = path_translator[str(chapter_path)]
     for chapter in chapters:
         if chapter.name == target:
             return chapter
 
+    return None
 
-def generate_chapter_modules(chapters, chapter_path):
+
+def generate_section_filename(page_num, page_name):
+    """
+    Creates a output Path for a section file.
+    Format is 'XXX_page_name.html', or 'prelimsXX_page_name.html' for front
+    matter pages.
+    Parameters
+    ----------
+    page_num : str
+    page_name : str
+    Returns
+    -------
+    Path
+    """
+
+    page_name = utilities.str_ops.make_str_filename_safe(page_name)
+
+    path_str = '{}_{}.html'.format(utilities.str_ops.normalize_file_page_num(page_num),
+                                   page_name)
+    return pathlib.Path(path_str)
+
+
+def process_chapter(chapters, chapter_path, tables):
     """
     Process data for all modules of a chapter.
     Read the raw data from extraction phase for all of a chapter's modules, put
@@ -92,9 +127,8 @@ def generate_chapter_modules(chapters, chapter_path):
     """
 
     # Load the extracted chapter data
-    f = chapter_path.open()
-    module_data = json.load(f)
-    f.close()
+    with chapter_path.open() as f:
+        module_data = json.load(f)
 
     # Make sure we add modules to the right chapter
     chapter = get_chapter_from_path(chapters, module_data['path'])
@@ -102,36 +136,65 @@ def generate_chapter_modules(chapters, chapter_path):
     # Decorate the module-section-subsection subtree with data
     for module_entry in module_data['modules']:
         module = text.Module(
-            shortTitle=module_entry['module']['shortTitle'],
-            fullTitle=module_entry['module']['fullTitle'],
+            short_title=module_entry['module']['shortTitle'],
+            full_title=module_entry['module']['fullTitle'],
             author=module_entry['module']['author']
         )
         for section in module_entry['module']['sections']:
-            sec_href = (section['pageNum'] + section['name'] + ".html")
+            sec_href = chapter.path / generate_section_filename(
+                section['pageNum'], section['name'])
+
             this_section = text.Section(
                 name=section['name'],
-                pageNum=section['pageNum'],
-                href=sec_href.replace(' ', '_').replace('/', '_'),  # TODO temporary solution
+                page_num=section['pageNum'],
+                href=sec_href,
                 content=module_data['pages'][section['pageNum']]['content']
             )
+
+            # Add to path table for link resolution
+            tables.path_table.register(
+                section['path'], this_section.href, this_section)
+
+            # Add to page table for pagination
+            tables.page_table.register(
+                this_section.page_num, this_section.href)
+
             for subsection in section['subsections']:
-                subsec_href = (subsection['pageNum'] + subsection['name'] + ".html")
-                new_subsection = text.Section(
+                subsec_href = chapter.path / generate_section_filename(
+                    subsection['pageNum'], subsection['name'])
+
+                this_subsection = text.Section(
                     name=subsection['name'],
-                    pageNum=subsection['pageNum'],
-                    href=subsec_href.replace(' ', '_').replace('/', '_'),  # TODO temporary solution
+                    page_num=subsection['pageNum'],
+                    href=subsec_href,
                     content=module_data['pages'][subsection['pageNum']]['content']
                 )
-                this_section.add_subsection(new_subsection)
+
+                # Add to path table for link resolution
+                tables.path_table.register(
+                    subsection['path'], this_subsection.href, this_subsection)
+
+                # Add to page table for pagination
+                tables.page_table.register(
+                    this_subsection.page_num, this_subsection.href)
+
+                this_section.add_subsection(this_subsection)
+
             module.add_section(this_section)
+
+            # Add to path table for link resolution
+            tables.path_table.register(module_entry['module']['path'], module.href, module)
 
         # Add the module subtree as child of the chapter
         chapter.add_module(module)
 
+        # Add to path table for link resolution
+        tables.path_table.register(module_data['path'], chapter.href, chapter)
+
     return
 
 
-def generate_text_pages(chapters):
+def write_text_pages(chapters, tables):
     """
     Generate all text chapter pages.
     Parameters
@@ -141,61 +204,83 @@ def generate_text_pages(chapters):
         'Chapter' objects
     """
 
+    print("Writing text chapter pages.")
+
     # Jinja setup
     jinja_env = Environment(
         loader=FileSystemLoader('templates'),
         autoescape=select_autoescape(['html', 'xml']),
         line_statement_prefix='#',
-        line_comment_prefix='##'
+        line_comment_prefix='##',
+        trim_blocks=True
     )
     text_template = jinja_env.get_template('textpage.html.jinja')
 
     # Write the html files!
     for chapter in chapters:
-        print(chapter.name)
-        for module in chapter.modules:
-            print(module.shortTitle)
-            for section in module.sections:
-                print(section.name)
-                with open(section.href, 'x') as f:
-                    f.write(text_template.render(
-                        chapters=chapters,
-                        this_chapter=chapter,
-                        this_module=module,
-                        this_section=section
-                    ))
-                for subsection in section.subsections:
-                    with open(subsection.href, 'x') as f:
+        # Should have better solution here, restructure method
+        if chapter.name != "Excavations":
+            for module in chapter.modules:
+                chapters_rel = [
+                    c.get_dict_with_relpaths(module.href) for c in chapters]
+                for section in module.sections:
+                    # Next block should have its own function
+                    prev_href = tables.page_table.get_prev_page_href(section.page_num)
+                    if prev_href is not None:
+                        prev_href_rel = utilities.path_ops.rel_path(prev_href, section.href)
+                    else:
+                        prev_href_rel = None
+                    next_href = tables.page_table.get_next_page_href(section.page_num)
+                    if next_href is not None:
+                        next_href_rel = utilities.path_ops.rel_path(next_href, section.href)
+                    else:
+                        next_href_rel = None
+
+                    pagination = {
+                        'prev_page_href': prev_href_rel,
+                        'this_page_num': section.page_num,
+                        'next_page_href': next_href_rel
+                    }
+
+                    section.href.parent.mkdir(parents=True, exist_ok=True)
+                    with section.href.open('w') as f:
                         f.write(text_template.render(
-                            chapters=chapters,
-                            this_chapter=chapter,
-                            this_module=module,
-                            this_section=subsection
+                            chapters=chapters_rel,
+                            this_chapter_name=chapter.name,
+                            this_module_name=module.full_title,
+                            this_section_name=section.name,
+                            this_section=section.get_dict_with_relpaths(section.href),
+                            pagination=pagination
                         ))
+                    for subsection in section.subsections:
+                        # Next block should have its own function
+                        prev_href = tables.page_table.get_prev_page_href(subsection.page_num)
+                        if prev_href is not None:
+                            prev_href_rel = utilities.path_ops.rel_path(prev_href, subsection.href)
+                        else:
+                            prev_href_rel = None
+                        next_href = tables.page_table.get_next_page_href(subsection.page_num)
+                        if next_href is not None:
+                            next_href_rel = utilities.path_ops.rel_path(next_href, subsection.href)
+                        else:
+                            next_href_rel = None
 
-    return
+                        pagination = {
+                            'prev_page_href': prev_href_rel,
+                            'this_page_num': subsection.page_num,
+                            'next_page_href': next_href_rel
+                        }
+                        subsection.href.parent.mkdir(parents=True, exist_ok=True)
+                        with subsection.href.open('w') as f:
+                            f.write(text_template.render(
+                                chapters=chapters_rel,
+                                this_chapter_name=chapter.name,
+                                this_module_name=module.full_title,
+                                this_section_name=subsection.name,
+                                this_section=subsection.get_dict_with_relpaths(subsection.href),
+                                pagination=pagination
+                            ))
 
+    print("Finished writing text chapter pages.")
 
-def generate_all_chapters(chapters_dir):
-    """
-    Generate pages for all text chapters from output of extraction phase.
-    Main function of this file.
-    Parameters
-    ----------
-    chapters_dir: str
-        Path of the directory containing all text chapter data in POSIX Path
-        format. Expects this directory to contain subdirectories for each named
-        chapter. A text chapter subdirectory will contain JSON files for each
-        module in that text chapter.
-    """
-
-    # Put the extracted data into a structure we can use for page generation
-    chapters = generate_chapters(chapters_dir)
-
-    # Set hrefs for chapters and modules such that the link leads to the first
-    # page in that module/chapter
-    for chapter in chapters:
-        chapter.set_hrefs_r()
-    # Make the files!
-    generate_text_pages(chapters)
     return
