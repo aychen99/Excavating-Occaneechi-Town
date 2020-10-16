@@ -1,3 +1,5 @@
 *.pyc
 **/.DS_Store
 config.json
+/jsons
+/newdig

@@ -1,4 +1,4 @@
-import utilities
+from .. import utilities
 
 
 class ExcavationElement:

@@ -1,4 +1,4 @@
-from utilities.str_ops import page_num_to_arabic
+from .str_ops import page_num_to_arabic
 import pathlib
 
 

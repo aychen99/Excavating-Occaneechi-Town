@@ -28,6 +28,8 @@ def register_images(dig_dir, imgs_in, imgs_out, tables):
 
     # Iterate through subdirectories
     for img_dir in imgs_in.iterdir():
+        if img_dir.name == '.DS_Store':
+            continue
         # Save new subdirectory path
         new_dir = imgs_out / img_dir.name
         # Iterate through images

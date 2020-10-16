@@ -1,9 +1,10 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from os.path import relpath
 import json
-import site_data_structs.excavation as exc
-import site_data_structs.text as text
-import utilities
+import pathlib
+from ..site_data_structs import excavation as exc
+from ..site_data_structs import text
+from .. import utilities
 
 
 def process_excavation_elements(excavation_file, description_file,
@@ -172,8 +173,9 @@ def write_excavation_pages(excavation_elements, chapters,
     print("Writing excavation element pages.")
 
     # Jinja setup
+    templates_path = str((pathlib.Path(__file__).parent.parent / "templates"))
     jinja_env = Environment(
-        loader=FileSystemLoader('templates'),
+        loader=FileSystemLoader(templates_path),
         autoescape=select_autoescape(['html', 'xml']),
         line_statement_prefix='#',
         line_comment_prefix='##',

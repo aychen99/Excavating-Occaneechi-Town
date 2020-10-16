@@ -1,5 +1,5 @@
-from modules import standard_text_chapter, excavation_details_page, image_page, feature_descriptions
-from utilities import file_ops
+from .modules import standard_text_chapter, excavation_details_page, image_page, feature_descriptions
+from .utilities import file_ops
 import pathlib
 import json
 import datetime
@@ -11,9 +11,9 @@ def run_extraction(config):
     output_dir_path_obj = None
     if output_dir_path == "Default":
         output_dir_path_obj = pathlib.Path(__file__).parent / "jsons"
-        output_dir_path_obj.mkdir(parents=True, exist_ok=True)
     else:
         output_dir_path_obj = pathlib.Path(output_dir_path)
+    output_dir_path_obj.mkdir(parents=True, exist_ok=True)
 
     # Run text chapter extraction
     text_partnames = config['standardTextChapterPartnames']
@@ -45,8 +45,3 @@ def run_extraction(config):
     descriptions_output_filename = output_dir_path_obj / "descriptions.json"
     with open(descriptions_output_filename, 'w') as f:
         json.dump(descriptions, f, indent=4, sort_keys=True)
-
-if __name__ == "__main__":
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-        run_extraction(config)

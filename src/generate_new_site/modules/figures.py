@@ -1,7 +1,7 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import json
 import pathlib
-import site_data_structs.figure as fig
+from ..site_data_structs import figure as fig
 
 
 def process_figures(figures_file, out_dir, tables):

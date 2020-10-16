@@ -1,7 +1,7 @@
 import argparse
 import pathlib
-import modules
-import utilities
+from . import modules
+from . import utilities
 
 
 def generate_site(

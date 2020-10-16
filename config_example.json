@@ -1,6 +1,9 @@
 {
     "digParentDirPath": "C:/dig_parent",
     "extractionOutputDirPath": "Default",
+    "generationOutputDirPath": "Default",
+    "overwriteExistingGeneratedFiles": true,
+    "copyImages": true,
     "standardTextChapterPartnames": [
         "part0",
         "part1",
