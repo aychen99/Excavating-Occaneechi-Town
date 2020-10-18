@@ -327,7 +327,6 @@ def extract_full_chapter(all_module_file_names, current_dir_path, dig_parent_pat
     """Extract an entire chapter by going through all tab*_*.html files."""
     filenames = sorted(all_module_file_names)
     module_start_tab_names = [filename for filename in filenames if "_" not in filename]
-    print(module_start_tab_names)
     extracted = {
         "path": current_dir_path,
         "modules": [],
@@ -339,7 +338,6 @@ def extract_full_chapter(all_module_file_names, current_dir_path, dig_parent_pat
     for tab_name in module_start_tab_names:
         current_module_file_names = [filename for filename in filenames
                                      if tab_name.split('.')[0] in filename]
-        print(current_module_file_names)
         module_object = extract_full_module(current_module_file_names, 
                                             current_dir_path, dig_parent_path, readfile)
         extracted['modules'].append(module_object)
