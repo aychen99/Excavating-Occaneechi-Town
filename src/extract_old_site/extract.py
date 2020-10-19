@@ -1,4 +1,10 @@
-from .modules import standard_text_chapter, excavation_details_page, image_page, feature_descriptions
+from .modules import (
+    standard_text_chapter,
+    excavation_details_page,
+    image_page,
+    feature_descriptions,
+    references
+)
 from .utilities import file_ops
 import pathlib
 import json
@@ -52,3 +58,11 @@ def run_extraction(config):
     descriptions = feature_descriptions.extract_descriptions(dig_parent_dir, file_ops.readfile)
     descriptions_output_filename = output_dir_path_obj / "descriptions.json"
     write_file(descriptions, descriptions_output_filename, True)
+
+    # Run references extraction
+    print("Extracting references... ...")
+    data = references.extract_all_references(dig_parent_dir, file_ops.readfile)
+    write_file(data['refs'], output_dir_path_obj / "references.json", True)
+    write_file(data['hrefsToRefs'], output_dir_path_obj / "hrefsToRefs.json", True)
+    print("Are all ref pages internally consistent? - "
+          + str(references.validate_all_ref_pages(dig_parent_dir, file_ops.readfile)))
