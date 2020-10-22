@@ -36,6 +36,8 @@ def generate_site(
     HTML_OUT_DIR = OUTPUT_DIR / "html"
     INDEX_PATH = HTML_OUT_DIR / "index.html"
 
+    HTML_OUT_DIR.mkdir(parents=overwrite_out, exist_ok=overwrite_out)
+
     # Table for translation from old to new Paths
     index = site_data_structs.site.Index(INDEX_PATH)
 
