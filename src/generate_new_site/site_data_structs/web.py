@@ -6,7 +6,7 @@ class WebChapter(SiteChapter):
 
     def __init__(self, name, parent, path):
         super().__init__(name=name, parent=parent, path=path)
-        self.href = str(path).replace(
+        self.href = path.as_posix().replace(
             'https:/', 'https://').replace('http:/', 'http://')
 
     def update_href(self, start_path):
