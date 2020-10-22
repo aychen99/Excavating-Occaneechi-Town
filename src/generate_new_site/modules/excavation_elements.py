@@ -1,7 +1,4 @@
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-from os.path import relpath
 import json
-import pathlib
 from ..site_data_structs import excavation as exc
 from ..site_data_structs import text
 from .. import utilities
@@ -123,13 +120,13 @@ def process_element(element_data, descriptions, out_dir, tables):
         description=description
     )
 
-
     # Add figures
     for fig in element_data['images']:
         element.add_figure(tables.figure_table.get_figure(fig['figureNum']))
 
     if description is not None:
-        tables.page_table.register(element.description['page_num'], element.href)
+        tables.page_table.register(
+            element.description['page_num'], element.href)
 
     # TODO check name in JSON
     tables.path_table.register(element_data['path'], element.href, element)
@@ -158,64 +155,3 @@ def generate_element_filename(elem_name, page_num=None):
     else:
         filename = '{}.html'.format(elem_name)
     return filename
-
-
-def write_excavation_pages(excavation_elements, chapters,
-                           exc_chapter, tables):
-    """
-    Generate all excavation element pages.
-    Parameters
-    ----------
-    excavation_elements : list of 'ExcavationElement' objects
-        Data for all excavation element pages.
-    """
-
-    print("Writing excavation element pages.")
-
-    # Jinja setup
-    templates_path = str((pathlib.Path(__file__).parent.parent / "templates"))
-    jinja_env = Environment(
-        loader=FileSystemLoader(templates_path),
-        autoescape=select_autoescape(['html', 'xml']),
-        line_statement_prefix='#',
-        line_comment_prefix='##',
-        trim_blocks=True
-    )
-    exc_template = jinja_env.get_template('exc_elem.html.jinja')
-    exc_desc_template = jinja_env.get_template('exc_elem_desc.html.jinja')
-
-    for module in exc_chapter.modules:
-        chapters_rel = [
-            c.get_dict_with_relpaths(module.href) for c in chapters
-        ]
-
-        for element in excavation_elements[module.full_title.lower()]:
-            # Use correct template for description or lack thereof
-            if element.description is not None:
-                this_template = exc_desc_template
-                pagination = {
-                    'prev_page_href': utilities.path_ops.rel_path(
-                        tables.page_table.get_prev_page_href(element.description['page_num']), element.href),
-                    'this_page_num': element.description['page_num'],
-                    'next_page_href': utilities.path_ops.rel_path(
-                        tables.page_table.get_next_page_href(element.description['page_num']), element.href)
-                }
-            else:
-                this_template = exc_template
-                pagination = {}
-
-            element.href.parent.mkdir(parents=True, exist_ok=True)
-            with element.href.open('w') as f:
-                f.write(this_template.render(
-                    excavation_element=element.get_dict_with_relpaths(
-                        element.href, tables),
-                    chapters=chapters_rel,
-                    this_chapter_name="Excavations",
-                    this_module_name=module.full_title,
-                    this_section_name=element.name,
-                    pagination=pagination
-                ))
-
-    print("Finished writing excavation element pages.")
-
-    return

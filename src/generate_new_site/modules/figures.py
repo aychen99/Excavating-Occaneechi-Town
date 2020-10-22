@@ -1,4 +1,3 @@
-from jinja2 import Environment, FileSystemLoader, select_autoescape
 import json
 import pathlib
 from ..site_data_structs import figure as fig
@@ -86,29 +85,3 @@ def generate_figure_filename(figure_num):
 
     path_str = 'figure_{:0>4}.html'.format(figure_num)
     return pathlib.Path(path_str)
-
-
-# def write_figure_pages(figures):
-#     """
-#     Generate all figure pages.
-#     Parameters
-#     ----------
-#     figures : list of 'Figure' objects
-#     """
-#
-#     # Jinja setup
-#     jinja_env = Environment(
-#         loader=FileSystemLoader('templates'),
-#         autoescape=select_autoescape(['html', 'xml']),
-#         line_statement_prefix='#',
-#         line_comment_prefix='##',
-#         trim_blocks=True
-#     )
-#     figure_template = jinja_env.get_template('figure.html.jinja')
-#
-#     for figure in figures:
-#         with figure.href.open('w') as f:
-#             # TODO fix this once template is done
-#             f.write(figure_template.render(figure=figure))
-#
-#     return

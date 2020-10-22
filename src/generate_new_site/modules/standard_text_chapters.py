@@ -1,5 +1,3 @@
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-from os.path import relpath
 import json
 import pathlib
 from ..site_data_structs import text
@@ -43,9 +41,10 @@ def process_chapters(chapter_paths, out_dir, tables):
     # Create all chapter objects
     for name in chapter_names:
         if name == "Electronic Dig":
-            ch = text.Chapter(name, None)
-            ch.set_href(pathlib.Path("https://electronicdig.sites.oasis.unc.edu/"))
-            chapters.append(ch)
+            chapters.append(text.Chapter(
+                name=name,
+                path=pathlib.Path("https://electronicdig.sites.oasis.unc.edu/")
+            ))
         else:
             chapter_path = out_dir / name.lower().replace(' ', '')
             chapters.append(text.Chapter(name, chapter_path))
@@ -106,8 +105,8 @@ def generate_section_filename(page_num, page_name):
 
     page_name = utilities.str_ops.make_str_filename_safe(page_name)
 
-    path_str = '{}_{}.html'.format(utilities.str_ops.normalize_file_page_num(page_num),
-                                   page_name)
+    path_str = '{}_{}.html'.format(
+        utilities.str_ops.normalize_file_page_num(page_num), page_name)
     return pathlib.Path(path_str)
 
 
@@ -136,8 +135,8 @@ def process_chapter(chapters, chapter_path, tables):
     # Decorate the module-section-subsection subtree with data
     for module_entry in module_data['modules']:
         module = text.Module(
-            short_title=module_entry['module']['shortTitle'],
-            full_title=module_entry['module']['fullTitle'],
+            short_name=module_entry['module']['shortTitle'],
+            long_name=module_entry['module']['fullTitle'],
             author=module_entry['module']['author']
         )
         for section in module_entry['module']['sections']:
@@ -183,105 +182,13 @@ def process_chapter(chapters, chapter_path, tables):
             module.add_section(this_section)
 
             # Add to path table for link resolution
-            tables.path_table.register(module_entry['module']['path'], module.href, module)
+            tables.path_table.register(
+                module_entry['module']['path'], module.href, module)
 
         # Add the module subtree as child of the chapter
         chapter.add_module(module)
 
         # Add to path table for link resolution
         tables.path_table.register(module_data['path'], chapter.href, chapter)
-
-    return
-
-
-def write_text_pages(chapters, tables):
-    """
-    Generate all text chapter pages.
-    Parameters
-    ----------
-    chapters : list of 'Chapter'
-        Data for all text chapters, represented by a list of decorated
-        'Chapter' objects
-    """
-
-    print("Writing text chapter pages.")
-
-    # Jinja setup
-    templates_path = str((pathlib.Path(__file__).parent.parent / "templates"))
-    jinja_env = Environment(
-        loader=FileSystemLoader(templates_path),
-        autoescape=select_autoescape(['html', 'xml']),
-        line_statement_prefix='#',
-        line_comment_prefix='##',
-        trim_blocks=True
-    )
-    text_template = jinja_env.get_template('textpage.html.jinja')
-
-    # Write the html files!
-    for chapter in chapters:
-        # Should have better solution here, restructure method
-        if chapter.name != "Excavations":
-            for module in chapter.modules:
-                chapters_rel = [
-                    c.get_dict_with_relpaths(module.href) for c in chapters]
-                for section in module.sections:
-                    # Next block should have its own function
-                    prev_href = tables.page_table.get_prev_page_href(section.page_num)
-                    if prev_href is not None:
-                        prev_href_rel = utilities.path_ops.rel_path(prev_href, section.href)
-                    else:
-                        prev_href_rel = None
-                    next_href = tables.page_table.get_next_page_href(section.page_num)
-                    if next_href is not None:
-                        next_href_rel = utilities.path_ops.rel_path(next_href, section.href)
-                    else:
-                        next_href_rel = None
-
-                    pagination = {
-                        'prev_page_href': prev_href_rel,
-                        'this_page_num': section.page_num,
-                        'next_page_href': next_href_rel
-                    }
-
-                    section.href.parent.mkdir(parents=True, exist_ok=True)
-                    with section.href.open('w') as f:
-                        f.write(text_template.render(
-                            chapters=chapters_rel,
-                            this_chapter_name=chapter.name,
-                            this_module_name=module.full_title,
-                            this_section_name=section.name,
-                            this_section=section.get_dict_with_relpaths(section.href),
-                            pagination=pagination
-                        ))
-                    for subsection in section.subsections:
-                        # Next block should have its own function
-                        prev_href = tables.page_table.get_prev_page_href(subsection.page_num)
-                        if prev_href is not None:
-                            prev_href_rel = utilities.path_ops.rel_path(prev_href, subsection.href)
-                        else:
-                            prev_href_rel = None
-                        next_href = tables.page_table.get_next_page_href(subsection.page_num)
-                        if next_href is not None:
-                            next_href_rel = utilities.path_ops.rel_path(next_href, subsection.href)
-                        else:
-                            next_href_rel = None
-
-                        pagination = {
-                            'prev_page_href': prev_href_rel,
-                            'this_page_num': subsection.page_num,
-                            'next_page_href': next_href_rel
-                        }
-                        subsection.href.parent.mkdir(parents=True, exist_ok=True)
-                        with subsection.href.open('w') as f:
-                            f.write(text_template.render(
-                                chapters=chapters_rel,
-                                this_chapter_name=chapter.name,
-                                this_module_name=module.full_title,
-                                this_section_name=subsection.name,
-                                this_section=subsection.get_dict_with_relpaths(subsection.href),
-                                pagination=pagination
-                            ))
-
-    print("Finished writing text chapter pages.")
 
     return

@@ -16,7 +16,7 @@
     <li class="page-item active">
       <a class="page-link" href="#">{{ pagination.this_page_num }}</a>
     </li>
-    {% if pagination.prev_page_href%}
+    {% if pagination.next_page_href%}
     <li class="page-item">
       <a class="page-link" href="{{ pagination.next_page_href }}">Next</a>
     </li>

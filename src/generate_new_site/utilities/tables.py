@@ -2,13 +2,6 @@ from .str_ops import page_num_to_arabic
 import pathlib
 
 
-class Tables:
-    def __init__(self):
-        self.path_table = PathTable()
-        self.page_table = PageTable()
-        self.figure_table = FigureTable()
-
-
 class PathTable:
     """
     Object for retrieving paths and entities based on paths in /dig.
@@ -56,7 +49,7 @@ class PathTable:
         old_path = pathlib.Path('/') / old_path
 
         if old_path in self.path_table:
-            return self.path_table[old_path]['path']
+            return self.path_table[old_path]['entity']
 
         return None
 
@@ -80,15 +73,15 @@ class PageTable:
         self.pages = {}
         self.prelim_pages = {}
 
-    def register(self, page_num, href):
+    def register(self, page_num, path):
         if page_num.isdigit():
-            self.pages[int(page_num)] = href
+            self.pages[int(page_num)] = path
         else:
             page_num = page_num_to_arabic(page_num)
-            self.prelim_pages[int(page_num)] = href
+            self.prelim_pages[int(page_num)] = path
         return
 
-    def get_page_href(self, page_num):
+    def get_page_path(self, page_num):
         if page_num.isdigit() and int(page_num) in self.pages:
             return self.pages[int(page_num)]
         elif not page_num.isdigit():
@@ -97,7 +90,7 @@ class PageTable:
                 return self.prelim_pages[int(page_num)]
         return None
 
-    def get_next_page_href(self, page_num):
+    def get_next_page_path(self, page_num):
         if page_num.isdigit() and int(page_num)+1 in self.pages:
             return self.pages[int(page_num)+1]
         elif not page_num.isdigit():
@@ -106,7 +99,7 @@ class PageTable:
                 return self.prelim_pages[int(page_num)+1]
         return None
 
-    def get_prev_page_href(self, page_num):
+    def get_prev_page_path(self, page_num):
         if page_num.isdigit() and int(page_num)-1 in self.pages:
             return self.pages[int(page_num)-1]
         elif not page_num.isdigit():

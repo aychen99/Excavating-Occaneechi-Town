@@ -89,7 +89,7 @@
                 <div class="col">
                   <p>Related Elements:</p>
                   {% for e in excavation_element.related_elements %}
-                  <p><a href="{{ e.path }}">{{ e.name }}</a></p>
+                  <p><a href="{{ e.href }}">{{ e.name }}</a></p>
                   {% endfor %}
                 </div>
               </div>
@@ -97,7 +97,7 @@
             <div class="col-md">
               <h1>{{ excavation_element.name }}</h1>
               <h2>Description</h2>
-            {% for c in excavation_element.description['content']['content'] %}
+            {% for c in excavation_element.content['content']['content'] %}
               {% if c['type'] == "author" %}
               <h5>{{ c['content'] }}</h5>
               {% elif c['type'] == "italic-title" %}
