@@ -13,10 +13,10 @@ def rel_path(path, start):
     if 'https:/' in str(path) or 'http:/' in str(path):
         return path
 
-    if start.is_file():  # Want relpath from file's directory
+    if start.suffix != '':  # Want relpath from file's directory
         return pathlib.Path(relpath(path, start.parent))
 
-    if start.is_dir():  # Already a directory
+    if start.suffix == '':  # Already a directory
         return pathlib.Path(relpath(path, start))
 
     # Should be no such paths that get here, return 'path' for safety
