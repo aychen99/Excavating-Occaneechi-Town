@@ -36,6 +36,9 @@ def generate_site(
     HTML_OUT_DIR = OUTPUT_DIR / "html"
     INDEX_PATH = HTML_OUT_DIR / "index.html"
 
+    ASSETS_IN = Path(__file__).parent / "assets"
+    ASSETS_OUT = OUTPUT_DIR / "assets"
+
     HTML_OUT_DIR.mkdir(parents=overwrite_out, exist_ok=overwrite_out)
 
     # Table for translation from old to new Paths
@@ -45,6 +48,8 @@ def generate_site(
         utilities.dig_imgs.copy_images(DIG_DIR, IMGS_IN, IMGS_OUT, index)
     else:
         utilities.dig_imgs.register_images(DIG_DIR, IMGS_IN, IMGS_OUT, index)
+
+    utilities.html_assets.copy_html_assets(ASSETS_IN, ASSETS_OUT)
 
     DESCRIPTIONS_PATH = INPUT_DIR / "descriptions.json"
     EXCAVATIONS_PATH = INPUT_DIR / "excavationsElements.json"
