@@ -1,11 +1,18 @@
 from bs4 import BeautifulSoup
 import pathlib
+import os
 
-def extract_page_content(html_string):
+def extract_page_content(html_string, folder_path):
     """Extract contents of a page from a report*b.html file."""
     soup = BeautifulSoup(html_string, 'html5lib')
+    folder_path_obj = pathlib.Path(folder_path)
 
     extracted = []
+    # Replace all relative links in <a> tags with full ones to help generation
+    for a in soup.find_all('a'):
+        new_href = os.path.normpath(folder_path_obj / a['href'])
+        new_href = pathlib.Path(new_href).as_posix()
+        a['href'] = new_href
     for content in soup.body.contents:
         if isinstance(content, str) and content.strip() == '':
             # Skip processing an '\n' character
@@ -239,7 +246,7 @@ def process_tab_html_contents(
 ):
     """Turn the raw html_strings from reading a tab.html file into a dict."""
     title = extract_page_title(html_strings['reporta_html'])
-    content = extract_page_content(html_strings['reportb_html'])
+    content = extract_page_content(html_strings['reportb_html'], current_dir_path)
     page_num = extract_page_number(html_strings['reportc_html'])
     sidebar_info = extract_sidebar(html_strings['sidebar_html'],
                                    current_dir_path,

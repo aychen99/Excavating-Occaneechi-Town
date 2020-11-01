@@ -40,7 +40,9 @@ def extract_descriptions(dig_parent_dir, readfile):
                                                                             dig_parent_dir_path,
                                                                             readfile)
             title = extract_page_title(html_strings['reporta_html'])
-            content = standard_text_chapter.extract_page_content(html_strings['reportb_html'])
+            content = standard_text_chapter.extract_page_content(
+                html_strings['reportb_html'], "/dig/html/descriptions"
+            )
             page_num = standard_text_chapter.extract_page_number(html_strings['reportc_html'])
             sidebar_info_sections = extract_sidebar_sections(html_strings['sidebar_html'])
 
