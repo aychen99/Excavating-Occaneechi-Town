@@ -11,7 +11,7 @@
 ## -----------------------------------------------------------------------------
 #}
 <div class="col-md-3 eot-sidebar {% block collapse %}collapse show{% endblock %}" id="eot-sidebar">
-  <nav class="nav flex-column">
+  <nav id="toc" data-toggle="toc" class="nav flex-column">
   {% for chapter in chapters %}
     {% if chapter.name == this_chapter_name %}
     <div class="sidebar-active sidebar-chapter"> <!-- Current chapter -->

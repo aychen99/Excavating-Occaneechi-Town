@@ -14,6 +14,7 @@
 {% block title %}{{ this_section['name'] }}{% endblock %}
 {% block styles %}
     <link href="../../assets/css/textpage.css" rel="stylesheet">
+    {% include "shared_elements/common_css_and_fonts.html.jinja" %}
     {{ super() }}
 {% endblock %}
 {% block header %}

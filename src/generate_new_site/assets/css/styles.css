@@ -1,0 +1,128 @@
+#h-card {
+  font-family: 'Lithos Pro';
+  background-color: #202151;
+  border-radius: 0;
+}
+
+.mb-0 {
+  color: white;
+  font-size: 1.5rem;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  background-color: #C4C4C4;
+  width: 100%;
+}
+
+#footer-navbar .nav-item {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+#title-img {
+  padding-top: 25px;
+  max-width: 68%;
+  display: block;
+}
+
+#button-front {
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-size: 20px;
+  padding: 5px 40px;
+  border-radius: 10px;
+  background-color: #202151!important;
+  display: block;
+  margin-bottom: 25px;
+}
+
+#button-front-1 {
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-size: 20px;
+  padding: 5px 40px;
+  border-radius: 10px;
+  background-color: #522221 !important;
+  display: block;
+  margin-bottom: 25px;
+}
+
+#pot-img {
+  position: absolute;
+  visibility: visible;
+  left: 400px;
+  bottom: 100px;
+  z-index: 200;
+  height: auto;
+  width: 150px;
+}
+
+.sticky-top {
+  background-color: #202151 !important;
+}
+
+#toc .nav {
+  display: block;
+}
+
+.col-md-3 {
+  padding: 1rem;
+}
+
+.col-md {
+  padding: 1rem;
+}
+
+.navbar-brand {
+  font-family: 'Lithos Pro';
+  border-radius: 0;
+}
+
+.navbar-toggler-icon {
+  background: url('../img/hamburger_icon_white.svg') !important;
+  vertical-align: text-bottom !important;
+  }
+
+#author {
+  font-family: 'Ubuntu';
+  font-size: small;
+  margin-left: 10%;
+  font-style: italic;
+  color: #828282;
+}
+
+.sidebar-chapter {
+  padding: .25rem;
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-size: larger;
+}
+
+.sidebar-active > a {
+  color: #563D7C;
+}
+
+.sidebar-active > a {
+  color: #563D7C !important;
+}
+
+.sidebar-chapter > a {
+  color: #828282;
+}
+
+nav[data-toggle=toc] .nav>li>a {
+  font-size: medium !important;
+  font-weight: bold !important;
+}
+
+.col-md > h1 {
+  font-family: 'Roboto';
+  font-weight: bold;
+  padding-bottom: 0.75rem;
+}
+
+.col-md > p {
+  color: black;
+}
