@@ -14,6 +14,7 @@
 {% block title %}{{ this_section['name'] }}{% endblock %}
 {% block styles %}
     <link href="../../assets/css/textpage.css" rel="stylesheet">
+    <link href="../../assets/css/modals.css" rel="stylesheet">
     {% include "shared_elements/common_css_and_fonts.html.jinja" %}
     {{ super() }}
 {% endblock %}
@@ -24,7 +25,7 @@
     <div class="container-fluid">
       <div class="row">
         {% include "shared_elements/sidebar.html.jinja" %}
-        <div class="col-md" style="overflow-y: scroll;">
+        <div class="col-md" id="text-chapter-contents" style="overflow-y: scroll;">
           <h1>{{ this_section.name }}</h1>
           {% for content in this_section.content %}
             {% if content.type == "paragraph" %}
@@ -38,4 +39,7 @@
         </div>
       </div>
     </div>
+{% endblock %}
+{% block site_interactivity %}
+  {% include "shared_elements/generic_textpage_modal.html.jinja" %}
 {% endblock %}

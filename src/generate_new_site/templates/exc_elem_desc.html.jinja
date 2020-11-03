@@ -14,6 +14,7 @@
 {% block title %}{{ excavation_element['name'] }}{% endblock %}
 {% block styles %}
     <link href="../../assets/css/excavation_element.css" rel="stylesheet">
+    <link href="../../assets/css/modals.css" rel="stylesheet">
     {% include "shared_elements/common_css_and_fonts.html.jinja" %}
     {{ super() }}
 {% endblock %}
@@ -86,7 +87,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md">
+            <div class="col-md" id='text-chapter-contents'>
               <h1>{{ excavation_element.name }}</h1>
               <h2>Description</h2>
             {% for c in excavation_element.content['content']['content'] %}
@@ -104,4 +105,7 @@
         </div>
       </div>
     </div>
+{% endblock %}
+{% block site_interactivity %}
+  {% include "shared_elements/generic_textpage_modal.html.jinja" %}
 {% endblock %}

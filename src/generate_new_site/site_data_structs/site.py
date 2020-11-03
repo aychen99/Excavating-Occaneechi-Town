@@ -47,6 +47,8 @@ class Index:
         self.pathtable = PathTable()
         self.pagetable = PageTable()
         self.figuretable = None
+        self.references = None
+        self.datatables = None
 
     def add_child(self, child):
         """Adds 'child' to this Index's list of children."""
@@ -56,6 +58,14 @@ class Index:
     def add_figures(self, figures):
         """Adds the passed Figures object as an attribute."""
         self.figuretable = figures
+
+    def add_references(self, references):
+        """Add a References object as an attribute."""
+        self.references = references
+
+    def add_tables(self, tables):
+        """Add a Tables object as an attribute."""
+        self.datatables = tables
 
     def write(self):
         """

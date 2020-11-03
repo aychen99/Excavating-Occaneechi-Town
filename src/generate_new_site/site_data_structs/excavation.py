@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 from ..utilities.path_ops import rel_path
 from ..utilities.str_ops import make_str_filename_safe, normalize_file_page_num
+from ..utilities.process_content import update_text_paragraph
 from .site import SiteChapter, SiteModule, SitePage
 
 TEMPLATES_DIRECTORY = str(Path(__file__).parent.parent / "templates")
@@ -325,6 +326,16 @@ class ExcavationPage(SitePage):
         else:
             this_template = EXC_TEMPLATE
             pagination = {}
+
+        if self.content:
+            # TODO: Extra content key exists here, needs to be removed
+            # earlier on in extraction/generation
+            for content_obj in self.content['content']['content']:
+                content_obj['content'] = update_text_paragraph(
+                    content_obj['content'],
+                    self.parent.parent.parent,
+                    self.path
+                )
 
         with self.path.open('w') as f:
             f.write(this_template.render(

@@ -2,6 +2,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from pathlib import Path
 from ..utilities.path_ops import rel_path
 from ..utilities.str_ops import make_str_filename_safe, normalize_file_page_num
+from ..utilities.process_content import update_text_paragraph
 from .site import SiteChapter, SiteModule, SitePage
 import json
 
@@ -238,7 +239,15 @@ class TextPage(SitePage):
             'next_page_href': next_href_rel
         }
 
-        with self.path.open('w') as f:
+        for content_obj in self.content:
+            content_obj['content'] = update_text_paragraph(
+                content_obj['content'],
+                self.parent.parent.parent,
+                self.path
+            )
+
+        # Open using wb and encode('utf-8') to resolve encoding issues
+        with self.path.open('wb') as f:
             f.write(TEXT_TEMPLATE.render(
                 chapters=self.parent.parent.parent.children,
                 this_chapter_name=self.parent.parent.name,
@@ -246,6 +255,6 @@ class TextPage(SitePage):
                 this_section_name=self.name,
                 this_section=self,
                 pagination=pagination
-            ))
+            ).encode('utf-8'))
 
         super().write()  # Write children

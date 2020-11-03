@@ -38,5 +38,5 @@ def register_images(dig_dir, imgs_in, imgs_out, index):
             new_img = new_dir / img.name
             # Register the new path in the path table
             img = pathlib.Path('/') / relpath(img, dig_dir.parent)
-            index.path_table.register(img, new_img)
+            index.pathtable.register(img, new_img)
     return

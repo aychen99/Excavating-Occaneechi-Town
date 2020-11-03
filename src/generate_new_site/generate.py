@@ -54,11 +54,29 @@ def generate_site(
     DESCRIPTIONS_PATH = INPUT_DIR / "descriptions.json"
     EXCAVATIONS_PATH = INPUT_DIR / "excavationsElements.json"
     FIGURES_PATH = INPUT_DIR / "images.json"
+    REFERENCES_PATH = INPUT_DIR / "references.json"
+    OLD_REF_LETTERS_PATH = INPUT_DIR / "hrefsToRefs.json"
+    TABLES_PATH = INPUT_DIR / "tables.json"
+    TABLES_HTML_PATHS_TO_NUMS_PATH = INPUT_DIR / "tableHTMLPathsToNums.json"
+    TABLES_IMAGE_PATHS_TO_NUMS_PATH = (
+        INPUT_DIR / "tableImagePathsToFigureNums.json"
+    )
 
     figures = site_data_structs.figure.Figures.from_json(
         FIGURES_PATH, HTML_OUT_DIR/"figures", index)
+    references = site_data_structs.references.References.from_json(
+        REFERENCES_PATH, OLD_REF_LETTERS_PATH, index
+    )
+    tables = site_data_structs.tables.Tables.from_json(
+        TABLES_PATH,
+        TABLES_HTML_PATHS_TO_NUMS_PATH,
+        TABLES_IMAGE_PATHS_TO_NUMS_PATH,
+        index
+    )
 
     index.add_figures(figures)
+    index.add_references(references)
+    index.add_tables(tables)
 
     # Dummy objects for unimplemented chapters
     index.add_child(site_data_structs.site.SiteChapter(

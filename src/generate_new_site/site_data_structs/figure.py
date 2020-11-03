@@ -6,14 +6,21 @@ from pathlib import Path
 class Figures:
     def __init__(self, parent):
         self.figures = {}
+        self.html_path_to_figure_num = {}
         self.parent = parent
 
     def register(self, figure):
         self.figures[figure.figure_num] = figure
+        self.html_path_to_figure_num[figure.figure_path] = figure.figure_num
 
     def get_figure(self, figure_num):
         if figure_num in self.figures:
             return self.figures[figure_num]
+        return None
+
+    def get_figure_num(self, old_html_path):
+        if old_html_path in self.html_path_to_figure_num:
+            return self.html_path_to_figure_num[old_html_path]
         return None
 
     @classmethod
@@ -43,7 +50,7 @@ class Figures:
                 caption=figure_data['caption'],
                 img_orig_path=Path(figure_data['path']),
                 parent=figures,
-                figure_path=None,  # TODO
+                figure_path=figure_data['htmlPagePath'],  # TODO
                 path=dir/"figure_{:0>4}.html".format(figure_data['figureNum']),
                 orig_width=figure_data['originalDimensions']['width'],
                 orig_height=figure_data['originalDimensions']['height']
