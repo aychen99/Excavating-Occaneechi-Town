@@ -4,7 +4,8 @@ from .modules import (
     image_page,
     feature_descriptions,
     references,
-    tables
+    tables,
+    artifacts
 )
 from .utilities import file_ops
 import pathlib
@@ -37,7 +38,7 @@ def run_extraction(config):
     print("Extracting text chapters... ...")
     text_partnames = config['standardTextChapterPartnames']
     for partname in text_partnames:
-        print("Extracting " + partname)
+        print("    Extracting " + partname)
         output_filename = output_dir_path_obj / (partname + ".json")
         data = standard_text_chapter.extract_standard_part(partname, dig_parent_dir, file_ops.readfile)
         write_file(data, output_filename)
@@ -79,3 +80,22 @@ def run_extraction(config):
     write_file(table_strings, output_dir_path_obj / "tables.json")
     write_file(table_html_paths_to_nums, output_dir_path_obj / "tableHTMLPathsToNums.json")
     write_file(table_image_paths_to_figure_nums, output_dir_path_obj / "tableImagePathsToFigureNums.json")
+
+    # Run artifacts extraction
+    print("Extracting artifacts... ...")
+    artifacts_summary = artifacts.extract_all_of_artifacts_dir(dig_parent_dir, file_ops.readfile)
+    artifacts_details = artifacts.extract_appendix_b(dig_parent_dir, file_ops.readfile)
+    art_images = artifacts.extract_all_artifacts_images(dig_parent_dir, file_ops.readfile)
+    artifacts_by_cat_num = artifacts.generate_cat_num_to_artifacts_dict(artifacts_summary, artifacts_details, True)
+    write_file(artifacts_summary, output_dir_path_obj / "artifactsSummary.json")
+    write_file(artifacts_details, output_dir_path_obj / "artifactsDetails.json")
+    write_file(art_images, output_dir_path_obj / "artifactsImages.json", True)
+    write_file(artifacts_by_cat_num, output_dir_path_obj / "artifactsByCatNum.json", True)
+    artifacts_summary = None
+    artifacts_by_cat_num = None
+    with open(output_dir_path_obj / "artifactsByCatNum.json") as f:
+        artifacts_by_cat_num = json.load(f)
+    with open(output_dir_path_obj / "artifactsSummary.json") as f:
+        artifacts_summary = json.load(f)
+    artifacts_full = artifacts.insert_details_into_summary_dict(artifacts_summary, artifacts_by_cat_num)
+    write_file(artifacts_full, output_dir_path_obj / "artifactsByExcElementComplete.json", True, True)
