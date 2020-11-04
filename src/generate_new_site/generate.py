@@ -1,5 +1,6 @@
 import argparse
 from pathlib import Path
+import json
 from . import site_data_structs
 from . import utilities
 
@@ -133,6 +134,26 @@ def generate_site(
         path=Path("https://electronicdig.sites.oasis.unc.edu/")))
 
     index.write()  # Write the site!
+
+    # Add the page-numbers-to-html-file-path dictionary to the JavaScript file
+    # enabling navigation by page num.
+    JS_PATH = ASSETS_OUT / "js"
+    with (JS_PATH / "page-num-navigation-template.js").open('r') as f:
+        page_num_navigation_js = f.read()
+    page_num_nav_json = dict.copy(index.pagetable.roman_nums_to_prelim_pages)
+    page_num_nav_json.update(index.pagetable.pages)
+    for pageNum, pathValue in page_num_nav_json.items():
+        page_path = utilities.path_ops.rel_path(pathValue, HTML_OUT_DIR)
+        page_path = str(page_path.as_posix())
+        page_num_nav_json[pageNum] = page_path
+    page_num_nav_json = json.dumps(page_num_nav_json, indent=2)
+
+    page_num_navigation_js = page_num_navigation_js.replace(
+        "'placeholderForJinjaGeneration'",
+        page_num_nav_json
+    )
+    with (JS_PATH / "page-num-navigation.js").open('w') as f:
+        f.write(page_num_navigation_js)
 
     return
 

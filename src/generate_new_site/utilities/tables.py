@@ -72,13 +72,15 @@ class PageTable:
     def __init__(self):
         self.pages = {}
         self.prelim_pages = {}
+        self.roman_nums_to_prelim_pages = {}
 
     def register(self, page_num, path):
         if page_num.isdigit():
             self.pages[int(page_num)] = path
         else:
-            page_num = page_num_to_arabic(page_num)
-            self.prelim_pages[int(page_num)] = path
+            arabic_page_num = page_num_to_arabic(page_num)
+            self.prelim_pages[int(arabic_page_num)] = path
+            self.roman_nums_to_prelim_pages[page_num] = path
         return
 
     def get_page_path(self, page_num):

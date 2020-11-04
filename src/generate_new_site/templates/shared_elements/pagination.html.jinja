@@ -14,7 +14,7 @@
     </li>
     {% endif %}
     <li class="page-item active">
-      <a class="page-link" href="#">{{ pagination.this_page_num }}</a>
+      <a class="page-link" id="pageNumClickable" data-toggle="popover">{{ pagination.this_page_num }}</a>
     </li>
     {% if pagination.next_page_href%}
     <li class="page-item">
