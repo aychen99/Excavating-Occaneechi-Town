@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import pathlib
+from pathlib import Path
 import os
 from . import standard_text_chapter
 
@@ -10,12 +10,12 @@ def extract_sidebar_sections(html_string):
     section_links = soup.find_all('a')
     sections = []
     for link in section_links:
-        path = os.path.normpath(pathlib.Path('/dig/html/descriptions') / link['href'])
-        path = str(pathlib.Path(path).as_posix())
+        path = os.path.normpath(Path('/dig/html/descriptions') / link['href'])
+        path = Path(path).as_posix()
         sections.append({
-                    'name': str(link.string).strip(),
-                    'path': path,
-                    'subsections': []
+            'name': str(link.string).strip(),
+            'path': path,
+            'subsections': []
         })
 
     return sections
@@ -26,7 +26,7 @@ def extract_page_title(html_string):
     return str(soup.body.center.b.string)
 
 def extract_descriptions(dig_parent_dir, readfile):
-    dig_parent_dir_path = pathlib.Path(dig_parent_dir)
+    dig_parent_dir_path = Path(dig_parent_dir)
     current_dir_path = "/dig/html/descriptions"
     full_current_dir_path = dig_parent_dir_path / ("dig/html/descriptions")
 
@@ -35,10 +35,10 @@ def extract_descriptions(dig_parent_dir, readfile):
     for filename in full_current_dir_path.iterdir():
         if 'tab' in filename.name and 'tabs' not in filename.name:
             tab_page_content = readfile(filename, full_current_dir_path)
-            html_strings = standard_text_chapter.get_tab_page_html_contents(tab_page_content,
-                                                                            current_dir_path,
-                                                                            dig_parent_dir_path,
-                                                                            readfile)
+            html_strings = standard_text_chapter.get_tab_page_html_contents(
+                tab_page_content, current_dir_path,
+                dig_parent_dir_path, readfile
+            )
             title = extract_page_title(html_strings['reporta_html'])
             content = standard_text_chapter.extract_page_content(
                 html_strings['reportb_html'], "/dig/html/descriptions"

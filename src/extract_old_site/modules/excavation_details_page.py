@@ -1,6 +1,6 @@
 from .image_page import extract_image_page
 from bs4 import BeautifulSoup
-import pathlib
+from pathlib import Path
 import os
 
 # Because all the pages are stored in the "/dig/html/excavations" folder,
@@ -10,22 +10,24 @@ def extract_zoom_to(html_string):
     """Extract related elements to a feature from a zoom_**.html file."""
     soup = BeautifulSoup(html_string, 'html5lib')
     links = soup.body.find_all('a')
-    extracted = []
+    related_elements = []
     for link in links:
-        extracted.append({
+        related_elements.append({
             "name": str(link.string).strip(),
-            "path": str(pathlib.PurePosixPath("/dig/html/excavations") / link['href'])
+            "path": (Path("/dig/html/excavations") / link['href']).as_posix()
         })
-    return extracted
+    return related_elements
 
-def extract_info_page(html_string, current_dir_path, dig_parent_dir_path, readfile):
+def extract_info_page(
+    html_string, current_dir_path, dig_parent_dir_path, readfile
+):
     """Extract info from a info_**.html file."""
     # Assumes set structure of the document, particularly 
     # the main paragraph and td cells
 
     def remove_dots_and_make_posix(filename):
-        path = os.path.normpath(pathlib.Path('/dig/html/excavations') / filename)
-        return str(pathlib.Path(path).as_posix())
+        path = os.path.normpath(Path('/dig/html/excavations') / filename)
+        return Path(path).as_posix()
 
     soup = BeautifulSoup(html_string, 'html5lib')
     name = str(soup.body.big.b.string).strip()
@@ -50,7 +52,7 @@ def extract_info_page(html_string, current_dir_path, dig_parent_dir_path, readfi
         i += 1
     td_cells = soup.body.table.tbody.find_all('td')
     images = []
-    full_current_dir_path = pathlib.Path(dig_parent_dir_path) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_parent_dir_path) / ("." + current_dir_path)
     for link in td_cells[0].find_all('a'):
         if '.mov.html' in link['href'] or '.mpg.html' in link['href']:
             print("Found mov/mpg link in " + name)
@@ -79,7 +81,7 @@ def extract_info_page(html_string, current_dir_path, dig_parent_dir_path, readfi
 
 def get_ctrl_page_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
     """Extract the html contents linked to from within a ctrl_**.html file."""
-    full_current_dir_path = pathlib.Path(dig_parent_dir_path) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_parent_dir_path) / ("." + current_dir_path)
     
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
@@ -93,20 +95,20 @@ def get_ctrl_page_contents(html_string, current_dir_path, dig_parent_dir_path, r
 
 def get_exc_page_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
     """Extract the html contents linked to from within a exc_**.html file."""
-    full_current_dir_path = pathlib.Path(dig_parent_dir_path) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_parent_dir_path) / ("." + current_dir_path)
 
     frames = BeautifulSoup(html_string, 'html5lib').find_all('frame')
     ctrl_html_string = readfile(frames[1]['src'], full_current_dir_path)
     return get_ctrl_page_contents(ctrl_html_string, current_dir_path, dig_parent_dir_path, readfile)
 
 def extract_all_exc_pages(dig_parent_dir, readfile):
-    excavations_dir = pathlib.Path(dig_parent_dir) / "./dig/html/excavations"
+    excavations_dir = Path(dig_parent_dir) / "./dig/html/excavations"
     excavations_pages = []
     for filepath in excavations_dir.iterdir():
         if 'exc' in filepath.name:
             html_string = readfile(filepath.name, filepath.parent)
             page_contents = get_exc_page_contents(html_string, "/dig/html/excavations", dig_parent_dir, readfile)
-            page_contents['path'] = str((pathlib.Path("/dig/html/excavations") / filepath.name).as_posix())
+            page_contents['path'] = (Path("/dig/html/excavations") / filepath.name).as_posix()
             excavations_pages.append(page_contents)
 
     return excavations_pages

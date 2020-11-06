@@ -187,7 +187,8 @@ def generate_cat_num_to_artifacts_dict(artifacts_summary=None, artifacts_details
                         "details": [],
                         "appendixBPageNum": art_category['pageNum'],
                         "zoneNum": None,
-                        "parentExcPage": None
+                        "parentExcPage": None,
+                        "summary": None
                     }
                 if append:
                     all_artifacts[cat_no]['details'].append(artifact)
@@ -202,6 +203,15 @@ def generate_cat_num_to_artifacts_dict(artifacts_summary=None, artifacts_details
                             "details": None,
                             "appendixBPageNum": None
                         }
+                    if 'More' in artifact:
+                        if artifact['More']:
+                            appendix_b_page_num = int(artifact['More'].split('/page')[1].split('.')[0])
+                            if (all_artifacts[cat_no]['appendixBPageNum'] 
+                                and all_artifacts[cat_no]['appendixBPageNum'] != appendix_b_page_num
+                            ):
+                                print("Discrepancy found for " + cat_no)
+                            else:
+                                all_artifacts[cat_no]['appendixBPageNum'] = appendix_b_page_num
                     summary = None
                     if append:
                         summary = artifact
@@ -223,49 +233,3 @@ def insert_details_into_summary_dict(artifacts_summary, artifacts_by_cat_no):
                 cat_no = artifact['Cat. No.']
                 artifact['details'] = artifacts_by_cat_no[cat_no]['details']
     return artifacts_summary
-
-# Functions for validating input/output
-def validate_artifacts_images_with_excavations(artifacts_images, excavations_images):
-    """Check that excavations and artifacts image files have the same info."""
-    all_same = True
-    for path, art_img in artifacts_images.items():
-        exc_img = excavations_images[path]
-        for field in ['path', 'figureNum', 'caption']:
-            if art_img[field] != exc_img[field]:
-                all_same = False
-                print("Not the same: " + str(art_img) + "\n" + str(exc_img))
-    return all_same
-
-def validate_same_art_page_letter_extraction(dig_parent_dir, readfile):
-    """Check that all art_xx**.html files provide the same extracted info."""
-    artifacts_dir = pathlib.Path(dig_parent_dir) / "dig/html/artifacts"
-
-    dict_by_letters = {}
-    for filename in artifacts_dir.iterdir():
-        if 'art' in filename.name:
-            letters = filename.name.split('_')[1][0:2]
-            if letters not in dict_by_letters:
-                dict_by_letters[letters] = []
-            dict_by_letters[letters].append(filename.name)
-    
-    all_art_files_same_info = True
-    for filename_list in dict_by_letters.values():
-        all_same_info = True
-        baseline_soup = BeautifulSoup(readfile(filename_list[0], artifacts_dir), 'html5lib')
-        baseline_ctrl = baseline_soup.find_all('frame')[0]['src']
-        zones = extract_excavation_zones(readfile(baseline_ctrl, artifacts_dir), dig_parent_dir)
-        zones = zones['zones']
-        info_pagenames = set()
-        for zone in zones:
-            info_pagenames.add(zone['pageName'])
-        for filename in filename_list:
-            soup = BeautifulSoup(readfile(filename, artifacts_dir), 'html5lib')
-            frames = soup.find_all('frame')
-            letter_num = filename.split('_')[1].split('.')[0]
-            if (frames[0]['src'] != baseline_ctrl
-                    or frames[1]['src'].split('_')[1].split('.')[0] != letter_num
-                    or frames[1]['src'] not in info_pagenames):
-                all_same_info = False
-        all_art_files_same_info = all_art_files_same_info and all_same_info
-    
-    return all_art_files_same_info

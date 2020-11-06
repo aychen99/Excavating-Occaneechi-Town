@@ -1,21 +1,36 @@
 from bs4 import BeautifulSoup
-import pathlib
+from pathlib import Path
 import os
 
-def extract_page_content(html_string, folder_path):
-    """Extract contents of a page from a report*b.html file."""
-    soup = BeautifulSoup(html_string, 'html5lib')
-    folder_path_obj = pathlib.Path(folder_path)
+def extract_page_content(html_string, folder_path_str):
+    """Extract contents of a page from a report*b.html file.
+    
+    Parameters
+    ----------
+    html_string : str
+        The HTML content of the report*b.html page to be extracted, as a str.
+    folder_path_str : str
+        Str indicating the current html str's parent folder within /dig/html.
 
-    extracted = []
+    Returns
+    -------
+    extracted_paragraphs : list
+        List of objects representing paragraphs, each with a type and content.
+    """
+    soup = BeautifulSoup(html_string, 'html5lib')
+    folder_path = Path(folder_path_str)
+
+    extracted_paragraphs = []
     # Replace all relative links in <a> tags with full ones to help generation
     for a in soup.find_all('a'):
-        new_href = os.path.normpath(folder_path_obj / a['href'])
-        new_href = pathlib.Path(new_href).as_posix()
+        new_href = os.path.normpath(folder_path / a['href'])
+        new_href = Path(new_href).as_posix()
         a['href'] = new_href
+
+    # Extract the page's paragraph contents
     for content in soup.body.contents:
         if isinstance(content, str) and content.strip() == '':
-            # Skip processing an '\n' character
+            # Skip processing a '\n' character
             pass
         elif content.name == 'p':
             inner_html = str(content).replace('<p>', '').replace('</p>', '')
@@ -23,49 +38,104 @@ def extract_page_content(html_string, folder_path):
                 # Skip processing an empty <p> tag
                 pass
             else:
-                p_contents = [item for item in content.contents if str(item).strip() != '']
+                p_contents = [
+                    item
+                    for item in content.contents
+                    if str(item).strip() != ''
+                ]
                 if len(p_contents) == 1 and p_contents[0].name == 'i':
-                    extracted.append({
+                    # Paragraph tag contains a section title in italics
+                    extracted_paragraphs.append({
                         'type': 'italic-title',
                         'content': str(p_contents[0].string)
                     })
                 else:
+                    # Paragraph tag contains a normal paragraph and text.
+                    # Newlines need to be removed during extraction.
                     lines = str(content).split('\n')
-                    lines = [line.replace('<p>', '').replace('</p>', '') for line in lines]
-                    lines = [line.replace('  ', ' ').strip() for line in lines if line.strip() != '']
-                    p_html = ' '.join(lines)
-                    extracted.append({
+                    lines = [
+                        line.replace('<p>', '').replace('</p>', '')
+                        for line in lines
+                    ]
+                    lines = [
+                        line.replace('  ', ' ').strip() # Remove double spaces
+                        for line in lines
+                        if line.strip() != ''
+                    ]
+                    p_inner_html = ' '.join(lines)
+                    extracted_paragraphs.append({
                         'type': 'paragraph',
-                        'content': p_html
+                        'content': p_inner_html
                     })
         else:
             # TODO
             pass
 
-    return extracted
+    return extracted_paragraphs
 
 def extract_page_title(html_string):
-    """Extract the page title from a report*a.html file."""
+    """Extract the page title from a report*a.html file.
+    
+    Parameters
+    ----------
+    html_string : str
+        The HTML content of the report*a.html page to be extracted, as a str.
+
+    Returns
+    -------
+    str
+        Page title as a string, without any HTML tags.
+    """
     soup = BeautifulSoup(html_string, 'html.parser')
     return str(soup.body.center.i.string)
 
 def extract_page_number(html_string):
-    """Extract the page number from a report*c.html file."""
+    """Extract the page number from a report*c.html file.
+
+    Parameters
+    ----------
+    html_string : str
+        The HTML content of the report*c.html page to be extracted, as a str.
+
+    Returns
+    -------
+    str
+        Page number as a string, to cover both Arabic and Roman numerals.
+    """
     soup = BeautifulSoup(html_string, 'html.parser')
-    # Note: Leaves page number as a string due to Roman numerals
     return str(soup.body.center.string).replace('Page ', '')
 
-def extract_sidebar(html_string, folder_path, parent_body_page_name):
-    """Extract sidebar info from a "index*_*.html" file."""
+def extract_sidebar(html_string, folder_path_str, parent_body_page_name):
+    """Extract sidebar info from a "index*_*.html" file.
+    
+    Parameters
+    ----------
+    html_string : str
+        The HTML content of the index*_*.html page to be extracted, as a str.
+    folder_path_str : str
+        Str indicating the current html str's parent folder within /dig/html.
+    parent_body_page_name: str
+        The name of the body*_*.html page that loads this sidebar as a frame.
+
+    Returns
+    -------
+    dict
+        Dict with this sidebar's name, author, sections, and current section.
+    """
     # Note: because the original html content did not have any closing </p>
     # tags, this function depends on using html5lib for proper parsing.
     soup = BeautifulSoup(html_string, 'html5lib')
+    folder_path = Path(folder_path_str)
+    # Get lines/sections from the sidebar, which are contained in <p> tags
     paragraphs = soup.body.find_all('p')
     # Remove empty paragraphs
-    paragraphs = [p for p in paragraphs 
-                  if str(p).replace('<p>', '').replace('</p>', '').strip() != '']
+    paragraphs = [
+        p
+        for p in paragraphs 
+        if str(p).replace('<p>', '').replace('</p>', '').strip() != ''
+    ]
 
-    currentModuleFullName = str(paragraphs[0].b.string).strip()
+    current_module_full_name = str(paragraphs[0].b.string).strip()
     moduleAuthor = None
     sections = []
     current_section = None
@@ -73,15 +143,20 @@ def extract_sidebar(html_string, folder_path, parent_body_page_name):
     if len(paragraphs) == 1:
         # Deal with the edge case of the foreword in part 0
         if paragraphs[0].find('br'):
-            moduleAuthor = str(paragraphs[0]).split('<br/>')[-1].split('<br>')[-1]
-            moduleAuthor = moduleAuthor.replace('</p>', '').strip()
-        # Only the full module name is in this sidebar, no links or sections.
+            moduleAuthor = (
+                str(paragraphs[0]).split('<br/>')[-1]
+                                  .split('<br>')[-1]
+                                  .replace('</p>', '')
+                                  .strip()
+            )
+        # If we aren't in the edge case of the foreword, then
+        # only the full module name is in this sidebar, no links or sections.
         # Thus, create one section object to represent this one section.
         # Note that this may lead to inconsistency between the names
         # in report*a.html, tabs*.html, and this sidebar index*.html.
         section_object = {
-            'name': currentModuleFullName,
-            'path': str(pathlib.PurePosixPath(folder_path) / parent_body_page_name),
+            'name': current_module_full_name,
+            'path': (folder_path / parent_body_page_name).as_posix(),
             'subsections': []
         }
         current_section = section_object
@@ -106,39 +181,46 @@ def extract_sidebar(html_string, folder_path, parent_body_page_name):
             if content.name == 'a':
                 section_object = {
                     'name': str(content.string).strip(),
-                    'path': str(pathlib.PurePosixPath(folder_path) / str(content['href'])),
+                    'path': (folder_path / str(content['href'])).as_posix(),
                     'subsections': []
                 }
             elif isinstance(content, str) and content.strip() != '':
-                # Then it's the link to the current page, without an <a> tag around it.
+                # Then it's the link to the current page,
+                # without an <a> tag around it.
                 section_object = {
                     'name': str(content.string).strip(),
-                    'path': str(pathlib.PurePosixPath(folder_path) / parent_body_page_name),
+                    'path': (folder_path / parent_body_page_name).as_posix(),
                     'subsections': []
                 }
                 current_section = section_object
 
             if section_object:
-                if i != 0 and ('\xa0' in links_contents[i-1] or '\xa0' in content):
-                    # Covers both the case where there's an <a> tag around the
-                    # title, and when it's the current page so there's no <a> tag.
-                    # Relies on fact that no sidebar has more than three levels of
-                    # links, i.e. subsections do not themselves have subsections.
+                if (
+                    i != 0 and
+                    ('\xa0' in links_contents[i-1] or '\xa0' in content)
+                ):
+                    # \xa0 is a non-breaking space, or &nbsp; in HTML.
+                    # This covers both the case where there's an <a> tag around
+                    # the title, and when it's the current page so there's no
+                    # <a> tag. Relies on fact that no sidebar has more than
+                    # three levels of links, i.e. subsections do not themselves
+                    # have subsections.
                     sections[-1]['subsections'].append(section_object)
                 else:
                     sections.append(section_object)
             i += 1
 
     return {
-        'currentModuleFullName': currentModuleFullName,
+        'currentModuleFullName': current_module_full_name,
         'moduleAuthor': moduleAuthor,
         'sections': sections,
         'currentSection': current_section
     }
 
-def extract_topbar(html_string, folder_path, parent_tab_page_name):
+def extract_topbar(html_string, folder_path_str, parent_tab_page_name):
     """Extract info on the modules of a chapter from a tabs*.html file."""
     soup = BeautifulSoup(html_string, 'html5lib')
+    folder_path = Path(folder_path_str)
     links_contents = soup.body.b.contents
     # Change the parent_tab_page_name so the extraction always uses the first
     # page of a module (tab0.html, tab1.html, etc.), rather than pages like
@@ -156,7 +238,7 @@ def extract_topbar(html_string, folder_path, parent_tab_page_name):
                 # Is the current module, without a link to it
                 module_obj = {
                     'moduleShortName': stripped_string,
-                    'path': str(pathlib.PurePosixPath(folder_path) / parent_tab_page_name)
+                    'path': (folder_path / parent_tab_page_name).as_posix()
                 }
                 modules.append(module_obj)
                 current_module = module_obj
@@ -165,12 +247,12 @@ def extract_topbar(html_string, folder_path, parent_tab_page_name):
                 pass
             elif '/' in element['href']:
                 raise Exception('/ character found in hyperlink in the topbar of '
-                                + str(pathlib.PurePosixPath(folder_path) / parent_tab_page_name)
+                                + (folder_path / parent_tab_page_name).as_posix()
                                 + 'when it was not supposed to be.')
             else:
                 modules.append({
                     'moduleShortName': str(element.string).strip(),
-                    'path': str(pathlib.PurePosixPath(folder_path) / element['href'])
+                    'path': (folder_path / element['href']).as_posix()
                 })
 
     return {
@@ -359,12 +441,12 @@ def extract_standard_part(part_folder_name, dig_parent_dir, readfile):
     """Extract an entire chapter based on folder name, e.g. /dig/html/part2."""
     # Get all tab*.html or tab*_*.html files, which are starting points for
     # the extraction process
-    folder_to_extract_full_path = pathlib.Path(dig_parent_dir) / "./dig/html" / part_folder_name
+    folder_to_extract_full_path = Path(dig_parent_dir) / "./dig/html" / part_folder_name
     tab_filenames = []
     for filepath in folder_to_extract_full_path.iterdir():
         if "tab" in filepath.name and "tabs" not in filepath.name:
             tab_filenames.append(filepath.name)
     return extract_full_chapter(tab_filenames,
                                 "/dig/html/" + part_folder_name,
-                                pathlib.Path(dig_parent_dir),
+                                Path(dig_parent_dir),
                                 readfile)

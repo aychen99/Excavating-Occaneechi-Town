@@ -75,7 +75,7 @@ def run_extraction(config):
     print("Extracting tables... ...")
     table_info = tables.extract_all_tables(dig_parent_dir, file_ops.readfile)
     table_strings = table_info['tables']
-    table_html_paths_to_nums = table_info['htmlPathsToTableNums']
+    table_html_paths_to_nums = table_info['htmlPathsToTableFileNums']
     table_image_paths_to_figure_nums = tables.extract_all_table_image_htmls(dig_parent_dir, file_ops.readfile)
     write_file(table_strings, output_dir_path_obj / "tables.json")
     write_file(table_html_paths_to_nums, output_dir_path_obj / "tableHTMLPathsToNums.json")
@@ -87,15 +87,9 @@ def run_extraction(config):
     artifacts_details = artifacts.extract_appendix_b(dig_parent_dir, file_ops.readfile)
     art_images = artifacts.extract_all_artifacts_images(dig_parent_dir, file_ops.readfile)
     artifacts_by_cat_num = artifacts.generate_cat_num_to_artifacts_dict(artifacts_summary, artifacts_details, True)
+    artifacts_full = artifacts.insert_details_into_summary_dict(artifacts_summary, artifacts_by_cat_num)
     write_file(artifacts_summary, output_dir_path_obj / "artifactsSummary.json")
     write_file(artifacts_details, output_dir_path_obj / "artifactsDetails.json")
     write_file(art_images, output_dir_path_obj / "artifactsImages.json", True)
     write_file(artifacts_by_cat_num, output_dir_path_obj / "artifactsByCatNum.json", True)
-    artifacts_summary = None
-    artifacts_by_cat_num = None
-    with open(output_dir_path_obj / "artifactsByCatNum.json") as f:
-        artifacts_by_cat_num = json.load(f)
-    with open(output_dir_path_obj / "artifactsSummary.json") as f:
-        artifacts_summary = json.load(f)
-    artifacts_full = artifacts.insert_details_into_summary_dict(artifacts_summary, artifacts_by_cat_num)
     write_file(artifacts_full, output_dir_path_obj / "artifactsByExcElementComplete.json", True, True)
