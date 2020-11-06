@@ -317,11 +317,11 @@ class ExcavationPage(SitePage):
             pagination = {
                 'prev_page_href': rel_path(
                     self.parent.parent.parent.pagetable.get_prev_page_path(
-                        self.page_num), self.path),
+                        self.page_num), self.path),  # TODO as_posix()?
                 'this_page_num': self.page_num,
                 'next_page_href': rel_path(
                     self.parent.parent.parent.pagetable.get_next_page_path(
-                        self.page_num), self.path)
+                        self.page_num), self.path)  # TODO as_posix()?
             }
         else:
             this_template = EXC_TEMPLATE
