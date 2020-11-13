@@ -1,3 +1,9 @@
+$(document).ready(function() {
+  $("#carousel-zoom").lightGallery({
+      selector: 'a'
+  });
+});
+
 function setUpModals() {
   let contents = document.getElementById("text-chapter-contents");
   let imgAnchors = contents.getElementsByClassName("a-img");
