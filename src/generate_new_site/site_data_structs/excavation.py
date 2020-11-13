@@ -7,7 +7,8 @@ from ..utilities.process_content import update_text_paragraph
 from .site import SiteChapter, SiteModule, SitePage
 
 TEMPLATES_DIRECTORY = str(Path(__file__).parent.parent / "templates")
-EXC_TEMPLATE_FILENAME = "exc_elem.html.jinja"
+EXCAVATION_TEMPLATE_FILENAME = "excavation.html.jinja"
+EXC_ELEM_TEMPLATE_FILENAME = "exc_elem.html.jinja"
 EXC_DESC_TEMPLATE_FILENAME = "exc_elem_desc.html.jinja"
 JINJA_ENV = Environment(
     loader=FileSystemLoader(TEMPLATES_DIRECTORY),
@@ -15,7 +16,8 @@ JINJA_ENV = Environment(
     line_statement_prefix='#', line_comment_prefix='##', trim_blocks=True
 )
 
-EXC_TEMPLATE = JINJA_ENV.get_template(EXC_TEMPLATE_FILENAME)
+EXCAVATION_TEMPLATE = JINJA_ENV.get_template(EXCAVATION_TEMPLATE_FILENAME)
+EXC_ELEM_TEMPLATE = JINJA_ENV.get_template(EXC_ELEM_TEMPLATE_FILENAME)
 EXC_DESC_TEMPLATE = JINJA_ENV.get_template(EXC_DESC_TEMPLATE_FILENAME)
 
 
@@ -37,8 +39,18 @@ class ExcavationChapter(SiteChapter):
         super().__init__(name=name, parent=parent, path=path)
 
     def write(self):
-        super().write()
-        # TODO Write the excavations map page
+        self.parent.update_href(self.path)
+
+        with self.path.open('w') as f:
+            f.write(EXCAVATION_TEMPLATE.render(
+                excavation_element=self,
+                chapters=self.parent.children,
+                this_chapter_name="Excavations",
+                this_module_name=None,
+                this_section_name=None
+            ))
+
+        super().write()  # Write children
 
     # Remove once Excavation chapter has separate chapter level page
     def add_child(self, child):
@@ -80,7 +92,8 @@ class ExcavationChapter(SiteChapter):
         -------
         excavations : ExcavationChapter
         """
-        excavations = ExcavationChapter(name=name, parent=index)
+        exc_page_path = dir / "excavations.html"
+        excavations = ExcavationChapter(name=name, parent=index, path=exc_page_path)
         features = ExcavationModule(
             short_name="Features", parent=excavations)
         squares = ExcavationModule(
@@ -324,7 +337,7 @@ class ExcavationPage(SitePage):
                         self.page_num), self.path)  # TODO as_posix()?
             }
         else:
-            this_template = EXC_TEMPLATE
+            this_template = EXC_ELEM_TEMPLATE
             pagination = {}
 
         if self.content:

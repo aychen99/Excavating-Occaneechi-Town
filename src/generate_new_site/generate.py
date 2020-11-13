@@ -103,14 +103,16 @@ def generate_site(
         dir=HTML_OUT_DIR / "background",
         index=index
     ))
-    # Excavation chapter interleaved here
-    index.add_child(site_data_structs.excavation.ExcavationChapter.from_json(
+    # Save excavation chapter for easy access later
+    excavation_chapter = site_data_structs.excavation.ExcavationChapter.from_json(
         exc_json_path=EXCAVATIONS_PATH,
         desc_json_path=DESCRIPTIONS_PATH,
         name="Excavations",
         dir=HTML_OUT_DIR / "excavations",
         index=index
-    ))
+    )
+    index.add_child(excavation_chapter)
+
     index.add_child(site_data_structs.text.TextChapter.from_json(
         json_path=INPUT_DIR / "part3.json",
         name="Artifacts",
@@ -154,6 +156,21 @@ def generate_site(
     )
     with (JS_PATH / "page-num-navigation.js").open('w') as f:
         f.write(page_num_navigation_js)
+
+    # Add a JavaScript file containing an href lookup table for the excavation map
+    # Set up paths and names for map links
+    elem_data = {}
+    excavation_chapter.parent.update_href(excavation_chapter.path)
+    for module in excavation_chapter.children:
+        for page in module.children:
+            elem_data[utilities.str_ops.make_str_filename_safe(page.name)] = {
+                'href': page.href,
+                'name': page.name
+            }
+
+    js_file_str = "const hrefs = {};".format(json.dumps(elem_data))
+    with (JS_PATH / "exc_hrefs.js").open('w') as f:
+        f.write(js_file_str)
 
     return
 
