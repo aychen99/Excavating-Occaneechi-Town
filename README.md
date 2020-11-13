@@ -147,4 +147,6 @@ This project is licensed under the terms of the MIT license.
 Special thanks to Drs. Vin Steponaitis and R.P. Stephen Davis for their
 continued support and enthusiasm for this project, and to our COMP 523 mentor
 for helping guide us through this project and for providing invaluable
-technical assistance.
+technical assistance. Also, thanks to Mike Bostock (creator of D3.js) for his
+work on  [this demo](https://observablehq.com/@d3/zoom-to-bounding-box), which
+was instrumental for the creation of this project's excavation map.
