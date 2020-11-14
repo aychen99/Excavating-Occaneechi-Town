@@ -39,7 +39,14 @@ class ExcavationChapter(SiteChapter):
         super().__init__(name=name, parent=parent, path=path)
 
     def write(self):
+        print("Writing '{}' pages... ".format(self.name), end='', flush=True)
+
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+
+        # As of right now, only one directory, only one update_href call needed
         self.parent.update_href(self.path)
+        for child in self.children:
+            child.write()
 
         with self.path.open('w') as f:
             f.write(EXCAVATION_TEMPLATE.render(
@@ -49,8 +56,7 @@ class ExcavationChapter(SiteChapter):
                 this_module_name=None,
                 this_section_name=None
             ))
-
-        super().write()  # Write children
+        print("Done.")
 
     # Remove once Excavation chapter has separate chapter level page
     def add_child(self, child):
