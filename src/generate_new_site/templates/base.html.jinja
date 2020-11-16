@@ -20,7 +20,7 @@
 
     <title>{% block title %}{% endblock %} - Excavating Occaneechi Town</title>
     {% block styles %}
-    <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+    {% include "shared_elements/common_css_and_fonts.html.jinja" %}
     {% endblock %}
   </head>
 
@@ -28,13 +28,12 @@
     {% block header %}
     <header>
       <div class="card" id="h-card">
-            <div class="card-header">
-                <h5 class="mb-0"><strong><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                  </button><a href="../index.html" style="color:inherit">Excavating Occeaneechi Town</a></strong><br></h5>
-            </div>
-          </div>
+        <div class="card-header">
+          <h5 class="mb-0"><strong><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button><a href="../index.html" style="color:inherit">Excavating Occaneechi Town</a></strong><br></h5>
         </div>
+      </div>
     </header>
     {% endblock %}
     {% block page_body %}{% endblock %}

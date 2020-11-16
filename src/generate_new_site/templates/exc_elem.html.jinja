@@ -15,21 +15,22 @@
 {% block styles %}
     <link href="../../assets/css/lightgallery.min.css" rel="stylesheet">
     <link href="../../assets/css/excavation_element.css" rel="stylesheet">
-    {% include "shared_elements/common_css_and_fonts.html.jinja" %}
     {{ super() }}
 {% endblock %}
 {% block header %}
     <header>
-    <div class="card" id="h-card">
-          <div class="card-header">
-              <h5 class="mb-0"><strong><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button><a href="../index.html" style="color:inherit">Excavating Occeaneechi Town</a></strong><br></h5>
-          </div>
+      <div class="card" id="h-card">
+        <div class="card-header">
+            <h5 class="mb-0"><strong><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button><a href="../index.html" style="color:inherit">Excavating Occaneechi Town</a></strong><br></h5>
+        </div>
+      </div>
       <div class="row bg-secondary">
         <div class="col-auto">
-          <a href="" class="text-light">Return to map view</a>
-        |
+          <a href="excavations.html" class="text-light">Return to map view</a>
+        </div>
+        <div class="col-auto ml-auto">
           <a href="" class="text-light">View {{ excavation_element['name'] }} artifact inventory</a>
         </div>
       </div>
