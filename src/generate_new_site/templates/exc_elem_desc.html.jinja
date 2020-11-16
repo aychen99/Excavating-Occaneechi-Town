@@ -13,6 +13,7 @@
 {% extends "base.html.jinja" %}
 {% block title %}{{ excavation_element['name'] }}{% endblock %}
 {% block styles %}
+    <link href="../../assets/css/lightgallery.min.css" rel="stylesheet">
     <link href="../../assets/css/excavation_element.css" rel="stylesheet">
     <link href="../../assets/css/modals.css" rel="stylesheet">
     {% include "shared_elements/common_css_and_fonts.html.jinja" %}
@@ -41,13 +42,15 @@
                   <li data-target="#carouselFigures" data-slide-to="{{ loop.index0 }}" class="bg-secondary{% if loop.first %} active{% endif %}"></li>
                   {% endfor %}
                 </ol>
-                <div class="carousel-inner">
+                <div id="carousel-zoom" class="carousel-inner">
                   {% for figure in excavation_element.figures %}
                   <div class="carousel-item{% if loop.first %} active{% endif %}">
+                    <a href="{{ figure.img_path }}" >
                     <figure class="figure d-block">
-                      <img src="{{ figure.img_path }}" class="d-block w-100 img-fluid" alt="Figure {{ figure.figure_num }}">
+                      <img src="{{ figure.img_path }}" class="mx-auto d-block img-fluid" alt="Figure {{ figure.figure_num }}. {{ figure.caption }}">
                       <figcaption class="figure-caption">Figure {{ figure.figure_num }}. {{ figure.caption }}</figcaption>
                     </figure>
+                    </a>
                   </div>
                   {% endfor %}
                 </div>
@@ -61,10 +64,12 @@
                 </a>
               </div>
               {% else %}{# Generate a single figure if there's only one #}
+              <div id="carousel-zoom">
+              <a href="{{ excavation_element.figures[0].img_path }}">
               <figure class="figure d-block">
-                <img src="{{ excavation_element.figures[0].img_path }}" class="d-block w-100 img-fluid" alt="Figure {{ excavation_element.figures[0].figure_num }}">
+                <img src="{{ excavation_element.figures[0].img_path }}" class="mx-auto d-block img-fluid" alt="Figure {{ excavation_element.figures[0].figure_num }}. {{ excavation_element.figures[0].caption }}">
                 <figcaption class="figure-caption">Figure {{ excavation_element.figures[0].figure_num }}. {{ excavation_element.figures[0].caption }}</figcaption>
-              </figure>
+              </figure></a></div>
               {% endif %}
               <div class="row">
                 <div class="col">

@@ -133,6 +133,7 @@ footer {
 nav[data-toggle=toc] .nav>li>a {
   font-size: medium !important;
   font-weight: bold !important;
+  padding: 4px 30px !important;
 }
 
 .col-md > h1 {
@@ -236,30 +237,14 @@ li.sidebar-subsection > a:hover {
   color: #563D7C;
 }
 
-/* .w-100 {
-  width: auto !important;
-} */
-/* .carousel-inner {
-  height: 650px !important;
-} */
-/* .carousel-inner img {
-  object-fit: contain !important;
-} */
-/* img.d-block.img-fluid {
-  min-height: -webkit-fill-available;
-} */
-/* .carousel-item {
-  height:600px;
-} */
-/* .carousel .carousel-indicators li {
-  border-radius: 0%;
-  margin-bottom: -100px;
-} */
+.carousel-inner {
+  height: 450px !important;
+}
 
-/* img.d-block.w-100.img-fluid {
-  height: -webkit-fill-available;
-  padding-block-end: 25px;
-} */
+.mx-auto.d-block.img-fluid {
+  min-height: 400px !important;
+}
+
 .text-light {
   font-family: 'Lithos Pro';
 }
