@@ -155,7 +155,7 @@ nav[data-toggle=toc] .nav>li>a {
 a.nav-link.active {
     display: none !important;
 }
-ul.nav.navbar-nav > li {
+#eot-sidebar ul.nav.navbar-nav > li {
   display: none !important;
 }
 /*border TOC*/
