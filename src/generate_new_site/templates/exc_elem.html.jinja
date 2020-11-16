@@ -45,10 +45,12 @@
           <div class="row">
             <div class="col-md align-items-center">
               {# Generate first figure on left panel #}
+              <div id="carousel-zoom">
+              <a href="{{ excavation_element.figures[0].img_path }}">
               <figure class="figure d-block">
-                <img src="{{ excavation_element.figures[0].img_path }}" class="mx-auto d-block img-fluid" alt="Figure {{ excavation_element.figures[0].figure_num }}">
+                <img src="{{ excavation_element.figures[0].img_path }}" class="mx-auto d-block img-fluid" alt="Figure {{ excavation_element.figures[0].figure_num }}. {{ excavation_element.figures[0].caption }}">
                 <figcaption class="figure-caption">Figure {{ excavation_element.figures[0].figure_num }}. {{ excavation_element.figures[0].caption }}</figcaption>
-              </figure>
+              </figure></a></div>
               <div class="row">
                 <div class="col">
                   <p>Type: {{ excavation_element.info.type }}</p>
@@ -117,4 +119,8 @@
         </div>
       </div>
     </div>
+{% endblock %}
+{% block site_interactivity %}
+  {% include "shared_elements/generic_textpage_modal.html.jinja" %}
+  <script src="../../assets/js/page-num-navigation.js"></script>
 {% endblock %}

@@ -1,6 +1,6 @@
 $(document).ready(function() {
-  $("#carousel-zoom").lightGallery({
-      selector: 'a'
+  $("[id^=carousel-zoom]").lightGallery({ /* loop: select elements with id:"carousel-zoom" */
+    selector: 'a'
   });
 });
 
