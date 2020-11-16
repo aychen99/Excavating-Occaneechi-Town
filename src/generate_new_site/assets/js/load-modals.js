@@ -1,8 +1,11 @@
-$(document).ready(function() {
-  $("#carousel-zoom").lightGallery({
+/*$(document).ready(function() {
+  carousels = $("#carousel-zoom");
+  if (carousels) {
+    carousels.lightGallery({
       selector: 'a'
-  });
-});
+    });
+  };
+});*/
 
 function setUpModals() {
   let contents = document.getElementById("text-chapter-contents");
