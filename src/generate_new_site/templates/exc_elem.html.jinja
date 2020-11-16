@@ -17,12 +17,13 @@
     {{ super() }}
 {% endblock %}
 {% block header %}
-    <header class="container-fluid sticky-top bg-dark">
-      <div class="navbar navbar-dark flex-column flex-md-row align-items-start bg-dark eot-navbar">
-        <a class="navbar-brand" href="../index.html">Excavating Occaneechi Town</a>
-        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar">
-          Toggle Sidebar
-        </button>
+    <header>
+    <div class="card" id="h-card">
+          <div class="card-header">
+              <h5 class="mb-0"><strong><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button><a href="../index.html" style="color:inherit">Excavating Occeaneechi Town</a></strong><br></h5>
+          </div>
       </div>
       <div class="row bg-secondary">
         <div class="col-auto">
