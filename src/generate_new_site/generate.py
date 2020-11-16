@@ -1,6 +1,7 @@
 import argparse
-import pathlib
-from . import modules
+from pathlib import Path
+import json
+from . import site_data_structs
 from . import utilities
 
 
@@ -8,63 +9,169 @@ def generate_site(
         dig_dir, input_dir, output_dir,
         overwrite_out=False, copy_images=False):
 
-    dig_dir = pathlib.Path(dig_dir)
-    input_dir = pathlib.Path(input_dir)
-    output_dir = pathlib.Path(output_dir)
+    DIG_DIR = Path(dig_dir)
+    INPUT_DIR = Path(input_dir)
+    OUTPUT_DIR = Path(output_dir)
 
     # Terminate execution if dig_dir or input_dir don't exist
-    if not input_dir.exists():
+    if not INPUT_DIR.exists():
         print('Input directory: {} does not exist. Site generation aborted.'
-              .format(str(input_dir)))
+              .format(str(INPUT_DIR)))
         return
-    if not dig_dir.exists():
+    if not DIG_DIR.exists():
         print('Dig directory: {} does not exist. Site generation aborted.'
-              .format(str(dig_dir)))
+              .format(str(DIG_DIR)))
         return
 
     # Terminate execution if output_dir exists and not set to overwrite
-    if output_dir.exists() and not overwrite_out:
+    if OUTPUT_DIR.exists() and not overwrite_out:
         print(("Output directory: {} already exists, and overwrite_out is "
-               "set to 'False'.").format(str(output_dir)))
+               "set to 'False'.").format(str(OUTPUT_DIR)))
         return
 
-    output_dir.mkdir(parents=overwrite_out, exist_ok=overwrite_out)
+    OUTPUT_DIR.mkdir(parents=overwrite_out, exist_ok=overwrite_out)
 
-    imgs_in = dig_dir / "html" / "images"
-    imgs_out = output_dir / "imgs"
+    IMGS_IN = DIG_DIR / "html" / "images"
+    IMGS_OUT = OUTPUT_DIR / "imgs"
+
+    HTML_OUT_DIR = OUTPUT_DIR / "html"
+    INDEX_PATH = HTML_OUT_DIR / "index.html"
+
+    ASSETS_IN = Path(__file__).parent / "assets"
+    ASSETS_OUT = OUTPUT_DIR / "assets"
+
+    HTML_OUT_DIR.mkdir(parents=overwrite_out, exist_ok=overwrite_out)
 
     # Table for translation from old to new Paths
-    tables = utilities.tables.Tables()
+    index = site_data_structs.site.Index(INDEX_PATH)
 
     if copy_images:
-        utilities.copy_images(dig_dir, imgs_in, imgs_out, tables)
+        utilities.dig_imgs.copy_images(DIG_DIR, IMGS_IN, IMGS_OUT, index)
     else:
-        utilities.register_images(dig_dir, imgs_in, imgs_out, tables)
+        utilities.dig_imgs.register_images(DIG_DIR, IMGS_IN, IMGS_OUT, index)
 
-    excavation_path = input_dir / "excavationsElements.json"
-    descriptions_path = input_dir / "descriptions.json"
-    chapter_paths = [input_dir / "part{}.json".format(i) for i in range(6)]
-    figures_path = input_dir / "images.json"
+    utilities.html_assets.copy_html_assets(ASSETS_IN, ASSETS_OUT)
 
-    html_out_dir = output_dir / "html"
-    index_path = html_out_dir / "index.html"
+    DESCRIPTIONS_PATH = INPUT_DIR / "descriptions.json"
+    EXCAVATIONS_PATH = INPUT_DIR / "excavationsElements.json"
+    FIGURES_PATH = INPUT_DIR / "images.json"
+    REFERENCES_PATH = INPUT_DIR / "references.json"
+    OLD_REF_LETTERS_PATH = INPUT_DIR / "hrefsToRefs.json"
+    TABLES_PATH = INPUT_DIR / "tables.json"
+    TABLES_HTML_PATHS_TO_NUMS_PATH = INPUT_DIR / "tableHTMLPathsToNums.json"
+    TABLES_IMAGE_PATHS_TO_NUMS_PATH = (
+        INPUT_DIR / "tableImagePathsToFigureNums.json"
+    )
 
-    figures = modules.process_figures(
-        figures_path, html_out_dir, tables)
-    chapters = modules.process_chapters(
-        chapter_paths, html_out_dir, tables)
-    for chapter in chapters:
-        if chapter.name == "Excavations":
-            exc_chapter = chapter
-    exc_elems = modules.process_excavation_elements(
-        excavation_path, descriptions_path,
-        html_out_dir, exc_chapter, tables)
+    figures = site_data_structs.figure.Figures.from_json(
+        FIGURES_PATH, HTML_OUT_DIR/"figures", index)
+    references = site_data_structs.references.References.from_json(
+        REFERENCES_PATH, OLD_REF_LETTERS_PATH, index
+    )
+    tables = site_data_structs.tables.Tables.from_json(
+        TABLES_PATH,
+        TABLES_HTML_PATHS_TO_NUMS_PATH,
+        TABLES_IMAGE_PATHS_TO_NUMS_PATH,
+        index
+    )
 
-    # modules.figs.write_figure_pages(figures, path_table)  # TODO make figures
-    modules.write_text_pages(chapters, tables)
-    modules.write_excavation_pages(
-        exc_elems, chapters, exc_chapter, tables)
-    modules.write_homepage(chapters, index_path)
+    index.add_figures(figures)
+    index.add_references(references)
+    index.add_tables(tables)
+
+    # Dummy objects for unimplemented chapters
+    index.add_child(site_data_structs.site.SiteChapter(
+        name="Getting Started", parent=index))
+    index.add_child(site_data_structs.site.SiteChapter(
+        name="Archaeology Primer", parent=index))
+
+    index.add_child(site_data_structs.text.TextChapter.from_json(
+        json_path=INPUT_DIR / "part0.json",
+        name="Introduction",
+        dir=HTML_OUT_DIR / "introduction",
+        index=index
+    ))
+    index.add_child(site_data_structs.text.TextChapter.from_json(
+        json_path=INPUT_DIR / "part1.json",
+        name="Contents",
+        dir=HTML_OUT_DIR / "contents",
+        index=index
+    ))
+    index.add_child(site_data_structs.text.TextChapter.from_json(
+        json_path=INPUT_DIR / "part2.json",
+        name="Background",
+        dir=HTML_OUT_DIR / "background",
+        index=index
+    ))
+    # Save excavation chapter for easy access later
+    excavation_chapter = site_data_structs.excavation.ExcavationChapter.from_json(
+        exc_json_path=EXCAVATIONS_PATH,
+        desc_json_path=DESCRIPTIONS_PATH,
+        name="Excavations",
+        dir=HTML_OUT_DIR / "excavations",
+        index=index
+    )
+    index.add_child(excavation_chapter)
+
+    index.add_child(site_data_structs.text.TextChapter.from_json(
+        json_path=INPUT_DIR / "part3.json",
+        name="Artifacts",
+        dir=HTML_OUT_DIR / "artifacts",
+        index=index
+    ))
+    index.add_child(site_data_structs.text.TextChapter.from_json(
+        json_path=INPUT_DIR / "part4.json",
+        name="Food Remains",
+        dir=HTML_OUT_DIR / "foodremains",
+        index=index
+    ))
+    index.add_child(site_data_structs.text.TextChapter.from_json(
+        json_path=INPUT_DIR / "part5.json",
+        name="Interpretations",
+        dir=HTML_OUT_DIR / "interpretations",
+        index=index
+    ))
+    index.add_child(site_data_structs.web.WebChapter(
+        name="Electronic Dig", parent=index,
+        path=Path("https://electronicdig.sites.oasis.unc.edu/")))
+
+    index.write()  # Write the site!
+
+    # Add the page-numbers-to-html-file-path dictionary to the JavaScript file
+    # enabling navigation by page num.
+    JS_PATH = ASSETS_OUT / "js"
+    with (JS_PATH / "page-num-navigation-template.js").open('r') as f:
+        page_num_navigation_js = f.read()
+    page_num_nav_json = dict.copy(index.pagetable.roman_nums_to_prelim_pages)
+    page_num_nav_json.update(index.pagetable.pages)
+    for pageNum, pathValue in page_num_nav_json.items():
+        page_path = utilities.path_ops.rel_path(pathValue, HTML_OUT_DIR)
+        page_path = str(page_path.as_posix())
+        page_num_nav_json[pageNum] = page_path
+    page_num_nav_json = json.dumps(page_num_nav_json, indent=2)
+
+    page_num_navigation_js = page_num_navigation_js.replace(
+        "'placeholderForJinjaGeneration'",
+        page_num_nav_json
+    )
+    with (JS_PATH / "page-num-navigation.js").open('w') as f:
+        f.write(page_num_navigation_js)
+
+    # Add a JavaScript file containing an href lookup table for the excavation map
+    # Set up paths and names for map links
+    elem_data = {}
+    excavation_chapter.parent.update_href(excavation_chapter.path)
+    for module in excavation_chapter.children:
+        for page in module.children:
+            elem_data[utilities.str_ops.make_str_filename_safe(page.name)] = {
+                'href': page.href,
+                'name': page.name
+            }
+
+    js_file_str = "const hrefs = {};".format(json.dumps(elem_data))
+    with (JS_PATH / "exc_hrefs.js").open('w') as f:
+        f.write(js_file_str)
+
     return
 
 

@@ -11,5 +11,8 @@
         "part3",
         "part4",
         "part5"
-    ]
+    ],
+    "overwriteExistingExtractedData": true,
+    "runExtraction": true,
+    "runGeneration": true
 }

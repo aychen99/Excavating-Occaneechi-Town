@@ -26,5 +26,17 @@ if __name__ == "__main__":
     copy_images = config["copyImages"]
     
     # Run extraction and site generation
-    run_extraction(config)
-    generate_site(dig_dir, input_dir, output_dir, overwrite_out, copy_images)
+    if config['runExtraction']:
+        print("\n-----------------------------------\n"
+              "Extracting old site data.\n")
+        run_extraction(config)
+    else:
+        print("\n-----------------------------------\n"
+              "SKIPPING extracting old site data.\n")
+    if config['runGeneration']:
+        print("\n-----------------------------------\n"
+              "Generating new site files.\n")
+        generate_site(dig_dir, input_dir, output_dir, overwrite_out, copy_images)
+    else:
+        print("\n-----------------------------------\n"
+              "SKIPPING generating new site files.\n")

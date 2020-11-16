@@ -1,0 +1,91 @@
+{# Jinja2 template for EOT excavation element page generation (w/ description)
+## -----------------------------------------------------------------------------
+## Included templates:
+##  sidebar.html.jinja
+##  pagination.html.jinja
+## -----------------------------------------------------------------------------
+## Required parameters:
+##  excavation_element
+## -----------------------------------------------------------------------------
+##  excavation_element : ExcavationElement, defined in excavation.py
+## -----------------------------------------------------------------------------
+#}
+{% extends "base.html.jinja" %}
+{% block title %}{{ excavation_element['name'] }}{% endblock %}
+{% block styles %}
+    <link href="../../assets/css/excavation.css" rel="stylesheet">
+    <link href="../../assets/css/modals.css" rel="stylesheet">
+    {% include "shared_elements/common_css_and_fonts.html.jinja" %}
+    {{ super() }}
+{% endblock %}
+{% block header %}
+    <div class="card" id="h-card">
+      <div class="card-header">
+          <h5 class="mb-0"><strong><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#eot-sidebar" aria-expanded="false" aria-controls="eot-sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button><a href="../index.html" style="color:inherit">Excavating Occaneechi Town</a></strong><br></h5>
+      </div>
+  </div>
+{% endblock %}
+{% block page_body %}
+<div class="container-fluid">
+    <div class="row">
+        {% include "shared_elements/sidebar_collapsed.html.jinja" %}
+        <div class="col-md" style="overflow-y: scroll;">
+            <div class="row">
+                <div class="col-md col-lg-5 order-last order-md-first">
+                    <div class="container border" id="map-box">
+                        <svg viewBox="0,0,520,600" id="map">
+                        </svg>
+                    </div>
+                </div>
+                <div class="col-md col-lg-7 order-first order-md-last">
+                    <div class="row">
+                        <h1>Archaeological Map of the Excavation at Occaneechi Town</h1>
+                        <p>This map shows the pits, postholes, houses, and palisade that define early eighteenth-century Occaneechi Town. The 150-ft (north-south) by 130-ft (east-west) excavation grid is shown in blue. Select a context type below and then click on a specific context on the map to view it in greater detail. </p>
+                    </div>
+                    <div class="row align-items-center justify-content-center py-4">
+                        <div class="col">
+                            <button id="ph-toggle" type="button" class="btn btn-primary btn-sm" data-toggle="button" aria-pressed="false">Toggle Postholes</button>
+                        </div>
+                        <div class="col align-items-center justify-content-center">
+                            <p>Choose Context:</p>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-primary btn-sm active">
+                                    <input type="radio" name="focus" id="focus-none" checked>None
+                                </label>
+                                <label class="btn btn-primary btn-sm">
+                                    <input type="radio" name="focus" id="focus-grid">Squares (Blue)
+                                </label>
+                                <label class="btn btn-primary btn-sm">
+                                    <input type="radio" name="focus" id="focus-features">Features (Red)
+                                </label>
+                                <label class="btn btn-primary btn-sm">
+                                    <input type="radio" name="focus" id="focus-structures">Structures (Brown)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row border">
+                        <div class="col">
+                            <div class="row">
+                                <h3>Selected Context:&nbsp;</h3><h3 id="context_name">None</h3>
+                            </div>
+                            <div class="row">
+                                <p>Click <a id="context_href" href="#">here</a> to view in more detail.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block site_interactivity %}
+<script src="../../assets/js/d3.min.js"></script>
+<script src="../../assets/js/exc_hrefs.js"></script>
+<script src="../../assets/js/excavation.js"></script>
+<script src="../../assets/js/map.js"></script>
+<script type="text/javascript">window.onload = runmap</script>
+{% endblock %}

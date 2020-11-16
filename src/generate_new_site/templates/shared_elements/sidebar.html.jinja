@@ -6,29 +6,29 @@
 ## -----------------------------------------------------------------------------
 ##  chapters          : list of 'Chapter', defined in text_classes.py
 ##  this_chapter_name : str, equal to chapter['name'] for the current chapter
-##  this_module_name  : str, equal to module['full_title'] for the current module
+##  this_module_name  : str, equal to module['long_name'] for the current module
 ##  this_section_name : str, equal to section['name'] for the current section
 ## -----------------------------------------------------------------------------
 #}
 <div class="col-md-3 eot-sidebar {% block collapse %}collapse show{% endblock %}" id="eot-sidebar">
-  <nav class="nav flex-column">
+  <nav id="toc" data-toggle="toc" class="nav flex-column">
   {% for chapter in chapters %}
     {% if chapter.name == this_chapter_name %}
     <div class="sidebar-active sidebar-chapter"> <!-- Current chapter -->
       <a href="{{ chapter.href }}">{{ chapter.name }}</a>
       <ul class="nav"> <!-- Current chapter modules list -->
-      {% for module in chapter.modules %}
-        {% if module.full_title == this_module_name %}
+      {% for module in chapter.children %}
+        {% if module.long_name == this_module_name %}
         <li class="sidebar-active sidebar-module">
-          <a href="{{ module.href }}">{{ module.full_title }}</a>
+          <a href="{{ module.href }}">{{ module.long_name }}</a>
           {% if module.author %}<p id="author">{{ module.author }}</p>{% endif %}
           <ul class="nav"> <!-- Current chapter section list-->
-          {% for section in module.sections %}
+          {% for section in module.children %}
             <li class="{% if section.name == this_section_name %}sidebar-active {% endif %}sidebar-section">
               <a href="{{ section.href }}">{{ section.name }}</a>
-              {% if section.subsections %}
+              {% if section.children %}
                 <ul>
-                {% for subsection in section.subsections %}
+                {% for subsection in section.children %}
                   <li class="{% if subsection.name == this_section_name %}sidebar-active {% endif %}sidebar-subsection">
                     <a href="{{ subsection.href }}">{{ subsection.name }}</a>
                   </li>
@@ -41,7 +41,7 @@
         </li>
         {% else %}
         <li class="sidebar-module">
-          <a href="{{ module.href }}">{{ module.short_title }}</a>
+          <a href="{{ module.href }}">{{ module.short_name }}</a>
         </li>
         {% endif %}
       {% endfor %}

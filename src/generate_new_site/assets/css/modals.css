@@ -1,0 +1,33 @@
+.modal-content {
+    display: none;
+}
+
+.modal-body {
+    display: initial;
+    width: auto;
+}
+
+.modal-header button {
+    display: initial;
+}
+
+.img-modal-body {
+    text-align: center;
+}
+
+.img-modal-body img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.ref-modal-body p {
+    margin-left: 1em;
+}
+
+.table-modal-body p {
+    text-align: center;
+}
+
+.table-img-modal-body {
+    text-align: center;
+}
