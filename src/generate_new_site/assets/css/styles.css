@@ -1,3 +1,7 @@
+html, body {
+  overflow-x: hidden !important;
+}
+
 .card-header {
   font-family: 'Lithos Pro';
   background-color: #202151 !important;
@@ -81,7 +85,7 @@ footer {
 }
 
 #toc .nav {
-  display: inline-block;
+  display: table;
 }
 
 .col-md-3 {
@@ -174,7 +178,7 @@ a.nav-link.active {
 @media only screen and (max-width : 767px) {
   /* Styles */
   #toc {
-    display: inline-block;
+    display: table;
   }
   div#eot-sidebar.col-md-3 {
     max-width: 60% !important;
@@ -247,4 +251,8 @@ li.sidebar-subsection > a:hover {
 
 .text-light {
   font-family: 'Lithos Pro';
+}
+div#text-chapter-contents img {
+  padding-block-start: 1em;
+  padding-block-end: 2em;
 }
