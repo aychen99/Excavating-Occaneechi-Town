@@ -1,3 +1,3 @@
 [run]
-source = .
+source = .,./src,./src/generate_new_site,./src/generate_new_site/site_data_structs,./src/generate_new_site/utilities,./src/extract_old_site,./src/extract_old_site/modules,./src/extract_old_site/utilities
 omit = ./venv/*,*tests*,*__init__.py
