@@ -6,3 +6,4 @@ config.json
 /venv
 /.pytest_cache
 /htmlcov
+/.coverage
