@@ -21,6 +21,13 @@ html, body {
   #index-buttons {
     text-align: -webkit-center;
   }
+  footer {
+    left: 0;
+    background-color: #C4C4C4;
+    width: 100%;
+    position: relative !important;
+    bottom: 0;
+  }
 }
 
 /* Smartphones (portrait) ----------- */
@@ -35,6 +42,8 @@ footer {
   left: 0;
   background-color: #C4C4C4;
   width: 100%;
+  position: absolute;
+  bottom: 0;
 }
 
 #footer-navbar .nav-item {
