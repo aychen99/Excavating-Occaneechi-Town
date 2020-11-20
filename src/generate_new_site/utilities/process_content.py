@@ -136,19 +136,11 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             new_link = index.pathtable.get_path(old_path)
             new_link = rel_path(new_link, page_obj_path)
             a['href'] = new_link
-        elif 'artifacts' in old_path:
-            new_link = index.pathtable.get_path(old_path)
-            new_link = rel_path(new_link, page_obj_path)
-            a['href'] = new_link
-        elif 'excavations' in old_path:
-            new_link = index.pathtable.get_path(old_path)
-            new_link = rel_path(new_link, page_obj_path)
-            a['href'] = new_link
-        elif 'part6' in old_path:
-            new_link = index.pathtable.get_path(old_path)
-            new_link = rel_path(new_link, page_obj_path)
-            a['href'] = new_link
-        elif 'dbs' in old_path:
+        elif any(
+            case in old_path
+            for case in ['artifacts', 'excavations', 'part6', 'dbs', 'started',
+                         'primer', 'maps', 'data']
+        ):
             new_link = index.pathtable.get_path(old_path)
             new_link = rel_path(new_link, page_obj_path)
             a['href'] = new_link
@@ -156,32 +148,15 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             # Deal with video files
             a['href'] = old_path.replace('/dig/html/video/', '../../video/')
         elif 'version.html' in old_path:
-            # TODO: Deal with professional vs instructional version
-            pass
-        elif 'started' in old_path:
-            # Deal with linking to getting started
-            new_link = index.pathtable.get_path(old_path)
-            new_link = rel_path(new_link, page_obj_path)
-            a['href'] = new_link
-        elif 'primer' in old_path:
-            # Deal with linking to the archaeology primer
-            new_link = index.pathtable.get_path(old_path)
-            new_link = rel_path(new_link, page_obj_path)
-            a['href'] = new_link
-        elif 'maps' in old_path:
-            new_link = index.pathtable.get_path(old_path)
-            new_link = rel_path(new_link, page_obj_path)
-            a['href'] = new_link
+            a['href'] = "#versionModal"
+            a['data-toggle'] = "modal"
+            a['data-target'] = "#versionModal"
         elif 'javalaunch.html' in old_path or 'digquery.html' in old_path:
             a['href'] = "https://electronicdig.sites.oasis.unc.edu"
         elif 'tutorial' in old_path:
-            # TODO: Deal with the old electronic dig tutorial, which should now
-            # be removed.
-            pass
-        elif 'data' in old_path:
-            new_link = index.pathtable.get_path(old_path)
-            new_link = rel_path(new_link, page_obj_path)
-            a['href'] = new_link
+            # TODO: Probably just remove this <li> element in the content,
+            # don't have time to restructure this right now
+            a['href'] = "https://electronicdig.sites.oasis.unc.edu/views/tutorial1.html"
         else:
             raise Exception('found path ' + old_path + ' in this paragraph: \n'
                             + paragraph_string)

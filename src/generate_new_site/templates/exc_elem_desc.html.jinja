@@ -29,8 +29,7 @@
         <div class="row bg-secondary">
         <div class="col-auto">
           <a href="excavations.html" class="text-light">Return to map view</a>
-          |
-          <a href="{{ excavation_element.artifacts_path }}" class="text-light">View Artifacts in Appendix A</a>
+          {% if excavation_element.artifacts_href != None %}| <a href="{{ excavation_element.artifacts_href }}" class="text-light">View Artifacts in Appendix A</a> {% endif %}
         </div>
       </div>
       </div>

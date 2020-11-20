@@ -363,11 +363,7 @@ class TextChapter(SiteChapter):
                 page_num="Appendix A " + artifacts_obj["appendixAPageNum"],
                 other_info={
                     # "parentExcElem": exc_element,
-                    "parentExcPath": rel_path(
-                        index.pathtable.get_path(
-                            exc_element.path
-                        ), path
-                    ).as_posix()
+                    "parentExcPath": rel_path(exc_element.path, path).as_posix()
                 },
                 template=APPENDIX_A_TEMPLATE
             )

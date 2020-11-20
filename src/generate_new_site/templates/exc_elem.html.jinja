@@ -26,12 +26,10 @@
             </button><a href="../index.html" style="color:inherit">Excavating Occaneechi Town</a></strong><br></h5>
         </div>
         <div class="row bg-secondary">
-          <div class="col-auto">
-            <a href="excavations.html" class="text-light">Return to map view</a>
-          </div>
-          <div class="col-auto">
-            <a href="{{ excavation_element.artifacts_path }}" class="text-light">View {{ excavation_element['name'] }} artifact inventory</a>
-          </div>
+            <div class="col-auto">
+              <a href="excavations.html" class="text-light">Return to map view</a>
+              {% if excavation_element.artifacts_href != None %}| <a href="{{ excavation_element.artifacts_href }}" class="text-light">View Artifacts in Appendix A</a> {% endif %}
+            </div>
         </div>
       </div>
       </div>

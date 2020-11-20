@@ -118,9 +118,9 @@ pathtable = index.pathtable
 
 # Updated Paragraphs
 updated_paragraph_with_slid_link = (
-    'This paragraph has a link to an image: <a href="#genModal" data-toggle="modal" data-target="#genModal" '
-    'class="a-img" data-figure-caption="<b>Figure 773</b>. Sq. 210R100, top of subsoil (view to north)." '
-    'data-figure-path="../../imgs/2/210r100.gif">Image</a>'
+    '<html><head></head><body>This paragraph has a link to an image: <a class="a-img" data-src="../../imgs/2/210r100.gif" '
+    'data-sub-html="&lt;b&gt;Figure 773&lt;/b&gt;. Sq. 210R100, top of subsoil (view to north)." '
+    'href="../../imgs/2/210r100.gif">Image</a></body></html>'
 )
 
 updated_paragraph_with_ref_link = (
