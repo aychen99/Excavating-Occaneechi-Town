@@ -258,7 +258,17 @@ class TextChapter(SiteChapter):
             page_num=third_page_num
         )
 
-        # TODO: add sections to path table for link resolution
+        # Add sections to path table for link resolution
+        # HOTFIX: hardcode two old_paths, one for dig and one for dig_pro
+        index.pathtable.register(old_path="/dig/html/part6/tab0.html", new_path=a_g_section.path, entity=a_g_section)
+        index.pathtable.register(old_path="/digpro/html/part6/tab0.html", new_path=a_g_section.path, entity=a_g_section)
+
+        index.pathtable.register(old_path="/dig/html/part6/tab1.html", new_path=h_r_section.path, entity=h_r_section)
+        index.pathtable.register(old_path="/digpro/html/part6/tab1.html", new_path=h_r_section.path, entity=h_r_section)
+
+        index.pathtable.register(old_path="/dig/html/part6/tab2.html", new_path=s_z_section.path, entity=s_z_section)
+        index.pathtable.register(old_path="/digpro/html/part6/tab2.html", new_path=s_z_section.path, entity=s_z_section)
+
         # Add to page table for pagination
         index.pagetable.register(
             a_g_section.page_num, a_g_section.path
