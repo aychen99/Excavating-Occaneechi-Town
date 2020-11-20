@@ -173,6 +173,9 @@ class PageTable:
                 return self.data_pages[int(page_num)+1]
         elif not page_num.isdigit():
             page_num = page_num_to_arabic(page_num)
+            # Special case for 4 to account for missing 5 in prelims
+            if int(page_num) == 4 and 6 in self.prelim_pages:
+                return self.prelim_pages[6]
             if int(page_num)+1 in self.prelim_pages:
                 return self.prelim_pages[int(page_num)+1]
         return None
@@ -202,6 +205,9 @@ class PageTable:
                 return self.data_pages[int(page_num)-1]
         elif not page_num.isdigit():
             page_num = page_num_to_arabic(page_num)
+            # Special case for 4 to account for missing 5 in prelims
+            if int(page_num) == 6 and 4 in self.prelim_pages:
+                return self.prelim_pages[4]
             if int(page_num)-1 in self.prelim_pages:
                 return self.prelim_pages[int(page_num)-1]
         return None
