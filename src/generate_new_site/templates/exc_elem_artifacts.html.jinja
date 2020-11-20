@@ -136,7 +136,8 @@
                   {% set caption="<b>Figure " ~ artifact["Photo"].figure_num ~ "</b>. " ~ artifact["Photo"].caption %}
                   {% set figurePath = artifact["Photo"].img_orig_path.as_posix().replace('/dig/html/images', '../../imgs/') %}
                   <td>
-                  <a data-toggle="popover" class="figure-popover" data-figure-caption="{{ caption }}" data-figure-path="{{ figurePath }}">
+                  {# <a data-toggle="popover" class="figure-popover" data-figure-caption="{{ caption }}" data-figure-path="{{ figurePath }}"> #}
+                  <a class="a-img" data-src="{{ figurePath }}" data-sub-html="{{ caption }}" href="{{ figurePath }}">
                   {{ artifact["Artifacts"] }}
                   </a>
                   </td>
@@ -148,7 +149,7 @@
                   <td>{{ artifact["Size"] }}</td>
                   <td>
                   {% if artifact["details"] %}
-                  <a class="a-table" data-table-header="Details" data-target="#genModal" data-toggle="modal" href="#genModal" data-table-string="{{
+                  <a class="a-table" data-table-header="<strong>Details</strong>" data-target="#genModal" data-toggle="modal" href="#genModal" data-table-string="{{
                     makeDetailsPopoverTable(artifact['details'], artifact['detailsFieldOrder'])
                   }}">Yes</a>
                   {% endif %}
