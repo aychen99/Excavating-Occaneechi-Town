@@ -145,10 +145,9 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             new_link = rel_path(new_link, page_obj_path)
             a['href'] = new_link
         elif 'part6' in old_path:
-            # TODO: Create new dedicated references page,
-            # for the table of contents.
-            # Only problem being run into is /part6/tab0, tab1, and tab2.html.
-            pass
+            new_link = index.pathtable.get_path(old_path)
+            new_link = rel_path(new_link, page_obj_path)
+            a['href'] = new_link
         elif 'dbs' in old_path:
             new_link = index.pathtable.get_path(old_path)
             new_link = rel_path(new_link, page_obj_path)
@@ -170,9 +169,9 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             new_link = rel_path(new_link, page_obj_path)
             a['href'] = new_link
         elif 'maps' in old_path:
-            # TODO: Deal with linking to the new map for excavations.
-            # Only really a problem in the table of contents.
-            pass
+            new_link = index.pathtable.get_path(old_path)
+            new_link = rel_path(new_link, page_obj_path)
+            a['href'] = new_link
         elif 'javalaunch.html' in old_path or 'digquery.html' in old_path:
             a['href'] = "https://electronicdig.sites.oasis.unc.edu"
         elif 'tutorial' in old_path:
@@ -180,8 +179,9 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             # be removed.
             pass
         elif 'data' in old_path:
-            # TODO: Deal with the downloads available on the old site.
-            pass
+            new_link = index.pathtable.get_path(old_path)
+            new_link = rel_path(new_link, page_obj_path)
+            a['href'] = new_link
         else:
             raise Exception('found path ' + old_path + ' in this paragraph: \n'
                             + paragraph_string)
