@@ -21,13 +21,6 @@ html, body {
   #index-buttons {
     text-align: -webkit-center;
   }
-  footer {
-    left: 0;
-    background-color: #C4C4C4;
-    width: 100%;
-    position: relative !important;
-    bottom: 0;
-  }
 }
 
 /* Smartphones (portrait) ----------- */
@@ -42,7 +35,7 @@ footer {
   left: 0;
   background-color: #C4C4C4;
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 0;
 }
 
@@ -195,6 +188,13 @@ a.nav-link.active {
   .sidebar-chapter > a {
     color: #828282;
     white-space: nowrap;
+  }
+  footer {
+    left: 0;
+    background-color: #C4C4C4;
+    width: 100%;
+    position: relative !important;
+    bottom: 0;
   }
 }
 .carousel-item {
