@@ -168,7 +168,7 @@ a.nav-link.active {
 /*border TOC*/
 @media only screen and (min-width : 768px) {
   /* Styles */
-  .row>[class*='col-md']:nth-child(n+1):before {
+  .row>[class*='col-md']:nth-child(1):before {
     content: "";
     border-left: 2px solid #DDD;
     position: absolute;
