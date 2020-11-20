@@ -170,9 +170,9 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             new_link = rel_path(new_link, page_obj_path)
             a['href'] = new_link
         elif 'maps' in old_path:
-            # TODO: Deal with linking to the new map for excavations.
-            # Only really a problem in the table of contents.
-            pass
+            new_link = index.pathtable.get_path(old_path)
+            new_link = rel_path(new_link, page_obj_path)
+            a['href'] = new_link
         elif 'javalaunch.html' in old_path or 'digquery.html' in old_path:
             a['href'] = "https://electronicdig.sites.oasis.unc.edu"
         elif 'tutorial' in old_path:
