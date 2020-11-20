@@ -4,15 +4,10 @@
     "generationOutputDirPath": "Default",
     "overwriteExistingGeneratedFiles": true,
     "copyImages": true,
-    "standardTextChapterPartnames": [
-        "part0",
-        "part1",
-        "part2",
-        "part3",
-        "part4",
-        "part5"
-    ],
+    "copyVideos": true,
+    "copyData": true,
     "overwriteExistingExtractedData": true,
+    "shrinkExtractionJsons": false,
     "runExtraction": true,
     "runGeneration": true
 }

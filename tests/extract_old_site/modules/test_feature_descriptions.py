@@ -183,13 +183,16 @@ reports53_62_63_fully_extracted = {
             "pageTitle": "Burial 1 Description",
             "parentModuleShortTitle": "Feature Descriptions",
             "content": [{
+                "type": "paragraph",
+                "content": "by H. Trawick Ward"
+            }, {
                 "type": "italic-title",
                 "content": "Grave Goods"    
             }, {
                 "type": "paragraph",
-                "content": ('Over the sternum were a <a href="/dig/html/excavations/slid_aho.html" target="body">'
+                "content": ('Over the sternum were a <a href="/dig/html/excavations/slid_aho.html">'
                             '<u>large shell gorget</u></a> and a '
-                            '<a href="/dig/html/excavations/slid_ahp.html" target="body"><u>'
+                            '<a href="/dig/html/excavations/slid_ahp.html"><u>'
                             'small shell gorget</u></a> with punctated designs.')
             }]
         },
@@ -197,14 +200,17 @@ reports53_62_63_fully_extracted = {
             "pageTitle": "Feature 7 (Burial 9) Description",
             "parentModuleShortTitle": "Feature Descriptions",
             "content": [{
+                "type": "paragraph",
+                "content": "by H. Trawick Ward"
+            }, {
                 "type": "italic-title",
                 "content": "Grave Goods"
             }, {
                 "type": "paragraph",
-                "content": ('Associated artifacts consisted of an <a href="/dig/html/excavations/slid_akr.html" target="body">'
+                "content": ('Associated artifacts consisted of an <a href="/dig/html/excavations/slid_akr.html">'
                             '<u>iron hoe</u></a> placed adjacent to and southwest of the skull '
                             '(the blade end lay under the shoulder and occipital region of the skull) and a '
-                            'bone-handled <a href="/dig/html/excavations/slid_aks.html" target="body">'
+                            'bone-handled <a href="/dig/html/excavations/slid_aks.html">'
                             '<u>iron knife</u></a> placed under the right forearm.')
             }]
         },
@@ -212,6 +218,9 @@ reports53_62_63_fully_extracted = {
             "pageTitle": "Feature 8 Description",
             "parentModuleShortTitle": "Feature Descriptions",
             "content": [{
+                "type": "paragraph",
+                "content": "by R. P. Stephen Davis, Jr."
+            }, {
                 "type": "paragraph",
                 "content": ('Feature 8 was located just east of Structure 7 at 290.0R58.0. At the top of '
                             'subsoil, this feature appeared as an irregular patch of brown loam, about 2.0 '

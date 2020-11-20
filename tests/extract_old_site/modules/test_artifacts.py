@@ -267,6 +267,7 @@ img_aj0_extracted = {
 }
 
 ctrl_aj_extracted = {
+    "appendixAPageNum": "10",
     "excavationElement": "Feature 15",
     "parentExcPage": "/dig/html/excavations/exc_aj.html",
     "zones": [{
@@ -288,6 +289,7 @@ ctrl_aj_extracted = {
 }
 
 ctrl_fg_extracted = {
+    "appendixAPageNum": "135",
     "excavationElement": "Sq. 240R60",
     "parentExcPage": "/dig/html/excavations/exc_fg.html",
     "zones": [{
@@ -436,6 +438,7 @@ info_aj4_extracted = [{
 }]
 
 art_aj0_or_feature_15_fully_extracted = {
+    "appendixAPageNum": "10",
     "excavationElement": "Feature 15",
     "parentExcPage": "/dig/html/excavations/exc_aj.html",
     "zones": [{
@@ -462,6 +465,7 @@ art_aj0_or_feature_15_fully_extracted = {
 }
 
 art_fg0_or_sq240r60_fully_extracted = {
+    "appendixAPageNum": "135",
     "excavationElement": "Sq. 240R60",
     "parentExcPage": "/dig/html/excavations/exc_fg.html",
     "zones": [{
@@ -486,169 +490,212 @@ art_fg0_or_sq240r60_fully_extracted = {
 head0_extracted = "Beads"
 head6_extracted = "Pipes"
 
-db0_0_extracted = [{
-    "Catalog No.": "2351a1038/a",
-    "Context": "Sq. 260R80"
-}, {
-    "Catalog No.": "2351a1076",
-    "Context": "Sq. 260R90"
-}, {
-    "Catalog No.": "2351a1110",
-    "Context": "Sq. 270R60"
-}, {
-    "Catalog No.": "2351a1110",
-    "Context": "Sq. 270R60"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}]
+db0_0_extracted = {
+    "artifacts": [{
+        "Catalog No.": "2351a1038/a",
+        "Context": "Sq. 260R80"
+    }, {
+        "Catalog No.": "2351a1076",
+        "Context": "Sq. 260R90"
+    }, {
+        "Catalog No.": "2351a1110",
+        "Context": "Sq. 270R60"
+    }, {
+        "Catalog No.": "2351a1110",
+        "Context": "Sq. 270R60"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }],
+    "fields": [
+        "Catalog No.", "Context"
+    ]
+}
 
-db0_1_extracted = [{
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a4282          Type IIa",
-    "Context": "Sq. 250R50"
-}, {
-    "Catalog No.": "2351a4282          Type IVa",
-    "Context": "Sq. 250R50"
-}, {
-    "Catalog No.": "2351a6824/1        Type IIa",
-    "Context": "Feature 28"
-}, {
-    "Catalog No.": "2351a6824/1        Type IIa",
-    "Context": "Feature 28"
-}]
+db0_1_extracted = {
+    "artifacts": [{
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a4282          Type IIa",
+        "Context": "Sq. 250R50"
+    }, {
+        "Catalog No.": "2351a4282          Type IVa",
+        "Context": "Sq. 250R50"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IIa",
+        "Context": "Feature 28"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IIa",
+        "Context": "Feature 28"
+    }],
+    "fields": [
+        "Catalog No.", "Context"
+    ]
+}
 
-db0_2_extracted = [{
-    "Catalog No.": "2351a6824/1        Type IIa",
-    "Context": "Feature 28"
-}, {
-    "Catalog No.": "2351a6824/1        Type IIa",
-    "Context": "Feature 28"
-}, {
-    "Catalog No.": "2351a6824/1        Type IVa",
-    "Context": "Feature 28"
-}]
+db0_2_extracted = {
+    "artifacts": [{
+        "Catalog No.": "2351a6824/1        Type IIa",
+        "Context": "Feature 28"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IIa",
+        "Context": "Feature 28"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IVa",
+        "Context": "Feature 28"
+    }],
+    "fields": [
+        "Catalog No.", "Context"
+    ]
+}
 
-db0_3_extracted = [{
-    "Catalog No.": "2378w96            Type IIa",
-    "Context": "Feature 42"
-}]
+db0_3_extracted = {
+    "artifacts": [{
+        "Catalog No.": "2378w96            Type IIa",
+        "Context": "Feature 42"
+    }],
+    "fields": [
+        "Catalog No.", "Context"
+    ]
+}
 
-db0_all_artifacts = [{
-    "Catalog No.": "2351a1038/a",
-    "Context": "Sq. 260R80"
-}, {
-    "Catalog No.": "2351a1076",
-    "Context": "Sq. 260R90"
-}, {
-    "Catalog No.": "2351a1110",
-    "Context": "Sq. 270R60"
-}, {
-    "Catalog No.": "2351a1110",
-    "Context": "Sq. 270R60"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a425",
-    "Context": "Burial 2"
-}, {
-    "Catalog No.": "2351a4282          Type IIa",
-    "Context": "Sq. 250R50"
-}, {
-    "Catalog No.": "2351a4282          Type IVa",
-    "Context": "Sq. 250R50"
-}, {
-    "Catalog No.": "2351a6824/1        Type IIa",
-    "Context": "Feature 28"
-}, {
-    "Catalog No.": "2351a6824/1        Type IIa",
-    "Context": "Feature 28"
-}, {
-    "Catalog No.": "2351a6824/1        Type IIa",
-    "Context": "Feature 28"
-}, {
-    "Catalog No.": "2351a6824/1        Type IIa",
-    "Context": "Feature 28"
-}, {
-    "Catalog No.": "2351a6824/1        Type IVa",
-    "Context": "Feature 28"
-}, {
-    "Catalog No.": "2378w96            Type IIa",
-    "Context": "Feature 42"
-}]
+db0_all_artifacts = {
+    "artifacts": [{
+        "Catalog No.": "2351a1038/a",
+        "Context": "Sq. 260R80"
+    }, {
+        "Catalog No.": "2351a1076",
+        "Context": "Sq. 260R90"
+    }, {
+        "Catalog No.": "2351a1110",
+        "Context": "Sq. 270R60"
+    }, {
+        "Catalog No.": "2351a1110",
+        "Context": "Sq. 270R60"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a425",
+        "Context": "Burial 2"
+    }, {
+        "Catalog No.": "2351a4282          Type IIa",
+        "Context": "Sq. 250R50"
+    }, {
+        "Catalog No.": "2351a4282          Type IVa",
+        "Context": "Sq. 250R50"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IIa",
+        "Context": "Feature 28"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IIa",
+        "Context": "Feature 28"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IIa",
+        "Context": "Feature 28"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IIa",
+        "Context": "Feature 28"
+    }, {
+        "Catalog No.": "2351a6824/1        Type IVa",
+        "Context": "Feature 28"
+    }, {
+        "Catalog No.": "2378w96            Type IIa",
+        "Context": "Feature 42"
+    }],
+    "fields": [
+        "Catalog No.", "Context"
+    ]
+}
 
-db6_0_extracted = [{
-    "Catalog No.": "2351a1008",
-    "Raw Material": "Kaolin",
-    "Morphology": "European (Kaolin Form)",
-    "Portion": "Bowl Frag.",
-    "Bowl Form": "N/A",
-    "Decoration": None,
-    "Count": "1",
-    "Comment": None,
-    "Context": "S260R70"
-}]
+db6_0_extracted = {
+    "artifacts": [{
+        "Catalog No.": "2351a1008",
+        "Raw Material": "Kaolin",
+        "Morphology": "European (Kaolin Form)",
+        "Portion": "Bowl Frag.",
+        "Bowl Form": "N/A",
+        "Decoration": None,
+        "Count": "1",
+        "Comment": None,
+        "Context": "S260R70"
+    }],
+    "fields": [
+        "Catalog No.", "Raw Material", "Morphology", "Portion",
+        "Bowl Form", "Decoration", "Count", "Comment", "Context"
+    ]
+}
 
-db6_1_extracted = [{
-    "Catalog No.": "2378a1203",
-    "Raw Material": "Kaolin",
-    "Morphology": "European (Kaolin Form)",
-    "Portion": "Bowl Frag.",
-    "Bowl Form": "Indeterminate",
-    "Decoration": None,
-    "Count": "1",
-    "Comment": None,
-    "Context": "S190R20"
-}]
+db6_1_extracted = {
+    "artifacts": [{
+        "Catalog No.": "2378a1203",
+        "Raw Material": "Kaolin",
+        "Morphology": "European (Kaolin Form)",
+        "Portion": "Bowl Frag.",
+        "Bowl Form": "Indeterminate",
+        "Decoration": None,
+        "Count": "1",
+        "Comment": None,
+        "Context": "S190R20"
+    }],
+    "fields": [
+        "Catalog No.", "Raw Material", "Morphology", "Portion",
+        "Bowl Form", "Decoration", "Count", "Comment", "Context"
+    ]
+}
 
-db6_all_artifacts = [{
-    "Catalog No.": "2351a1008",
-    "Raw Material": "Kaolin",
-    "Morphology": "European (Kaolin Form)",
-    "Portion": "Bowl Frag.",
-    "Bowl Form": "N/A",
-    "Decoration": None,
-    "Count": "1",
-    "Comment": None,
-    "Context": "S260R70"
-}, {
-    "Catalog No.": "2378a1203",
-    "Raw Material": "Kaolin",
-    "Morphology": "European (Kaolin Form)",
-    "Portion": "Bowl Frag.",
-    "Bowl Form": "Indeterminate",
-    "Decoration": None,
-    "Count": "1",
-    "Comment": None,
-    "Context": "S190R20"
-}]
+db6_all_artifacts = {
+    "artifacts": [{
+        "Catalog No.": "2351a1008",
+        "Raw Material": "Kaolin",
+        "Morphology": "European (Kaolin Form)",
+        "Portion": "Bowl Frag.",
+        "Bowl Form": "N/A",
+        "Decoration": None,
+        "Count": "1",
+        "Comment": None,
+        "Context": "S260R70"
+    }, {
+        "Catalog No.": "2378a1203",
+        "Raw Material": "Kaolin",
+        "Morphology": "European (Kaolin Form)",
+        "Portion": "Bowl Frag.",
+        "Bowl Form": "Indeterminate",
+        "Decoration": None,
+        "Count": "1",
+        "Comment": None,
+        "Context": "S190R20"
+    }],
+    "fields": [
+        "Catalog No.", "Raw Material", "Morphology", "Portion",
+        "Bowl Form", "Decoration", "Count", "Comment", "Context"
+    ]
+}
 
 
 def mock_readfile(filename, parent_dir_path_obj):
@@ -800,13 +847,15 @@ def test_extract_db_frame(db_html_str, expected_result):
 @pytest.mark.parametrize("page_num,expected_result", [
     (0, {
         "name": head0_extracted,
-        "pageNum": 0,
-        "artifacts": db0_all_artifacts
+        "pageNum": "0",
+        "artifacts": db0_all_artifacts["artifacts"],
+        "fields": db0_all_artifacts["fields"]
     }),
     (6, {
         "name": head6_extracted,
-        "pageNum": 6,
-        "artifacts": db6_all_artifacts
+        "pageNum": "6",
+        "artifacts": db6_all_artifacts["artifacts"],
+        "fields": db6_all_artifacts["fields"]
     })
 ])
 def test_extract_appendix_b_page(page_num, expected_result):
@@ -836,8 +885,9 @@ def test_generate_cat_num_to_artifacts_dict():
     db0_artifacts_in_details_dict = {
         head0_extracted: {
             "name": head0_extracted,
-            "pageNum": 0,
-            "artifacts": db0_all_artifacts
+            "pageNum": "0",
+            "artifacts": db0_all_artifacts["artifacts"],
+            "fields": db0_all_artifacts["fields"]
         }
     }
     assert artifacts.generate_cat_num_to_artifacts_dict(
@@ -848,6 +898,7 @@ def test_generate_cat_num_to_artifacts_dict():
             "zoneNum": 0,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Animal Bone",
                 "Size": '1/2"',
@@ -862,6 +913,7 @@ def test_generate_cat_num_to_artifacts_dict():
             "zoneNum": 0,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Baked Clay",
                 "Size": '1/2"',
@@ -872,10 +924,11 @@ def test_generate_cat_num_to_artifacts_dict():
             }
         },
         "2351a3397": {
-            "appendixBPageNum": 5,
+            "appendixBPageNum": "5",
             "zoneNum": 0,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Biface",
                 "Size": '1/2"',
@@ -886,10 +939,11 @@ def test_generate_cat_num_to_artifacts_dict():
             }
         },
         "2351a646": {
-            "appendixBPageNum": 5,
+            "appendixBPageNum": "5",
             "zoneNum": 0,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Bifaces",
                 "Size": '1/2"',
@@ -904,6 +958,7 @@ def test_generate_cat_num_to_artifacts_dict():
             "zoneNum": 1,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Animal Bone",
                 "Size": '1/4"',
@@ -914,10 +969,11 @@ def test_generate_cat_num_to_artifacts_dict():
             }
         },
         "2351a666": {
-            "appendixBPageNum": 3,
+            "appendixBPageNum": "3",
             "zoneNum": 1,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Bottle Glass (Lip)",
                 "Size": '1/4"',
@@ -932,6 +988,7 @@ def test_generate_cat_num_to_artifacts_dict():
             "zoneNum": 1,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Daub",
                 "Size": '1/2"',
@@ -942,10 +999,11 @@ def test_generate_cat_num_to_artifacts_dict():
             }
         },
         "2351m679": {
-            "appendixBPageNum": 3,
+            "appendixBPageNum": "3",
             "zoneNum": 2,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Brick Fragments",
                 "Size": '1/2"',
@@ -956,10 +1014,11 @@ def test_generate_cat_num_to_artifacts_dict():
             }
         },
         "2351p682": {
-            "appendixBPageNum": 1,
+            "appendixBPageNum": "1",
             "zoneNum": 3,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Potsherd",
                 "Size": '1/2"',
@@ -970,27 +1029,33 @@ def test_generate_cat_num_to_artifacts_dict():
             }
         },
         "2351a1038/a": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
                 "Catalog No.": "2351a1038/a",
                 "Context": "Sq. 260R80"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         },
         "2351a1076": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
                 "Catalog No.": "2351a1076",
                 "Context": "Sq. 260R90"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         },
         "2351a1110": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
@@ -1000,10 +1065,13 @@ def test_generate_cat_num_to_artifacts_dict():
                 "Catalog No.": "2351a1110",
                 "Context": "Sq. 270R60"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         },
         "2351a425": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
@@ -1025,30 +1093,39 @@ def test_generate_cat_num_to_artifacts_dict():
                 "Catalog No.": "2351a425",
                 "Context": "Burial 2"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         },
         "2351a4282          Type IIa": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
                 "Catalog No.": "2351a4282          Type IIa",
                 "Context": "Sq. 250R50"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         },
         "2351a4282          Type IVa": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
                 "Catalog No.": "2351a4282          Type IVa",
                 "Context": "Sq. 250R50"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         },
         "2351a6824/1        Type IIa": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
@@ -1064,26 +1141,35 @@ def test_generate_cat_num_to_artifacts_dict():
                 "Catalog No.": "2351a6824/1        Type IIa",
                 "Context": "Feature 28"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         },
         "2351a6824/1        Type IVa": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
                 "Catalog No.": "2351a6824/1        Type IVa",
                 "Context": "Feature 28"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         },
         "2378w96            Type IIa": {
-            "appendixBPageNum": 0,
+            "appendixBPageNum": "0",
             "zoneNum": None,
             "parentExcPage": None,
             "details": [{
                 "Catalog No.": "2378w96            Type IIa",
                 "Context": "Feature 42"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": None
         }
     }
@@ -1140,6 +1226,7 @@ def test_insert_details_into_summary_dict():
             "zoneNum": 0,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Animal Bone",
                 "Size": '1/2"',
@@ -1154,6 +1241,7 @@ def test_insert_details_into_summary_dict():
             "zoneNum": 1,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Animal Bone",
                 "Size": '1/4"',
@@ -1171,6 +1259,9 @@ def test_insert_details_into_summary_dict():
                 "Catalog No.": "2351a666",
                 "Context": "S240R60"
             }],
+            "detailsFieldOrder": [
+                "Catalog No.", "Context"
+            ],
             "summary": {
                 "Artifacts": "Bottle Glass (Lip)",
                 "Size": '1/4"',
@@ -1185,6 +1276,7 @@ def test_insert_details_into_summary_dict():
             "zoneNum": 0,
             "parentExcPage": exc_page_name,
             "details": None,
+            "detailsFieldOrder": None,
             "summary": {
                 "Artifacts": "Daub",
                 "Size": '1/2"',
@@ -1209,7 +1301,8 @@ def test_insert_details_into_summary_dict():
                     "Cat. No.": "2351b656",
                     "Photo": None,
                     "More": None,
-                    "details": None
+                    "details": None,
+                    "detailsFieldOrder": None
                 }]
             }, {
                 "name": "Plow Zone, 20-liter Waterscreen Sample",
@@ -1221,7 +1314,8 @@ def test_insert_details_into_summary_dict():
                     "Cat. No.": "2351b668",
                     "Photo": None,
                     "More": None,
-                    "details": None
+                    "details": None,
+                    "detailsFieldOrder": None
                 }, {
                     "Artifacts": "Bottle Glass (Lip)",
                     "Size": '1/4"',
@@ -1232,7 +1326,10 @@ def test_insert_details_into_summary_dict():
                     "details": [{
                         "Catalog No.": "2351a666",
                         "Context": "S240R60"
-                    }]
+                    }],
+                    "detailsFieldOrder": [
+                        "Catalog No.", "Context"
+                    ]
                 }, {
                     "Artifacts": "Daub",
                     "Size": '1/2"',
@@ -1240,7 +1337,8 @@ def test_insert_details_into_summary_dict():
                     "Cat. No.": "2351m664",
                     "Photo": None,
                     "More": None,
-                    "details": None
+                    "details": None,
+                    "detailsFieldOrder": None
                 }]
             }]
         }

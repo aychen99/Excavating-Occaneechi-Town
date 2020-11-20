@@ -532,10 +532,11 @@ report39a_extracted = "Introduction"
 report40a_extracted = "The Invisible Invaders"
 
 # Extracted page content
-# Note: all double spaces, '  ', are removed in the extracted data.
+# Note: all double spaces, '  ', are removed in the extracted data,
+# as are all "target" attributes of <a> tags.
 report33b_extracted = [{
     "type": "paragraph",
-    "content": ('Bacon then attacked the Occaneechis (<a href="/dig/html/part6/ref_ac.html" target="_top">'
+    "content": ('Bacon then attacked the Occaneechis (<a href="/dig/html/part6/ref_ac.html">'
                 '<u>Billings 1975</u></a>:267-269).')
 }]
 
@@ -559,21 +560,21 @@ report36b_extracted = [{
                'relatively brief. A limited excavation of 800 sq ft '
                'revealed a portion of a cemetery lying just outside the '
                'village (see '
-               '<a href="/dig/html/excavations/slid_bbd.html" '
-               'target="body"><u>photo</u></a>) and a segment of the '
+               '<a href="/dig/html/excavations/slid_bbd.html">'
+               '<u>photo</u></a>) and a segment of the '
                'village palisade '
-               '(see <a href="/dig/html/excavations/slid_bba.html" '
-               'target="body"><u>photo</u></a>). Three human burials '
+               '(see <a href="/dig/html/excavations/slid_bba.html">'
+               '<u>photo</u></a>). Three human burials '
                'within the cemetery were excavated. All three pits were '
                'rectangular with sharp corners (indicating that they '
                'probably were excavated with metal tools) and contained '
                'numerous artifacts of Euroamerican manufacture. A fourth '
                'pit excavated within the cemetery contained neither human '
                'remains nor grave associations (see photos of '
-               '<a href="/dig/html/excavations/slid_bbv.html" '
-               'target="body"><u>sifting plowed soil</u></a>, '
-               '<a href="/dig/html/excavations/slid_bbf.html" '
-               'target="body"><u>burial excavation</u></a>).'
+               '<a href="/dig/html/excavations/slid_bbv.html">'
+               '<u>sifting plowed soil</u></a>, '
+               '<a href="/dig/html/excavations/slid_bbf.html">'
+               '<u>burial excavation</u></a>).'
     }, {
         "type": "italic-title",
         "content": "Field Methods"
@@ -588,7 +589,7 @@ report37b_extracted = [{
     "content": "Figures: General"
 }, {
     "type": "paragraph",
-    "content": ('<a href="/dig/html/excavations/slid_azn.html" target="body"><u>Figure 1</u></a>. '
+    "content": ('<a href="/dig/html/excavations/slid_azn.html"><u>Figure 1</u></a>. '
                 'Distribution of Siouan-speaking peoples in eastern North America (based on Mooney 1894).')
 }]
 

@@ -11,33 +11,33 @@ import pathlib
 
 # Example data
 raw_paragraph_with_slid_link = (
-    'This paragraph has a link to an image: <a href="../excavations/slid_abc.html">Image</a>'
+    'This paragraph has a link to an image: <a href="/dig/html/excavations/slid_abc.html">Image</a>'
 )
 
 raw_paragraph_with_ref_link = (
-    'This paragraph has a reference: <a href="../part6/ref_ab.html">Reference</a>'
+    'This paragraph has a reference: <a href="/dig/html/part6/ref_ab.html">Reference</a>'
 )
 
 raw_paragraph_with_table_link = (
-    'We have a table here: <a href="../tables/table0.html">Table</a>'
+    'We have a table here: <a href="/dig/html/tables/table0.html">Table</a>'
 )
 
 raw_paragraph_with_table_with_images_link = (
-    'We have a table here: <a href="../tables/table2.html">Table</a>'
+    'We have a table here: <a href="/dig/html/tables/table2.html">Table</a>'
 )
 
 raw_paragraph_with_part_links = (
     'We have links to many parts here: <a href="../part2/body0.html">Part 2</a>\n'
-    '<a href="../part3/body0.html">Part 3</a>\n'
-    '<a href="../part4/body0.html">Part 4</a>\n'
-    '<a href="../part5/body0.html">Part 5</a>\n'
-    '<a href="../part5/body0_2.html">A Section in Part 5</a>\n'
-    '<a href="../body0.html">The Current Part, Part 0</a>\n'
+    '<a href="/dig/html/part3/body0.html">Part 3</a>\n'
+    '<a href="/dig/html/part4/body0.html">Part 4</a>\n'
+    '<a href="/dig/html/part5/body0.html">Part 5</a>\n'
+    '<a href="/dig/html/part5/body0_2.html">A Section in Part 5</a>\n'
+    '<a href="/dig/html/body0.html">The Current Part, Part 0</a>\n'
 )
 
 raw_paragraph_with_excavations_link = (
     'We have an excavation element that is not just an image: '
-    '<a href="../excavations/exc_az.html">Excavation</a>'
+    '<a href="/dig/html/excavations/exc_az.html">Excavation</a>'
 )
 
 
