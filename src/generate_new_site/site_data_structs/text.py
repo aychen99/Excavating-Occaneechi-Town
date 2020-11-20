@@ -364,7 +364,10 @@ class TextChapter(SiteChapter):
             # exc_element.artifacts_page = this_section
             exc_element.artifacts_path = rel_path(path, index.pathtable.get_path(exc_element.path))
 
-            # TODO: Add section to path table for link resolution
+            # Add section to path table for link resolution
+            # HOTFIX: hardcode old_path based on exc_XX.html
+            oldpath = artifacts_obj['parentExcPage'].replace("/excavations/", "/artifacts/").replace("exc_", "art_").replace(".html", "0.html")
+            index.pathtable.register(old_path=oldpath, new_path=this_section.path, entity=this_section)
 
             # Add to page table for pagination
             index.pagetable.register(
@@ -443,7 +446,20 @@ class TextChapter(SiteChapter):
                 template=APPENDIX_B_TEMPLATE
             )
 
-            # TODO: Add section to path table for link resolution
+            # Add section to path table for link resolution
+            # HOTFIX: dict of paths from names. Only 7 pages... This isn't that
+            #         bad right? Definitely fix this in extract later
+            oldpathtable = {
+                'Beads': "/dig/html/dbs/page0.html",
+                'Ceramics': "/dig/html/dbs/page1.html",
+                'Faunal Remains': "/dig/html/dbs/page2.html",
+                'Historic Artifacts': "/dig/html/dbs/page3.html",
+                'Historic Ceramics': "/dig/html/dbs/page4.html",
+                'Lithics': "/dig/html/dbs/page5.html",
+                'Pipes': "/dig/html/dbs/page6.html"
+            }
+            index.pathtable.register(old_path=oldpathtable[apx_b_page["name"]], new_path=this_section.path, entity=this_section)
+            index.pathtable.register(old_path=oldpathtable[apx_b_page["name"]].replace("/dig/","/digpro/"), new_path=this_section.path, entity=this_section)
 
             # Add to page table for pagination
             index.pagetable.register(

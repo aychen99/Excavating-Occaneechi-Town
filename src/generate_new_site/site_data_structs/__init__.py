@@ -7,6 +7,4 @@ from . import text
 from . import web
 from . import references
 from . import tables
-from . import appendix_a
-from . import appendix_b
 from . import archaeology_primer

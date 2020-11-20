@@ -137,8 +137,9 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             new_link = rel_path(new_link, page_obj_path)
             a['href'] = new_link
         elif 'artifacts' in old_path:
-            # TODO Deal with artifacts
-            pass
+            new_link = index.pathtable.get_path(old_path)
+            new_link = rel_path(new_link, page_obj_path)
+            a['href'] = new_link
         elif 'excavations' in old_path:
             new_link = index.pathtable.get_path(old_path)
             new_link = rel_path(new_link, page_obj_path)
@@ -149,8 +150,9 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             # Only problem being run into is /part6/tab0, tab1, and tab2.html.
             pass
         elif 'dbs' in old_path:
-            # TODO: Create dedicated Appendix B page for artifacts details
-            pass
+            new_link = index.pathtable.get_path(old_path)
+            new_link = rel_path(new_link, page_obj_path)
+            a['href'] = new_link
         elif 'video' in old_path:
             # Deal with video files
             a['href'] = old_path.replace('/dig/html/video/', '../../video/')
