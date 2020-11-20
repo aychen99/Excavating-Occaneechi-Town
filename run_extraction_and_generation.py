@@ -42,6 +42,6 @@ if __name__ == "__main__":
         print("\n-----------------------------------\n"
               "SKIPPING generating new site files.\n")
 
-    if config['runDigPro']:
+    # if config['runDigPro']:
         # TODO
-        pass
+        # pass

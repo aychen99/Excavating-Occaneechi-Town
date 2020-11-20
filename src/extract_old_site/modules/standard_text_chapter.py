@@ -288,7 +288,7 @@ def extract_frames(html_string, full_current_dir_path, readfile):
         data.append(readfile(frame['src'], full_current_dir_path))
     return data
 
-def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
+def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile, has_page_num=True):
     """Extract all parts of a body*_*.html page and its contained frames.
 
     Parameters
@@ -314,32 +314,39 @@ def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_pa
     report_folder_path = (full_current_dir_path / frames[1]['src']).parent
     report_abc_content = extract_frames(report_html_string, report_folder_path, readfile)
 
-    return {
+    extracted_html_strs = {
         'sidebar_html': sidebar_html_string,
         'reporta_html': report_abc_content[0],
-        'reportb_html': report_abc_content[1],
-        'reportc_html': report_abc_content[2]
+        'reportb_html': report_abc_content[1]
     }
+    if has_page_num:
+        extracted_html_strs['reportc_html'] = report_abc_content[2]
+    return extracted_html_strs
 
-def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
+def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile, has_page_num=True):
     """Extract all parts of a tab*.html or tab*_*.html page and its frames."""
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
     full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
     topbar_html_string = readfile(frames[0]['src'], full_current_dir_path)
-    body_html_content = get_body_page_html_contents(readfile(frames[1]['src'],
-                                                    full_current_dir_path),
-                                                    current_dir_path,
-                                                    dig_parent_dir_path,
-                                                    readfile)
-    return {
+    body_html_content = get_body_page_html_contents(
+        readfile(frames[1]['src'], full_current_dir_path),
+        current_dir_path,
+        dig_parent_dir_path,
+        readfile,
+        has_page_num=has_page_num
+    )
+    extracted_html_strs = {
         'topbar_html': topbar_html_string,
         'sidebar_html': body_html_content['sidebar_html'],
         'reporta_html': body_html_content['reporta_html'],
         'reportb_html': body_html_content['reportb_html'],
-        'reportc_html': body_html_content['reportc_html'],
         'body_page_name': frames[1]['src']
     }
+
+    if has_page_num:
+        extracted_html_strs['reportc_html'] = body_html_content['reportc_html']
+    return extracted_html_strs
 
 def process_tab_html_contents(
     html_strings, current_tab_page_name,
@@ -431,7 +438,10 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
 
     return extracted
 
-def extract_full_chapter(all_module_file_names, current_dir_path, dig_parent_path, readfile):
+def extract_full_chapter(
+    all_module_file_names, current_dir_path, dig_parent_path, readfile,
+    extract_full_module=extract_full_module
+):
     """Extract an entire chapter by going through all tab*_*.html files."""
     filenames = sorted(all_module_file_names)
     module_start_tab_names = [filename for filename in filenames if "_" not in filename]

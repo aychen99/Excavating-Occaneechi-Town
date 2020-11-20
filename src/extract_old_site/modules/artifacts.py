@@ -220,7 +220,8 @@ def generate_cat_num_to_artifacts_dict(artifacts_summary=None, artifacts_details
                             if (all_artifacts[cat_no]['appendixBPageNum']
                                 and all_artifacts[cat_no]['appendixBPageNum'] != appendix_b_page_num
                             ):
-                                print("Discrepancy found for " + cat_no)
+                                pass
+                                # print("Discrepancy found for " + cat_no)
                             else:
                                 all_artifacts[cat_no]['appendixBPageNum'] = appendix_b_page_num
                     summary = None

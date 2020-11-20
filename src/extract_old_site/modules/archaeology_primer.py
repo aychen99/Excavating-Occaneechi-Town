@@ -4,9 +4,6 @@ import os
 
 # NOTE: tab0.html can be safely ignored
 
-def get_image_and_caption(primer_num, dig_parent_dir):
-    pass
-
 def extract_primer_page(html_string, dig_parent_dir, current_page_name, readfile):
     # primer*.html, including subpages like 14a, 13b, 23a, etc.
     soup = BeautifulSoup(html_string, 'html5lib')
@@ -66,7 +63,8 @@ def extract_primer_page(html_string, dig_parent_dir, current_page_name, readfile
                 # Primer 14 or 23
                 if table_for_image.td.b:
                     # Not an a, b, or c page
-                    caption_for_no_image = str(table_for_image.td.b).replace('<b>', '').replace('</b>', '').replace('<br>', '')
+                    caption_for_no_image = str(table_for_image.td.b).replace('<b>', '').replace('</b>', '').replace("\n", " ")
+                    caption_for_no_image = " ".join(caption_for_no_image.split('<br>'))
                 else:
                     image_src = Path(os.path.normpath(Path('/dig/html/primer') / new_soup.img['src'])).as_posix()
                     image_caption = new_soup.font.text.strip()
@@ -78,7 +76,8 @@ def extract_primer_page(html_string, dig_parent_dir, current_page_name, readfile
                 # Primer 13
                 caption_for_no_image = "Click on a stage of the excavation process to view it."
                 image_src = Path(os.path.normpath(Path('/dig/html/primer') / new_soup.img['src'])).as_posix()
-                image_caption = new_soup.font.text.strip()
+                image_caption = new_soup.font.decode_contents().replace('<font>', '').replace('</font>', '').replace("\n", " ")
+                image_caption = " ".join(image_caption.split('<br/>'))
                 non_paragraph_content["pageToImgMap"][filename] = {
                     "src": image_src,
                     "caption": image_caption
@@ -90,10 +89,10 @@ def extract_primer_page(html_string, dig_parent_dir, current_page_name, readfile
         if soup.img:
             def is_image_caption_table(table_tag):
                 return table_tag.name == 'table' and table_tag.has_attr('align') and table_tag['align'] == 'right'
-            # If no soup.img, is primer 25
-            table_with_image = soup.find(is_image_caption_table)
+            # Note: If no soup.img, is primer 25
             image_path = Path(os.path.normpath(Path('/dig/html/primer') / soup.img['src'])).as_posix()
-            image_caption = soup.font.text.strip()
+            image_caption = soup.font.decode_contents().replace('<font>', '').replace('</font>', '').replace("\n", " ")
+            image_caption = " ".join(image_caption.split('<br/>'))
             image = {
                 "path": image_path,
                 "caption": image_caption

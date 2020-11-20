@@ -110,7 +110,8 @@ def run_extraction(config):
     artifacts_by_cat_num = artifacts.generate_cat_num_to_artifacts_dict(artifacts_summary, artifacts_details, True)
     artifacts_full = artifacts.insert_details_into_summary_dict(artifacts_summary, artifacts_by_cat_num)
     artifacts_full = artifacts.replace_figure_paths_with_nums_in_summary_dict(artifacts_full, art_images)
-    write_file(artifacts_summary, output_dir_path_obj / "artifactsSummary.json")
+    # Ignore artifacts_summary as it's currently mutated by the insert_details call
+    # write_file(artifacts_summary, output_dir_path_obj / "artifactsSummary.json")
     write_file(artifacts_details, output_dir_path_obj / "artifactsDetails.json")
     write_file(art_images, output_dir_path_obj / "artifactsImages.json", True)
     write_file(artifacts_by_cat_num, output_dir_path_obj / "artifactsByCatNum.json", True)
