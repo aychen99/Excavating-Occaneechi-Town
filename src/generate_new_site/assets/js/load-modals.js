@@ -5,6 +5,9 @@ $(document).ready(function() {
   $("[id^=archaeology-images]").lightGallery({ /* loop: select elements with id:"carousel-zoom" */
   selector: 'a'
   });
+  $("[class^=a-img]").lightGallery({ /* loop: select elements with id:"carousel-zoom" */
+  selector: 'this'
+  });
 });
 
 function setUpModals() {

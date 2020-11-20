@@ -53,15 +53,19 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
                 lookup = index.figuretable
                 img_num = lookup.get_figure_num(old_path)
                 figure = lookup.get_figure(img_num)
-                a['href'] = '#genModal'
-                a['data-toggle'] = 'modal'
-                a['data-target'] = '#genModal'
+                # a['href'] = '#genModal'
+                # a['data-toggle'] = 'modal'
+                # a['data-target'] = '#genModal'
                 a['class'] = 'a-img'
-                a['data-figure-caption'] = (
+                a['data-sub-html'] = (
                     "<b>Figure " + str(img_num) + "</b>. "
                     + str(figure.caption)
                 )
-                a['data-figure-path'] = (
+                a['data-src'] = (
+                    figure.img_orig_path.as_posix()
+                    .replace('/dig/html/images/', '../../imgs/')
+                )
+                a['href'] = (
                     figure.img_orig_path.as_posix()
                     .replace('/dig/html/images/', '../../imgs/')
                 )
