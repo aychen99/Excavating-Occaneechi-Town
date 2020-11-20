@@ -13,6 +13,7 @@
 {% extends "base.html.jinja" %}
 {% block title %}{{ this_section['name'] }}{% endblock %}
 {% block styles %}
+    <link href="../../assets/css/lightgallery.min.css" rel="stylesheet">
     <link href="../../assets/css/textpage.css" rel="stylesheet">
     <link href="../../assets/css/modals.css" rel="stylesheet">
     {% include "shared_elements/common_css_and_fonts.html.jinja" %}
@@ -64,8 +65,14 @@
           <img src="{{ this_section.mapImg }}" usemap="#squares">
           {% endif %}
           {% if this_section.image %}
-          <img src="{{ this_section.image.path }}">
-          <p>{{ this_section.image.caption }}</p>
+          {# <img src="{{ this_section.image.path }}">
+          <p>{{ this_section.image.caption }}</p> #}
+          <div id="archaeology-images">
+          <a href="{{ this_section.image.path }}">
+            <figure class="figure d-block">
+              <img src="{{ this_section.image.path }}" style="padding-block-start: 1em;" class="mx-auto d-block img" alt="{{ this_section.image.caption }}">
+              <figcaption class="figure-caption">{{ this_section.image.caption }}</figcaption>
+            </figure></a></div>
           {% endif %}
           {% if this_section.content.image %}
           <img src="{{ this_section.content.image.path }}">

@@ -2,6 +2,9 @@ $(document).ready(function() {
   $("[id^=carousel-zoom]").lightGallery({ /* loop: select elements with id:"carousel-zoom" */
     selector: 'a'
   });
+  $("[id^=archaeology-images]").lightGallery({ /* loop: select elements with id:"carousel-zoom" */
+  selector: 'a'
+  });
 });
 
 function setUpModals() {
