@@ -3,6 +3,7 @@ import pathlib
 import os
 from .path_ops import rel_path
 
+
 def update_text_paragraph(paragraph_string, index, page_obj_path):
     """Update the <a> tags in a textpage/feature description paragraph."""
     # Change innerHTML content of each section/paragraph
@@ -12,10 +13,39 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
     soup = BeautifulSoup(paragraph_string, 'html5lib')
     for a in soup.find_all('a'):
         old_path = a['href']
-        if 'slid' in old_path:
+        if a.has_attr('data-is-primer') and a['data-is-primer'] == 'yes':
+            del a['data-is-primer']
+            old_path = pathlib.Path('/dig/html/primer') / old_path
+            old_path = os.path.normpath(old_path)
+            old_path = str(pathlib.Path(old_path).as_posix())
+            a['href'] = '#genModal'
+            a['data-toggle'] = 'modal'
+            a['data-target'] = '#genModal'
+            a['class'] = 'a-video'
+            a['data-figure-path'] = old_path.replace('/dig/html/video/', '../../video/')
+        elif 'slid' in old_path:
             # Set up image modal
             if 'mov.html' in old_path or 'mpg.html' in old_path:
-                continue # TODO
+                old_path = pathlib.Path('/dig/html/someDir') / old_path
+                old_path = os.path.normpath(old_path)
+                old_path = str(pathlib.Path(old_path).as_posix())
+                lookup = index.figuretable
+                img_num = lookup.get_figure_num(old_path)
+                figure = lookup.get_figure(img_num)
+                a['href'] = '#genModal'
+                a['data-toggle'] = 'modal'
+                a['data-target'] = '#genModal'
+                a['class'] = 'a-video'
+                a['data-figure-caption'] = (
+                    "<b>Figure " + str(img_num) + "</b>. "
+                    + str(figure.caption)
+                )
+                a['data-figure-path'] = (
+                    figure.img_orig_path.as_posix()
+                    .split('.')[0]
+                    .replace('/dig/html/video/', '../../video/')
+                    + '.mp4'
+                )
             else:
                 old_path = pathlib.Path('/dig/html/someDir') / old_path
                 old_path = os.path.normpath(old_path)
@@ -52,7 +82,7 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             else:
                 print("Failed to find reference for letters "
                         + letters)
-        elif 'table' in old_path:
+        elif 'html/table' in old_path:
             # Set up table modal
             a['href'] = '#genModal'
             a['data-toggle'] = 'modal'
@@ -92,7 +122,7 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             new_table_str = new_table_str.replace('</body>', '')
             a['data-table-string'] = new_table_str
         elif any(
-            partname in old_path 
+            partname in old_path
             for partname in ['part0', 'part1', 'part2',
                              'part3', 'part4', 'part5', 'descriptions']
         ):
@@ -118,10 +148,33 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             # TODO: Create dedicated Appendix B page for artifacts details
             pass
         elif 'video' in old_path:
-            # TODO: Deal with video files
-            pass
+            # Deal with video files
+            a['href'] = old_path.replace('/dig/html/video/', '../../video/')
         elif 'version.html' in old_path:
             # TODO: Deal with professional vs instructional version
+            pass
+        elif 'started' in old_path:
+            # Deal with linking to getting started
+            new_link = index.pathtable.get_path(old_path)
+            new_link = rel_path(new_link, page_obj_path)
+            a['href'] = new_link
+        elif 'primer' in old_path:
+            # Deal with linking to the archaeology primer
+            new_link = index.pathtable.get_path(old_path)
+            new_link = rel_path(new_link, page_obj_path)
+            a['href'] = new_link
+        elif 'maps' in old_path:
+            # TODO: Deal with linking to the new map for excavations.
+            # Only really a problem in the table of contents.
+            pass
+        elif 'javalaunch.html' in old_path or 'digquery.html' in old_path:
+            a['href'] = "https://electronicdig.sites.oasis.unc.edu"
+        elif 'tutorial' in old_path:
+            # TODO: Deal with the old electronic dig tutorial, which should now
+            # be removed.
+            pass
+        elif 'data' in old_path:
+            # TODO: Deal with the downloads available on the old site.
             pass
         else:
             raise Exception('found path ' + old_path + ' in this paragraph: \n'

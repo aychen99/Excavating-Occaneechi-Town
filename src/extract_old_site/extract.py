@@ -1,5 +1,8 @@
 from .modules import (
     standard_text_chapter,
+    getting_started,
+    archaeology_primer,
+    data_downloads,
     excavation_details_page,
     image_page,
     feature_descriptions,
@@ -10,12 +13,13 @@ from .modules import (
 from .utilities import file_ops
 import pathlib
 import json
-import datetime
+
 
 def run_extraction(config):
     # Set up variables from config
     dig_parent_dir = config['digParentDirPath']
     output_dir_path = config['extractionOutputDirPath']
+    shrinkJsons = config['shrinkExtractionJsons']
     output_dir_path_obj = None
     if output_dir_path == "Default":
         output_dir_path_obj = pathlib.Path(__file__).parent / "jsons"
@@ -28,20 +32,32 @@ def run_extraction(config):
         if not overwrite_files and filename_path_obj.is_file():
             pass
         else:
-            indent = 4
-            if not prettify:
-                indent = None
+            indent = None
+            if prettify and not shrinkJsons:
+                indent = 4
             with open(filename_path_obj, 'w') as f:
                 json.dump(data, f, sort_keys=sort_keys, indent=indent)
 
     # Run text chapter extraction
     print("Extracting text chapters... ...")
-    text_partnames = config['standardTextChapterPartnames']
+    text_partnames = ['part0', 'part1', 'part2', 'part3', 'part4', 'part5']
     for partname in text_partnames:
         print("    Extracting " + partname)
         output_filename = output_dir_path_obj / (partname + ".json")
         data = standard_text_chapter.extract_standard_part(partname, dig_parent_dir, file_ops.readfile)
+        if partname == 'part0':
+            data = standard_text_chapter.reextract_title_page(data, dig_parent_dir, file_ops.readfile)
         write_file(data, output_filename)
+
+    # Run getting started extraction
+    print("Extracting Getting Started... ...")
+    getting_started_data = getting_started.extract_getting_started(dig_parent_dir, file_ops.readfile)
+    write_file(getting_started_data, output_dir_path_obj / "started.json")
+
+    # Run archaeology primer extraction
+    print("Extracting Archaeology Primer... ...")
+    primer_data = archaeology_primer.extract_entire_primer(dig_parent_dir, file_ops.readfile)
+    write_file(primer_data, output_dir_path_obj / "primer.json")
 
     # Run excavations element pages extraction
     print("Extracting excavations element pages... ...")
@@ -71,6 +87,11 @@ def run_extraction(config):
     write_file(refs['refs'], output_dir_path_obj / "references.json", True)
     write_file(refs['hrefsToRefs'], output_dir_path_obj / "hrefsToRefs.json", True)
 
+    # Run data downloads chapter extraction
+    print("Extracting data for download chapter... ...")
+    data_downloads_data = data_downloads.extract_data_downloads(dig_parent_dir, file_ops.readfile)
+    write_file(data_downloads_data, output_dir_path_obj / "dataChapter.json")
+
     # Run tables extraction
     print("Extracting tables... ...")
     table_info = tables.extract_all_tables(dig_parent_dir, file_ops.readfile)
@@ -88,6 +109,7 @@ def run_extraction(config):
     art_images = artifacts.extract_all_artifacts_images(dig_parent_dir, file_ops.readfile)
     artifacts_by_cat_num = artifacts.generate_cat_num_to_artifacts_dict(artifacts_summary, artifacts_details, True)
     artifacts_full = artifacts.insert_details_into_summary_dict(artifacts_summary, artifacts_by_cat_num)
+    artifacts_full = artifacts.replace_figure_paths_with_nums_in_summary_dict(artifacts_full, art_images)
     write_file(artifacts_summary, output_dir_path_obj / "artifactsSummary.json")
     write_file(artifacts_details, output_dir_path_obj / "artifactsDetails.json")
     write_file(art_images, output_dir_path_obj / "artifactsImages.json", True)

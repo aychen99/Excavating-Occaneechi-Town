@@ -9,7 +9,8 @@ INDEX_TEMPLATE_FILENAME = "index.html.jinja"
 INDEX_TEMPLATE = Environment(
     loader=FileSystemLoader(TEMPLATES_DIRECTORY),
     autoescape=select_autoescape(['html', 'xml']),
-    line_statement_prefix='#', line_comment_prefix='##', trim_blocks=True
+    line_statement_prefix='#', line_comment_prefix='##',
+    trim_blocks=True, lstrip_blocks=True
 ).get_template(INDEX_TEMPLATE_FILENAME)
 
 

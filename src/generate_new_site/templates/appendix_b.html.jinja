@@ -1,0 +1,58 @@
+{# Jinja2 template for Appendix A generation
+## -----------------------------------------------------------------------------
+## Included templates:
+##  sidebar.html.jinja
+##  pagination.html.jinja
+## -----------------------------------------------------------------------------
+## Required parameters:
+##  this_section
+## -----------------------------------------------------------------------------
+##  this_section : Section, defined in text_classes.py
+## -----------------------------------------------------------------------------
+#}
+
+{% extends "base.html.jinja" %}
+{% block title %}{{ this_section['name'] }}{% endblock %}
+{% block styles %}
+    <link href="../../assets/css/textpage.css" rel="stylesheet">
+    <link href="../../assets/css/modals.css" rel="stylesheet">
+    {% include "shared_elements/common_css_and_fonts.html.jinja" %}
+    {{ super() }}
+{% endblock %}
+{% block header %}
+{{ super() }}
+{% endblock %}
+{% block page_body %}
+    <div class="container-fluid">
+      <div class="row">
+        {% include "shared_elements/sidebar.html.jinja" %}
+        <div class="col-md" id="text-chapter-contents" style="overflow-y: scroll;">
+          <h1>{{ this_section.name }}</h1>
+            <div>
+              <h3>{{ this_section.content[0].content.name }}</h3>
+              <table class="table table-striped table-bordered table-sm">
+              <thead class="thead-light">
+                <tr>
+                {% for field in this_section.content[0].content.fields %}
+                  <th>{{ field }}</th>
+                {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for artifact in this_section.content[0].content.artifacts %}
+                <tr>
+                  {% for field in this_section.content[0].content.fields %}<td>{{ artifact[field] }}</td>{% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+              </table>
+            </div>
+          {% include "shared_elements/pagination.html.jinja" %}
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block site_interactivity %}
+  {% include "shared_elements/generic_textpage_modal.html.jinja" %}
+  <script src="../../assets/js/page-num-navigation.js"></script>
+{% endblock %}

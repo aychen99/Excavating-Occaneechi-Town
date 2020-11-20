@@ -45,6 +45,11 @@ def extract_descriptions(dig_parent_dir, readfile):
             )
             page_num = standard_text_chapter.extract_page_number(html_strings['reportc_html'])
             sidebar_info_sections = extract_sidebar_sections(html_strings['sidebar_html'])
+            author = str(BeautifulSoup(html_strings['reportb_html'], 'html5lib').body.contents[0]).strip()
+            content.insert(0, {
+                "type": "paragraph",
+                "content": author
+            })
 
             current_section = None
             for section in sidebar_info_sections:
@@ -79,10 +84,10 @@ def extract_descriptions(dig_parent_dir, readfile):
                     "pageNum": page_num,
                 }
             })
-    
+
     if not standard_text_chapter.validate_tab_html_extraction_results(processed_pages):
         return "Failed: inconsistency in pages within module Feature Descriptions."
-    
+
     extracted = {
         "module": {},
         "pages": {}
@@ -90,12 +95,12 @@ def extract_descriptions(dig_parent_dir, readfile):
     sectionsToPageNums = {}
     for processed_page in processed_pages:
         sectionInfo = processed_page['additionalSectionInfo']
-        pageNumDictKey = (sectionInfo['currentSection']['path'] 
+        pageNumDictKey = (sectionInfo['currentSection']['path']
                           + '-' + sectionInfo['currentSection']['name'])
         if pageNumDictKey in sectionsToPageNums:
             return "Failed: Two sections with the same path + name"
         sectionsToPageNums[pageNumDictKey] = sectionInfo['pageNum']
-    
+
     extracted['module'] = processed_pages[0]['module']
     for processed_page in processed_pages:
         pageNum = processed_page['page'].pop('pageNum', None)
@@ -105,7 +110,7 @@ def extract_descriptions(dig_parent_dir, readfile):
         section['pageNum'] = sectionsToPageNums[section['path'] + '-' + section['name']]
         if len(section['subsections']) > 0:
             for subsection in section['subsections']:
-                subsection['pageNum'] = sectionsToPageNums[subsection['path'] 
+                subsection['pageNum'] = sectionsToPageNums[subsection['path']
                                                            + '-' + subsection['name']]
         if section['name'] in sections_name_changes:
             section['name'] = sections_name_changes[section['name']]

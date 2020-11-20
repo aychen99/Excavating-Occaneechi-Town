@@ -8,7 +8,10 @@ def make_str_filename_safe(s):
         ord('.'): None
     }
 
-    return s.lower().translate(translation_table)
+    return (
+        s.replace("<i>", "").replace("</i>", "")
+         .lower().translate(translation_table)
+    )
 
 
 def normalize_file_page_num(page_num):
@@ -19,6 +22,19 @@ def normalize_file_page_num(page_num):
 
     if page_num.isdigit():  # Not roman numerals, so in main section
         return '{:0>3}'.format(page_num)  # We want 3 digits with leading 0s
+    elif "GS" in page_num:
+        # Dealing with getting started
+        return int(page_num.replace("GS", ""))
+    elif "AP" in page_num:
+        # Dealing with archaeology primer
+        return int(page_num.replace("AP", ""))
+    elif "Appendix A " in page_num:
+        return int(page_num.replace("Appendix A ", ""))
+    elif "Appendix B " in page_num:
+        return int(page_num.replace("Appendix B ", ""))
+    elif "Data " in page_num:
+        # Dealing with data downloads
+        return int(page_num.replace("Data ", ""))
     else:  # Dealing with preliminaries, different formatting required
         page_num = page_num_to_arabic(page_num)
         return '{}_{:0>2}'.format("prelims", page_num)

@@ -7,7 +7,7 @@ from . import utilities
 
 def generate_site(
         dig_dir, input_dir, output_dir,
-        overwrite_out=False, copy_images=False):
+        overwrite_out=False, copy_images=False, copy_videos=False, copy_data=True):
 
     DIG_DIR = Path(dig_dir)
     INPUT_DIR = Path(input_dir)
@@ -52,6 +52,12 @@ def generate_site(
 
     utilities.html_assets.copy_html_assets(ASSETS_IN, ASSETS_OUT)
 
+    if copy_videos:
+        utilities.html_assets.copy_videos(DIG_DIR / "html/video", OUTPUT_DIR / "video")
+
+    if copy_data:
+        utilities.html_assets.copy_data(DIG_DIR / 'html/data/content/files', OUTPUT_DIR / 'dataForDownload')
+
     DESCRIPTIONS_PATH = INPUT_DIR / "descriptions.json"
     EXCAVATIONS_PATH = INPUT_DIR / "excavationsElements.json"
     FIGURES_PATH = INPUT_DIR / "images.json"
@@ -62,6 +68,8 @@ def generate_site(
     TABLES_IMAGE_PATHS_TO_NUMS_PATH = (
         INPUT_DIR / "tableImagePathsToFigureNums.json"
     )
+    ARTIFACTS_PATH = INPUT_DIR / "artifactsByExcElementComplete.json"
+    ARTIFACTS_DETAILS_PATH = INPUT_DIR / "artifactsDetails.json"
 
     figures = site_data_structs.figure.Figures.from_json(
         FIGURES_PATH, HTML_OUT_DIR/"figures", index)
@@ -74,17 +82,24 @@ def generate_site(
         TABLES_IMAGE_PATHS_TO_NUMS_PATH,
         index
     )
+    with ARTIFACTS_PATH.open("r") as f:
+        artifacts = json.load(f)
 
     index.add_figures(figures)
     index.add_references(references)
     index.add_tables(tables)
 
-    # Dummy objects for unimplemented chapters
-    index.add_child(site_data_structs.site.SiteChapter(
-        name="Getting Started", parent=index))
-    index.add_child(site_data_structs.site.SiteChapter(
-        name="Archaeology Primer", parent=index))
-
+    index.add_child(site_data_structs.text.TextChapter.from_json(
+        json_path=INPUT_DIR / "started.json",
+        name="Getting Started",
+        dir=HTML_OUT_DIR / "gettingstarted",
+        index=index))
+    index.add_child(site_data_structs.archaeology_primer.PrimerChapter.from_json(
+        json_path=INPUT_DIR / "primer.json",
+        name="Archaeology Primer",
+        dir=HTML_OUT_DIR / "primer",
+        index=index
+    ))
     index.add_child(site_data_structs.text.TextChapter.from_json(
         json_path=INPUT_DIR / "part0.json",
         name="Introduction",
@@ -131,6 +146,30 @@ def generate_site(
         dir=HTML_OUT_DIR / "interpretations",
         index=index
     ))
+    index.add_child(site_data_structs.text.TextChapter.references_from_json(
+        json_path=REFERENCES_PATH,
+        name="References",
+        dir=HTML_OUT_DIR / "references",
+        index=index
+    ))
+    index.add_child(site_data_structs.text.TextChapter.appendix_a_from_json(
+        json_path = ARTIFACTS_PATH,
+        name="Appendix A: Artifacts by Excavation Element",
+        dir=HTML_OUT_DIR / "appendixa",
+        index=index
+    ))
+    index.add_child(site_data_structs.text.TextChapter.appendix_b_from_json(
+        json_path = ARTIFACTS_DETAILS_PATH,
+        name="Appendix B: Artifacts by Category",
+        dir=HTML_OUT_DIR / "appendixb",
+        index=index
+    ))
+    index.add_child(site_data_structs.text.TextChapter.from_json(
+        json_path=INPUT_DIR / "dataChapter.json",
+        name="Data Downloads",
+        dir=HTML_OUT_DIR / "data",
+        index=index
+    ))
     index.add_child(site_data_structs.web.WebChapter(
         name="Electronic Dig", parent=index,
         path=Path("https://electronicdig.sites.oasis.unc.edu/")))
@@ -144,6 +183,11 @@ def generate_site(
         page_num_navigation_js = f.read()
     page_num_nav_json = dict.copy(index.pagetable.roman_nums_to_prelim_pages)
     page_num_nav_json.update(index.pagetable.pages)
+    page_num_nav_json.update(index.pagetable.strings_to_getting_started_pages)
+    page_num_nav_json.update(index.pagetable.strings_to_archaeology_primer_pages)
+    page_num_nav_json.update(index.pagetable.strings_to_appendix_a_pages)
+    page_num_nav_json.update(index.pagetable.strings_to_appendix_b_pages)
+    page_num_nav_json.update(index.pagetable.strings_to_data_pages)
     for pageNum, pathValue in page_num_nav_json.items():
         page_path = utilities.path_ops.rel_path(pathValue, HTML_OUT_DIR)
         page_path = str(page_path.as_posix())

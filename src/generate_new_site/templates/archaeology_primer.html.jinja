@@ -1,0 +1,82 @@
+{# Jinja2 template for EOT textpage (section) generation
+## -----------------------------------------------------------------------------
+## Included templates:
+##  sidebar.html.jinja
+##  pagination.html.jinja
+## -----------------------------------------------------------------------------
+## Required parameters:
+##  this_section
+## -----------------------------------------------------------------------------
+##  this_section : Section, defined in text_classes.py
+## -----------------------------------------------------------------------------
+#}
+{% extends "base.html.jinja" %}
+{% block title %}{{ this_section['name'] }}{% endblock %}
+{% block styles %}
+    <link href="../../assets/css/textpage.css" rel="stylesheet">
+    <link href="../../assets/css/modals.css" rel="stylesheet">
+    {% include "shared_elements/common_css_and_fonts.html.jinja" %}
+    {{ super() }}
+{% endblock %}
+{% block header %}
+{{ super() }}
+{% endblock %}
+{% block page_body %}
+    <div class="container-fluid">
+      <div class="row">
+        {% include "shared_elements/sidebar.html.jinja" %}
+        <div class="col-md" id="text-chapter-contents" style="overflow-y: scroll;">
+          <h1>{{ this_section.name }}</h1>
+          {% for content in this_section.content %}
+            {% if content.type == "paragraph" %}
+            <p>{{ content.content }}</p>
+            {% elif content.type == "map" %}
+            {{ content.form }}
+            {{ content.mapJs }}
+            {{ content.map }}
+            <img src="{{ content.mapImg }}" usemap="#squares">
+            {% elif content.type == "ul" %}
+            {{ content.content }}
+            <table style="align:right;" id="changeable-image"><td>{{ content.noImageCaption }}</td></table>
+            <script>
+              function activateList() {
+                changeableImageTable = document.getElementById('changeable-image');
+                ul = document.getElementById('text-chapter-contents').getElementsByTagName('ul')[0];
+                aTags = ul.getElementsByTagName('a');
+                console.log(aTags)
+                for (let a of aTags) {
+                    a.onclick = function(e) {
+                        console.log('happening');
+                        changeableImageTable.innerHTML = `<img src="${a.getAttribute('data-image-path')}"><br><p>${a.getAttribute('data-image-caption')}</p>`;
+                    }
+                }
+                console.log('activated');
+              }
+
+              activateList();
+            </script>
+            {% endif %}
+          {% endfor %}
+          {% if this_section.map %}
+          {{ this_section.form }}
+          {{ this_section.mapJs}}
+          {{ this_section.map }}
+          <img src="{{ this_section.mapImg }}" usemap="#squares">
+          {% endif %}
+          {% if this_section.image %}
+          <img src="{{ this_section.image.path }}">
+          <p>{{ this_section.image.caption }}</p>
+          {% endif %}
+          {% if this_section.content.image %}
+          <img src="{{ this_section.content.image.path }}">
+          {{ this_section.content.image.caption }}
+          {% endif %}
+          {% include "shared_elements/pagination.html.jinja" %}
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block site_interactivity %}
+  {% include "shared_elements/generic_textpage_modal.html.jinja" %}
+  <script src="../../assets/js/page-num-navigation.js"></script>
+{% endblock %}

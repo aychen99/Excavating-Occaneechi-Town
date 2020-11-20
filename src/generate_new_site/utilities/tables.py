@@ -73,10 +73,46 @@ class PageTable:
         self.pages = {}
         self.prelim_pages = {}
         self.roman_nums_to_prelim_pages = {}
+        self.getting_started_pages = {}
+        self.strings_to_getting_started_pages = {}
+        self.archaeology_primer_pages = {}
+        self.strings_to_archaeology_primer_pages = {}
+        self.appendix_a_pages = {}
+        self.strings_to_appendix_a_pages = {}
+        self.appendix_b_pages = {}
+        self.strings_to_appendix_b_pages = {}
+        self.data_pages = {}
+        self.strings_to_data_pages = {}
 
     def register(self, page_num, path):
+        int_page_num = None
+        int_page_dict = None
+        strings_page_dict = None
+
+
+
         if page_num.isdigit():
             self.pages[int(page_num)] = path
+        elif "GS" in page_num:
+            self.strings_to_getting_started_pages[page_num] = path
+            page_num = int(page_num.replace("GS", ""))
+            self.getting_started_pages[page_num] = path
+        elif "AP" in page_num:
+            self.strings_to_archaeology_primer_pages[page_num] = path
+            page_num = int(page_num.replace("AP", ""))
+            self.archaeology_primer_pages[page_num] = path
+        elif "Appendix A " in page_num:
+            self.strings_to_appendix_a_pages[page_num] = path
+            page_num = int(page_num.replace("Appendix A ", ""))
+            self.appendix_a_pages[page_num] = path
+        elif "Appendix B " in page_num:
+            self.strings_to_appendix_b_pages[page_num] = path
+            page_num = int(page_num.replace("Appendix B ", ""))
+            self.appendix_b_pages[page_num] = path
+        elif "Data " in page_num:
+            self.strings_to_data_pages[page_num] = path
+            page_num = int(page_num.replace("Data ", ""))
+            self.data_pages[page_num] = path
         else:
             arabic_page_num = page_num_to_arabic(page_num)
             self.prelim_pages[int(arabic_page_num)] = path
@@ -86,6 +122,26 @@ class PageTable:
     def get_page_path(self, page_num):
         if page_num.isdigit() and int(page_num) in self.pages:
             return self.pages[int(page_num)]
+        elif "GS" in page_num:
+            page_num = int(page_num.replace("GS", ""))
+            if int(page_num) in self.getting_started_pages:
+                return self.getting_started_pages[int(page_num)]
+        elif "AP" in page_num:
+            page_num = int(page_num.replace("AP", ""))
+            if int(page_num) in self.archaeology_primer_pages:
+                return self.archaeology_primer_pages[int(page_num)]
+        elif "Appendix A " in page_num:
+            page_num = int(page_num.replace("Appendix A ", ""))
+            if int(page_num) in self.appendix_a_pages:
+                return self.appendix_a_pages[int(page_num)]
+        elif "Appendix B " in page_num:
+            page_num = int(page_num.replace("Appendix B ", ""))
+            if int(page_num) in self.appendix_b_pages:
+                return self.appendix_b_pages[int(page_num)]
+        elif "Data " in page_num:
+            page_num = int(page_num.replace("Data ", ""))
+            if int(page_num) in self.data_pages:
+                return self.data_pages[int(page_num)]
         elif not page_num.isdigit():
             page_num = page_num_to_arabic(page_num)
             if int(page_num) in self.prelim_pages:
@@ -95,6 +151,26 @@ class PageTable:
     def get_next_page_path(self, page_num):
         if page_num.isdigit() and int(page_num)+1 in self.pages:
             return self.pages[int(page_num)+1]
+        elif "GS" in page_num:
+            page_num = int(page_num.replace("GS", ""))
+            if int(page_num)+1 in self.getting_started_pages:
+                return self.getting_started_pages[int(page_num)+1]
+        elif "AP" in page_num:
+            page_num = int(page_num.replace("AP", ""))
+            if int(page_num)+1 in self.archaeology_primer_pages:
+                return self.archaeology_primer_pages[int(page_num)+1]
+        elif "Appendix A " in page_num:
+            page_num = int(page_num.replace("Appendix A ", ""))
+            if int(page_num)+1 in self.appendix_a_pages:
+                return self.appendix_a_pages[int(page_num)+1]
+        elif "Appendix B " in page_num:
+            page_num = int(page_num.replace("Appendix B ", ""))
+            if int(page_num)+1 in self.appendix_b_pages:
+                return self.appendix_b_pages[int(page_num)+1]
+        elif "Data " in page_num:
+            page_num = int(page_num.replace("Data ", ""))
+            if int(page_num)+1 in self.data_pages:
+                return self.data_pages[int(page_num)+1]
         elif not page_num.isdigit():
             page_num = page_num_to_arabic(page_num)
             if int(page_num)+1 in self.prelim_pages:
@@ -104,6 +180,26 @@ class PageTable:
     def get_prev_page_path(self, page_num):
         if page_num.isdigit() and int(page_num)-1 in self.pages:
             return self.pages[int(page_num)-1]
+        elif "GS" in page_num:
+            page_num = int(page_num.replace("GS", ""))
+            if int(page_num)-1 in self.getting_started_pages:
+                return self.getting_started_pages[int(page_num)-1]
+        elif "AP" in page_num:
+            page_num = int(page_num.replace("AP", ""))
+            if int(page_num)-1 in self.archaeology_primer_pages:
+                return self.archaeology_primer_pages[int(page_num)-1]
+        elif "Appendix A " in page_num:
+            page_num = int(page_num.replace("Appendix A ", ""))
+            if int(page_num)-1 in self.appendix_a_pages:
+                return self.appendix_a_pages[int(page_num)-1]
+        elif "Appendix B " in page_num:
+            page_num = int(page_num.replace("Appendix B ", ""))
+            if int(page_num)-1 in self.appendix_b_pages:
+                return self.appendix_b_pages[int(page_num)-1]
+        elif "Data " in page_num:
+            page_num = int(page_num.replace("Data ", ""))
+            if int(page_num)-1 in self.data_pages:
+                return self.data_pages[int(page_num)-1]
         elif not page_num.isdigit():
             page_num = page_num_to_arabic(page_num)
             if int(page_num)-1 in self.prelim_pages:

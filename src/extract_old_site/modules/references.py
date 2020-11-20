@@ -3,7 +3,7 @@ from pathlib import Path
 
 def extract_references_page(html_string):
     """Extract the references in report282b, 283b, or 284b.html.
-    
+
     Keeps any double spaces present in the original reference, as well as <i>
     and other minor HTML tags.
     """

@@ -22,6 +22,7 @@
         <li class="sidebar-active sidebar-module">
           <a href="{{ module.href }}">{{ module.long_name }}</a>
           {% if module.author %}<p id="author">{{ module.author }}</p>{% endif %}
+          {% if module.children|length > 1 or chapter.name == "Archaeology Primer" %}
           <ul class="nav"> <!-- Current chapter section list-->
           {% for section in module.children %}
             <li class="{% if section.name == this_section_name %}sidebar-active {% endif %}sidebar-section">
@@ -38,6 +39,7 @@
             </li>
           {% endfor %}
           </ul>
+          {% endif %}
         </li>
         {% else %}
         <li class="sidebar-module">

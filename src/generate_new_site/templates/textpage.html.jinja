@@ -30,9 +30,12 @@
           {% for content in this_section.content %}
             {% if content.type == "paragraph" %}
             <p>{{ content.content }}</p>
-            {% endif %}
-            {% if content.type == "italic-title" %}
+            {% elif content.type == "italic-title" %}
             <p><i>{{ content.content }}</i></p>
+            {% elif content.type == "div" %}
+            <div>{{ content.content }}</div>
+            {% elif content.type == "table" %}
+            <p>{{ content.content }}</p>
             {% endif %}
           {% endfor %}
           {% include "shared_elements/pagination.html.jinja" %}

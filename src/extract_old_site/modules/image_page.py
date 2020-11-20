@@ -53,9 +53,26 @@ def get_image_dimensions(img_path):
         "height": height
     }
 
-def extract_video_image_page(html_string):
+def extract_video_image_page(html_string, img_page_parent_dir, current_page_name):
     """Extract info from a slid_***.mov.html or slid_***.mpg.html file."""
-    pass
+    soup = BeautifulSoup(html_string, 'html5lib')
+    path = Path(img_page_parent_dir) / soup.body.embed['src']
+    path = Path(os.path.normpath(path)).as_posix()
+    html_page_path = (Path(img_page_parent_dir) / current_page_name).as_posix()
+    figure_num_and_caption = soup.body.center.text.strip().split('.', 1)
+    figure_num = figure_num_and_caption[0].replace("Figure", "").strip()
+    caption = figure_num_and_caption[1].strip()
+    return {
+        "path": path,
+        "htmlPagePath": html_page_path,
+        "figureNum": figure_num,
+        "caption": caption,
+        "clickableAreas": [],
+        "originalDimensions": {
+            "width": None,
+            "height": None
+        }
+    }
 
 def extract_all_images(dig_parent_dir, readfile):
     """Return a dictionary of images and their metadata by file path."""
@@ -64,6 +81,11 @@ def extract_all_images(dig_parent_dir, readfile):
         if 'slid' in filepath.name and '.mpg' not in filepath.name and '.mov' not in filepath.name:
             html_string = readfile(filepath.name, filepath.parent)
             image_details = extract_image_page(html_string, "/dig/html/excavations", dig_parent_dir, filepath.name)
+            extracted_images[image_details['path']] = image_details
+        elif 'slid' in filepath.name and '.mpg' in filepath.name or '.mov' in filepath.name:
+            # Just slid_agr and slid_ags.mov.html and .mpg.html
+            html_string = readfile(filepath.name, filepath.parent)
+            image_details = extract_video_image_page(html_string, "/dig/html/excavations", filepath.name)
             extracted_images[image_details['path']] = image_details
     return extracted_images
 

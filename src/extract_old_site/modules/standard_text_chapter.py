@@ -4,7 +4,7 @@ import os
 
 def extract_page_content(html_string, folder_path_str):
     """Extract contents of a page from a report*b.html file.
-    
+
     Parameters
     ----------
     html_string : str
@@ -26,6 +26,7 @@ def extract_page_content(html_string, folder_path_str):
         new_href = os.path.normpath(folder_path / a['href'])
         new_href = Path(new_href).as_posix()
         a['href'] = new_href
+        del a['target']
 
     # Extract the page's paragraph contents
     for content in soup.body.contents:
@@ -67,6 +68,18 @@ def extract_page_content(html_string, folder_path_str):
                         'type': 'paragraph',
                         'content': p_inner_html
                     })
+        elif content.name == 'ul' or content.name == 'ol':
+            list_items = str(content) # Keep <ul> or <ol> tags
+            extracted_paragraphs.append({
+                'type': 'paragraph',
+                'content': list_items.strip()
+            })
+        elif content.name == 'table':
+            table = str(content) # Keep table as is, mainly for data downloads
+            extracted_paragraphs.append({
+                'type': 'paragraph',
+                'content': table.strip()
+            })
         else:
             # TODO
             pass
@@ -75,7 +88,7 @@ def extract_page_content(html_string, folder_path_str):
 
 def extract_page_title(html_string):
     """Extract the page title from a report*a.html file.
-    
+
     Parameters
     ----------
     html_string : str
@@ -107,7 +120,7 @@ def extract_page_number(html_string):
 
 def extract_sidebar(html_string, folder_path_str, parent_body_page_name):
     """Extract sidebar info from a "index*_*.html" file.
-    
+
     Parameters
     ----------
     html_string : str
@@ -131,11 +144,17 @@ def extract_sidebar(html_string, folder_path_str, parent_body_page_name):
     # Remove empty paragraphs
     paragraphs = [
         p
-        for p in paragraphs 
+        for p in paragraphs
         if str(p).replace('<p>', '').replace('</p>', '').strip() != ''
     ]
 
-    current_module_full_name = str(paragraphs[0].b.string).strip()
+    # Use b directly, rather than b.string, to account for Getting Started,
+    # where the title may include an <i> tag and thus have no b.string.
+    current_module_full_name = (
+        str(paragraphs[0].b).replace("<b>", "")
+                            .replace("</b>", "")
+                            .strip()
+    )
     moduleAuthor = None
     sections = []
     current_section = None
@@ -271,7 +290,7 @@ def extract_frames(html_string, full_current_dir_path, readfile):
 
 def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
     """Extract all parts of a body*_*.html page and its contained frames.
-    
+
     Parameters
     ----------
     html_string : str
@@ -367,7 +386,7 @@ def validate_tab_html_extraction_results(results):
                   + str(result['module']) + '\n'
                   + str(baseline_module))
             noError = False
-    
+
     return noError
 
 def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path, readfile):
@@ -385,19 +404,19 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
         processed_page = process_tab_html_contents(extracted_contents, filename,
                                                    current_dir_path, dig_parent_dir_path, readfile)
         processed_pages.append(processed_page)
-    
+
     if not validate_tab_html_extraction_results(processed_pages):
         return "Failed: inconsistency in pages within module " + module_file_names[0]
 
     sectionsToPageNums = {}
     for processed_page in processed_pages:
         sectionInfo = processed_page['additionalSectionInfo']
-        pageNumDictKey = (sectionInfo['currentSection']['path'] 
+        pageNumDictKey = (sectionInfo['currentSection']['path']
                           + '-' + sectionInfo['currentSection']['name'])
         if pageNumDictKey in sectionsToPageNums:
             return "Failed: Two sections with the same path + name"
         sectionsToPageNums[pageNumDictKey] = sectionInfo['pageNum']
-    
+
     extracted['module'] = processed_pages[0]['module']
     for processed_page in processed_pages:
         pageNum = processed_page['page'].pop('pageNum', None)
@@ -407,9 +426,9 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
         section['pageNum'] = sectionsToPageNums[section['path'] + '-' + section['name']]
         if len(section['subsections']) > 0:
             for subsection in section['subsections']:
-                subsection['pageNum'] = sectionsToPageNums[subsection['path'] 
+                subsection['pageNum'] = sectionsToPageNums[subsection['path']
                                                            + '-' + subsection['name']]
-    
+
     return extracted
 
 def extract_full_chapter(all_module_file_names, current_dir_path, dig_parent_path, readfile):
@@ -427,7 +446,7 @@ def extract_full_chapter(all_module_file_names, current_dir_path, dig_parent_pat
     for tab_name in module_start_tab_names:
         current_module_file_names = [filename for filename in filenames
                                      if tab_name.split('.')[0] in filename]
-        module_object = extract_full_module(current_module_file_names, 
+        module_object = extract_full_module(current_module_file_names,
                                             current_dir_path, dig_parent_path, readfile)
         extracted['modules'].append(module_object)
     for module in extracted['modules']:
@@ -450,3 +469,13 @@ def extract_standard_part(part_folder_name, dig_parent_dir, readfile):
                                 "/dig/html/" + part_folder_name,
                                 Path(dig_parent_dir),
                                 readfile)
+
+def reextract_title_page(part_0_data, dig_parent_dir, readfile):
+    """Extract the actual title page from part 0 and put it in the dict."""
+    title_page_html_str = readfile("report0b.html", Path(dig_parent_dir) / "./dig/html/split")
+    soup = BeautifulSoup(title_page_html_str, 'html5lib')
+    part_0_data["pages"]["i"]["content"].append({
+        "type": "paragraph",
+        "content": str(soup.center)
+    })
+    return part_0_data

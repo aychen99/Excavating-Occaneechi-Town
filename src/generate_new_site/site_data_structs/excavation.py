@@ -13,7 +13,8 @@ EXC_DESC_TEMPLATE_FILENAME = "exc_elem_desc.html.jinja"
 JINJA_ENV = Environment(
     loader=FileSystemLoader(TEMPLATES_DIRECTORY),
     autoescape=select_autoescape(['html', 'xml']),
-    line_statement_prefix='#', line_comment_prefix='##', trim_blocks=True
+    line_statement_prefix='#', line_comment_prefix='##',
+    trim_blocks=True, lstrip_blocks=True
 )
 
 EXCAVATION_TEMPLATE = JINJA_ENV.get_template(EXCAVATION_TEMPLATE_FILENAME)
@@ -312,6 +313,7 @@ class ExcavationPage(SitePage):
         self.info = info
         self.figures = []
         self.artifacts_path = artifacts_path
+        self.artifacts_page = None
         self.description_path = description_path
         self.related_elements = []
 
