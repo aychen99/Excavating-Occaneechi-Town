@@ -75,6 +75,60 @@ def test_text_module_add_child(mock_set_path):
     mock_set_path.assert_not_called()
 
 
+def test_text_chapter_set_path():
+    chapter = text.TextChapter(name="Test Chapter", parent=None, path=None)
+
+    testpath = Path("manually_set")
+
+    child1 = mock.Mock(path=Path("path1"))
+    child2 = mock.Mock(path=Path("path2"))
+
+    assert(chapter.path is None)
+
+    # Ensure path is set if path is none when child is added
+    chapter.add_child(child1)
+    assert(chapter.path == child1.path)
+
+    chapter.add_child(child2)
+    assert(chapter.path == child1.path)
+
+    chapter.path = None
+    chapter.set_path()
+
+    assert(chapter.path == child1.path)
+
+    chapter.set_path(testpath)
+    assert(chapter.path == testpath)
+
+
+def test_text_module_set_path():
+    module = text.TextModule(
+        short_name="Test Module 1",
+        long_name="Test Module 1",
+        parent=None,
+        path=None
+    )
+
+    child1 = mock.Mock(path=Path("path1"))
+    child2 = mock.Mock(path=Path("path2"))
+
+    assert(module.path is None)
+
+    # Ensure path is set if path is none when child is added
+    module.add_child(child1)
+    assert(module.path == child1.path)
+
+    module.add_child(child2)
+    assert(module.path == child1.path)
+
+    module.path = None
+    module.set_path()
+
+    assert(module.path == child1.path)
+
+
+
+
 ################
 # Test write() #
 ################
@@ -104,12 +158,14 @@ def test_text_page_write(mock_super_write, mock_update_content, mock_render, moc
         {'content': "content 1"},
         {'content': "content 2"}
     ]
+    other_info = "hocuspocus"
     path = Path("page.html")
     page = text.TextPage(
         name="page",
         path=path,
         content=content,
         parent=module,
+        other_info=other_info,
         page_num="5"
     )
 
@@ -124,17 +180,19 @@ def test_text_page_write(mock_super_write, mock_update_content, mock_render, moc
         for content_obj in content:
             assert content_obj['content'] == "touched"
 
-        # Assert that we call super().write()
+        # Assert that we call render with all of the args the template expects
         mock_render.assert_called_once_with(
             chapters=children,
             this_chapter_name=ch_name,
             this_module_name=mo_long_name,
             this_section_name=page.name,
             this_section=page,
+            other_info=other_info,
             pagination={
                 'prev_page_href': Path("relpath").as_posix(),
                 'this_page_num': page.page_num,
                 'next_page_href': Path("relpath").as_posix()
             }
         )
+        # Assert that we call super().write()
         mock_super_write.assert_called()
