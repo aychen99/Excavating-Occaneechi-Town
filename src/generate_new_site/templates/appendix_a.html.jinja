@@ -95,7 +95,7 @@
                   <td>{{ artifact["Size"] }}</td>
                   <td>
                   {% if artifact["details"] %}
-                  <a data-toggle="popover" class="details-popover" data-details-html="{{
+                  <a class="a-table" data-table-header="<strong>Details</strong>" data-target="#genModal" data-toggle="modal" href="#genModal" data-table-string="{{
                     makeDetailsPopoverTable(artifact['details'], artifact['detailsFieldOrder'])
                   }}">Yes</a>
                   {% endif %}
