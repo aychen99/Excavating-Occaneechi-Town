@@ -6,7 +6,6 @@ import pytest
 # rel_path unit test #
 ######################
 
-'''
 @pytest.mark.parametrize("path,start,expected_result", [
     (None, None, None),
     (None, Path("start"), None),
@@ -24,4 +23,4 @@ import pytest
     (Path("dir1/dir2/dir3/test.html"), Path("dir1/differentdir/diffdiffdir"), Path("../../dir2/dir3/test.html"))
 ])
 def test_rel_path(path, start, expected_result):
-    assert path_ops.rel_path(path, start) == expected_result'''
+    assert path_ops.rel_path(path, start) == expected_result

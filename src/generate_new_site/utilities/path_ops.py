@@ -10,7 +10,7 @@ def rel_path(path, start):
         return path
 
     # 'path' is an external link. Don't try it Anakin.
-    if 'https:/' in str(path) or 'http:/' in str(path):
+    if 'https:/' in path.as_posix() or 'http:/' in path.as_posix():
         return path
 
     if start.suffix != '':  # Want relpath from file's directory
