@@ -3,7 +3,9 @@
 config.json
 /jsons
 /newdig
+/newdigpro
 /venv
 /.pytest_cache
 /htmlcov
 /.coverage
+/.vscode

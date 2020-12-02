@@ -160,20 +160,20 @@ reports53_62_63_fully_extracted = {
         "author": None,
         "shortTitle": "Feature Descriptions",
         "fullTitle": "Feature Descriptions",
-        "path": "/dig/html/descriptions/tab0.html",
+        "path": "/html/descriptions/tab0.html",
         "sections": [{
             "name": "Burial 1 Description",
-            "path": "/dig/html/split/report53.html",
+            "path": "/html/split/report53.html",
             "pageNum": "21",
             "subsections": []
         }, {
             "name": "Feature 7 (Burial 9) Description",
-            "path": "/dig/html/split/report62.html",
+            "path": "/html/split/report62.html",
             "pageNum": "30",
             "subsections": []
         }, {
             "name": "Feature 8 Description",
-            "path": "/dig/html/split/report63.html",
+            "path": "/html/split/report63.html",
             "pageNum": "31",
             "subsections": []
         }]
@@ -190,9 +190,9 @@ reports53_62_63_fully_extracted = {
                 "content": "Grave Goods"    
             }, {
                 "type": "paragraph",
-                "content": ('Over the sternum were a <a href="/dig/html/excavations/slid_aho.html">'
+                "content": ('Over the sternum were a <a href="/html/excavations/slid_aho.html">'
                             '<u>large shell gorget</u></a> and a '
-                            '<a href="/dig/html/excavations/slid_ahp.html"><u>'
+                            '<a href="/html/excavations/slid_ahp.html"><u>'
                             'small shell gorget</u></a> with punctated designs.')
             }]
         },
@@ -207,10 +207,10 @@ reports53_62_63_fully_extracted = {
                 "content": "Grave Goods"
             }, {
                 "type": "paragraph",
-                "content": ('Associated artifacts consisted of an <a href="/dig/html/excavations/slid_akr.html">'
+                "content": ('Associated artifacts consisted of an <a href="/html/excavations/slid_akr.html">'
                             '<u>iron hoe</u></a> placed adjacent to and southwest of the skull '
                             '(the blade end lay under the shoulder and occipital region of the skull) and a '
-                            'bone-handled <a href="/dig/html/excavations/slid_aks.html">'
+                            'bone-handled <a href="/html/excavations/slid_aks.html">'
                             '<u>iron knife</u></a> placed under the right forearm.')
             }]
         },
@@ -290,15 +290,15 @@ def mock_readfile(filename, parent_dir_path_obj):
 def test_extract_sidebar_sections():
     assert desc.extract_sidebar_sections(index0_html_str) == [{
         "name": "Burial 1 Description",
-        "path": "/dig/html/split/report53.html",
+        "path": "/html/split/report53.html",
         "subsections": []
     }, {
         "name": "Feature 7 (Burial 9) Description",
-        "path": "/dig/html/split/report62.html",
+        "path": "/html/split/report62.html",
         "subsections": []
     }, {
         "name": "Feature 8 Description",
-        "path": "/dig/html/split/report63.html",
+        "path": "/html/split/report63.html",
         "subsections": []
     }]
 
@@ -320,4 +320,4 @@ def test_extract_descriptions():
                              for filename in filenames_list]
         mock_iterdir.return_value = iterdir_path_objs
 
-        assert desc.extract_descriptions("C:/", mock_readfile) == reports53_62_63_fully_extracted
+        assert desc.extract_descriptions("C:/dig", mock_readfile) == reports53_62_63_fully_extracted

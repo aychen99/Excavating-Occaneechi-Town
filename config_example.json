@@ -9,5 +9,6 @@
     "overwriteExistingExtractedData": true,
     "shrinkExtractionJsons": false,
     "runExtraction": true,
-    "runGeneration": true
+    "runGeneration": true,
+    "runDigPro": false
 }

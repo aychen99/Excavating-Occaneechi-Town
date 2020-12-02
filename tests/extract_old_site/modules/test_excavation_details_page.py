@@ -147,27 +147,27 @@ slid_bde_html_str = """
 
 # Extracted
 slid_azt_extracted = {
-    "path": "/dig/html/images/s/str1.gif",
-    "htmlPagePath": "/dig/html/excavations/slid_azt.html",
+    "path": "/html/images/s/str1.gif",
+    "htmlPagePath": "/html/excavations/slid_azt.html",
     "figureNum": "1039",
     "caption": "Structure 1, plan view (view to north).",
     "clickableAreas": [
         {"x1": 144, "y1": 140, "x2": 224, "y2": 214,
-            "path": "/dig/html/excavations/exc_cl.html"},
+            "path": "/html/excavations/exc_cl.html"},
         {"x1": 38, "y1": 78, "x2": 80, "y2": 127,
-            "path": "/dig/html/excavations/exc_au.html"},
+            "path": "/html/excavations/exc_au.html"},
         {"x1": 359, "y1": 292, "x2": 388, "y2": 361,
-            "path": "/dig/html/excavations/exc_am.html"},
+            "path": "/html/excavations/exc_am.html"},
         {"x1": 364, "y1": 134, "x2": 389, "y2": 198,
-            "path": "/dig/html/excavations/exc_iy.html"},
+            "path": "/html/excavations/exc_iy.html"},
         {"x1": 326, "y1": 155, "x2": 363, "y2": 190,
-            "path": "/dig/html/excavations/exc_iy.html"},
+            "path": "/html/excavations/exc_iy.html"},
         {"x1": 305, "y1": 3, "x2": 363, "y2": 154,
-            "path": "/dig/html/excavations/exc_iy.html"},
+            "path": "/html/excavations/exc_iy.html"},
         {"x1": 364, "y1": 90, "x2": 388, "y2": 133,
-            "path": "/dig/html/excavations/exc_ae.html"},
+            "path": "/html/excavations/exc_ae.html"},
         {"x1": 364, "y1": 3, "x2": 389, "y2": 89,
-            "path": "/dig/html/excavations/exc_iy.html"}
+            "path": "/html/excavations/exc_iy.html"}
     ],
     "originalDimensions": {
         "width": 390,
@@ -176,21 +176,21 @@ slid_azt_extracted = {
 }
 
 slid_bdo_extracted = {
-    "path": "/dig/html/images/x16/x6801.jpeg",
-    "htmlPagePath": "/dig/html/excavations/slid_bdo.html",
+    "path": "/html/images/x16/x6801.jpeg",
+    "htmlPagePath": "/html/excavations/slid_bdo.html",
     "figureNum": "1038",
     "caption": "Structure 1 at top of subsoil (view to southwest).",
     "clickableAreas": [
         {"x1": 43, "y1": 102, "x2": 193, "y2": 152,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 22, "y1": 151, "x2": 113, "y2": 219,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 194, "y1": 118, "x2": 243, "y2": 220,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 16, "y1": 220, "x2": 237, "y2": 298,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 114, "y1": 152, "x2": 196, "y2": 223,
-            "path": "/dig/html/excavations/exc_cl.html"}
+            "path": "/html/excavations/exc_cl.html"}
     ],
     "originalDimensions": {
         "width": 251,
@@ -199,8 +199,8 @@ slid_bdo_extracted = {
 }
 
 slid_bet_extracted = {
-    "path": "/dig/html/images/x16/x6968.jpeg",
-    "htmlPagePath": "/dig/html/excavations/slid_bet.html",
+    "path": "/html/images/x16/x6968.jpeg",
+    "htmlPagePath": "/html/excavations/slid_bet.html",
     "figureNum": "1037",
     "caption": "Structure 1 after excavation (view to southwest).",
     "clickableAreas": [],
@@ -211,21 +211,21 @@ slid_bet_extracted = {
 }
 
 slid_ada_extracted = {
-    "path": "/dig/html/images/2/240r60.gif",
-    "htmlPagePath": "/dig/html/excavations/slid_ada.html",
+    "path": "/html/images/2/240r60.gif",
+    "htmlPagePath": "/html/excavations/slid_ada.html",
     "figureNum": "860",
     "caption": "Sq. 240R60, top of subsoil (view to north).",
     "clickableAreas": [
         {"x1": 70, "y1": 283, "x2": 388, "y2": 389,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 149, "y1": 197, "x2": 386, "y2": 282,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 343, "y1": 1, "x2": 388, "y2": 197,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 14, "y1": 1, "x2": 148, "y2": 282,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 149, "y1": 0, "x2": 342, "y2": 196,
-            "path": "/dig/html/excavations/exc_cl.html"}
+            "path": "/html/excavations/exc_cl.html"}
     ],
     "originalDimensions": {
         "width": 390,
@@ -234,15 +234,15 @@ slid_ada_extracted = {
 }
 
 slid_bde_extracted = {
-    "path": "/dig/html/images/x16/x6730.jpeg",
-    "htmlPagePath": "/dig/html/excavations/slid_bde.html",
+    "path": "/html/images/x16/x6730.jpeg",
+    "htmlPagePath": "/html/excavations/slid_bde.html",
     "figureNum": "859",
     "caption": "Sq. 240R60 at top of subsoil (view to north).",
     "clickableAreas": [
         {"x1": 175, "y1": 100, "x2": 312, "y2": 160,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 70, "y1": 93, "x2": 113, "y2": 215,
-            "path": "/dig/html/excavations/exc_is.html"}
+            "path": "/html/excavations/exc_is.html"}
     ],
     "originalDimensions": {
         "width": 390,
@@ -252,7 +252,7 @@ slid_bde_extracted = {
 
 info_is_extracted = {
     "name": "Structure 1",
-    "miniMapIcon": "/dig/html/images/l/l240r60.gif",
+    "miniMapIcon": "/html/images/l/l240r60.gif",
     "info": {
         "Dimensions": {
             "Length": "13.4 ft",
@@ -264,13 +264,13 @@ info_is_extracted = {
         "Area": "115.88 ft<sup>2</sup>"
     },
     "images": [slid_azt_extracted, slid_bdo_extracted, slid_bet_extracted],
-    "artifactsPath": "/dig/html/artifacts/art_is0.html",
+    "artifactsPath": "/html/artifacts/art_is0.html",
     "descriptionPath": None
 }
 
 info_fg_extracted = {
     "name": "Sq. 240R60",
-    "miniMapIcon": "/dig/html/images/l/l240r60.gif",
+    "miniMapIcon": "/html/images/l/l240r60.gif",
     "info": {
         "Dimensions": {
             "Length": "10.0 ft",
@@ -282,38 +282,38 @@ info_fg_extracted = {
         "Area": "100.00 ft<sup>2</sup>"
     },
     "images": [slid_ada_extracted, slid_bde_extracted],
-    "artifactsPath": "/dig/html/artifacts/art_fg0.html",
+    "artifactsPath": "/html/artifacts/art_fg0.html",
     "descriptionPath": None
 }
 
 zoom_is_extracted = [{
     "name": "Feature 9",
-    "path": "/dig/html/excavations/exc_cl.html"
+    "path": "/html/excavations/exc_cl.html"
 }, {
     "name": "Sq. 240R60",
-    "path": "/dig/html/excavations/exc_fg.html"
+    "path": "/html/excavations/exc_fg.html"
 }, {
     "name": "Sq. 240R70",
-    "path": "/dig/html/excavations/exc_fh.html"
+    "path": "/html/excavations/exc_fh.html"
 }, {
     "name": "Sq. 250R60",
-    "path": "/dig/html/excavations/exc_ft.html"
+    "path": "/html/excavations/exc_ft.html"
 }, {
     "name": "Sq. 250R70",
-    "path": "/dig/html/excavations/exc_fu.html"
+    "path": "/html/excavations/exc_fu.html"
 }]
 
 zoom_fg_extracted = [{
     "name": "Feature 9",
-    "path": "/dig/html/excavations/exc_cl.html"
+    "path": "/html/excavations/exc_cl.html"
 }, {
     "name": "Structure 1",
-    "path": "/dig/html/excavations/exc_is.html"
+    "path": "/html/excavations/exc_is.html"
 }]
 
 ctrl_is_fully_extracted = {
     "name": "Structure 1",
-    "miniMapIcon": "/dig/html/images/l/l240r60.gif",
+    "miniMapIcon": "/html/images/l/l240r60.gif",
     "info": {
         "Dimensions": {
             "Length": "13.4 ft",
@@ -325,14 +325,14 @@ ctrl_is_fully_extracted = {
         "Area": "115.88 ft<sup>2</sup>"
     },
     "images": [slid_azt_extracted, slid_bdo_extracted, slid_bet_extracted],
-    "artifactsPath": "/dig/html/artifacts/art_is0.html",
+    "artifactsPath": "/html/artifacts/art_is0.html",
     "descriptionPath": None,
     "relatedElements": zoom_is_extracted
 }
 
 ctrl_fg_fully_extracted = {
     "name": "Sq. 240R60",
-    "miniMapIcon": "/dig/html/images/l/l240r60.gif",
+    "miniMapIcon": "/html/images/l/l240r60.gif",
     "info": {
         "Dimensions": {
             "Length": "10.0 ft",
@@ -344,7 +344,7 @@ ctrl_fg_fully_extracted = {
         "Area": "100.00 ft<sup>2</sup>"
     },
     "images": [slid_ada_extracted, slid_bde_extracted],
-    "artifactsPath": "/dig/html/artifacts/art_fg0.html",
+    "artifactsPath": "/html/artifacts/art_fg0.html",
     "descriptionPath": None,
     "relatedElements": zoom_fg_extracted
 }
@@ -352,7 +352,7 @@ ctrl_fg_fully_extracted = {
 # fg, then is according to how mock_iterdir is defined later on
 exc_dir_fully_extracted = [{
     "name": "Sq. 240R60",
-    "miniMapIcon": "/dig/html/images/l/l240r60.gif",
+    "miniMapIcon": "/html/images/l/l240r60.gif",
     "info": {
         "Dimensions": {
             "Length": "10.0 ft",
@@ -364,13 +364,13 @@ exc_dir_fully_extracted = [{
         "Area": "100.00 ft<sup>2</sup>"
     },
     "images": [slid_ada_extracted, slid_bde_extracted],
-    "artifactsPath": "/dig/html/artifacts/art_fg0.html",
+    "artifactsPath": "/html/artifacts/art_fg0.html",
     "descriptionPath": None,
     "relatedElements": zoom_fg_extracted,
-    "path": "/dig/html/excavations/exc_fg.html"
+    "path": "/html/excavations/exc_fg.html"
 }, {
     "name": "Structure 1",
-    "miniMapIcon": "/dig/html/images/l/l240r60.gif",
+    "miniMapIcon": "/html/images/l/l240r60.gif",
     "info": {
         "Dimensions": {
             "Length": "13.4 ft",
@@ -382,10 +382,10 @@ exc_dir_fully_extracted = [{
         "Area": "115.88 ft<sup>2</sup>"
     },
     "images": [slid_azt_extracted, slid_bdo_extracted, slid_bet_extracted],
-    "artifactsPath": "/dig/html/artifacts/art_is0.html",
+    "artifactsPath": "/html/artifacts/art_is0.html",
     "descriptionPath": None,
     "relatedElements": zoom_is_extracted,
-    "path": "/dig/html/excavations/exc_is.html"
+    "path": "/html/excavations/exc_is.html"
 }]
 
 def mock_extract_image_page(image_html_str, extra1, extra2, extra3):
@@ -450,10 +450,10 @@ def mock_readfile(filename, parent_dir_path_obj):
      </body></html>
      """, [{
         "name": "Sq. 270R90",
-        "path": "/dig/html/excavations/exc_gw.html"
+        "path": "/html/excavations/exc_gw.html"
     }, {
         "name": "Sq. 270R100",
-        "path": "/dig/html/excavations/exc_gn.html"
+        "path": "/html/excavations/exc_gn.html"
     }])
 ])
 def test_extract_zoom_to(zoom_html_str, expected_result):
@@ -467,7 +467,7 @@ def test_extract_zoom_to(zoom_html_str, expected_result):
 def test_extract_info_page(mock_ext_i_p, info_html_str, expected_result):
     mock_ext_i_p.side_effect = mock_extract_image_page
     assert exc_det.extract_info_page(
-        info_html_str, "/dig/html/excavations", "C:/", mock_readfile
+        info_html_str, "/html/excavations", "C:/dig", mock_readfile
     ) == expected_result
 
 @mock.patch("src.extract_old_site.modules.excavation_details_page.extract_image_page")
@@ -478,7 +478,7 @@ def test_extract_info_page(mock_ext_i_p, info_html_str, expected_result):
 def test_get_ctrl_page_contents(mock_ext_i_p, ctrl_html_str, expected_result):
     mock_ext_i_p.side_effect = mock_extract_image_page
     assert exc_det.get_ctrl_page_contents(
-        ctrl_html_str, "/dig/html/excavations", "C:/", mock_readfile
+        ctrl_html_str, "/html/excavations", "C:/dig", mock_readfile
     ) == expected_result
 
 @mock.patch("src.extract_old_site.modules.excavation_details_page.extract_image_page")
@@ -489,7 +489,7 @@ def test_get_ctrl_page_contents(mock_ext_i_p, ctrl_html_str, expected_result):
 def test_get_exc_page_contents(mock_ext_i_p, exc_html_str, expected_result):
     mock_ext_i_p.side_effect = mock_extract_image_page
     assert exc_det.get_exc_page_contents(
-        exc_html_str, "/dig/html/excavations", "C:/", mock_readfile
+        exc_html_str, "/html/excavations", "C:/dig", mock_readfile
     ) == expected_result
 
 @mock.patch("src.extract_old_site.modules.excavation_details_page.extract_image_page")
@@ -505,4 +505,4 @@ def test_extract_all_exc_pages(mock_ext_i_p):
                              for filename in filenames_list]
         mock_iterdir.return_value = iterdir_path_objs
 
-        assert exc_det.extract_all_exc_pages("C:/", mock_readfile) == exc_dir_fully_extracted
+        assert exc_det.extract_all_exc_pages("C:/dig", mock_readfile) == exc_dir_fully_extracted

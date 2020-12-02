@@ -5,7 +5,7 @@ import os
 
 def process_tab_html_contents(
     html_strings, current_tab_page_name,
-    current_dir_path, dig_parent_dir_path, readfile
+    current_dir_path, readfile
 ):
     """Turn the raw html_strings from reading a tab.html file into a dict."""
     title = standard_text_chapter.extract_page_title(html_strings['reporta_html'])
@@ -45,25 +45,25 @@ def process_tab_html_contents(
     }
     return processed
 
-def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path, readfile):
+def extract_full_module(module_file_names, current_dir_path, dig_dir_path, readfile):
     """Extract content from one module in a chapter and store in a dict."""
     extracted = {
         "module": {},
         "pages": {}
     }
-    full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
+    full_current_dir_path = dig_dir_path / ("." + current_dir_path)
     processed_pages = []
     for filename in module_file_names:
         tab_html_str = readfile(filename, full_current_dir_path)
         extracted_contents = standard_text_chapter.get_tab_page_html_contents(
             tab_html_str,
             current_dir_path,
-            dig_parent_dir_path,
+            dig_dir_path,
             readfile,
             has_page_num=False
         )
         processed_page = process_tab_html_contents(extracted_contents, filename,
-                                                   current_dir_path, dig_parent_dir_path, readfile)
+                                                   current_dir_path, readfile)
         processed_pages.append(processed_page)
     
     if not standard_text_chapter.validate_tab_html_extraction_results(processed_pages):
@@ -92,16 +92,16 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
     
     return extracted
 
-def extract_getting_started(dig_parent_dir, readfile):
-    started_dir_path_obj = Path(dig_parent_dir) / "./dig/html/started"
+def extract_getting_started(dig_dir_str, readfile):
+    started_dir_path_obj = Path(dig_dir_str) / "html/started"
     tab_filenames = []
     for filepath in started_dir_path_obj.iterdir():
         if "tab" in filepath.name and "tabs" not in filepath.name:
             tab_filenames.append(filepath.name)
     return standard_text_chapter.extract_full_chapter(
         tab_filenames,
-        "/dig/html/started",
-        Path(dig_parent_dir),
+        "/html/started",
+        Path(dig_dir_str),
         readfile,
         extract_full_module=extract_full_module
     )

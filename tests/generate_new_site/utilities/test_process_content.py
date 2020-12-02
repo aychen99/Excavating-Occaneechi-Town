@@ -11,33 +11,33 @@ import pathlib
 
 # Example data
 raw_paragraph_with_slid_link = (
-    'This paragraph has a link to an image: <a href="/dig/html/excavations/slid_abc.html">Image</a>'
+    'This paragraph has a link to an image: <a href="/html/excavations/slid_abc.html">Image</a>'
 )
 
 raw_paragraph_with_ref_link = (
-    'This paragraph has a reference: <a href="/dig/html/part6/ref_ab.html">Reference</a>'
+    'This paragraph has a reference: <a href="/html/part6/ref_ab.html">Reference</a>'
 )
 
 raw_paragraph_with_table_link = (
-    'We have a table here: <a href="/dig/html/tables/table0.html">Table</a>'
+    'We have a table here: <a href="/html/tables/table0.html">Table</a>'
 )
 
 raw_paragraph_with_table_with_images_link = (
-    'We have a table here: <a href="/dig/html/tables/table2.html">Table</a>'
+    'We have a table here: <a href="/html/tables/table2.html">Table</a>'
 )
 
 raw_paragraph_with_part_links = (
     'We have links to many parts here: <a href="../part2/body0.html">Part 2</a>\n'
-    '<a href="/dig/html/part3/body0.html">Part 3</a>\n'
-    '<a href="/dig/html/part4/body0.html">Part 4</a>\n'
-    '<a href="/dig/html/part5/body0.html">Part 5</a>\n'
-    '<a href="/dig/html/part5/body0_2.html">A Section in Part 5</a>\n'
-    '<a href="/dig/html/body0.html">The Current Part, Part 0</a>\n'
+    '<a href="/html/part3/body0.html">Part 3</a>\n'
+    '<a href="/html/part4/body0.html">Part 4</a>\n'
+    '<a href="/html/part5/body0.html">Part 5</a>\n'
+    '<a href="/html/part5/body0_2.html">A Section in Part 5</a>\n'
+    '<a href="/html/body0.html">The Current Part, Part 0</a>\n'
 )
 
 raw_paragraph_with_excavations_link = (
     'We have an excavation element that is not just an image: '
-    '<a href="/dig/html/excavations/exc_az.html">Excavation</a>'
+    '<a href="/html/excavations/exc_az.html">Excavation</a>'
 )
 
 
@@ -60,18 +60,18 @@ index.add_references(references)
 
 figures = Figures(index)
 figure_abc = Figure(
-    "773", "Sq. 210R100, top of subsoil (view to north).", pathlib.Path("/dig/html/images/2/210r100.gif"),
-    "/dig/html/excavations/slid_abc.html", pathlib.Path("/figures/figure_0773.html"), figures,
+    "773", "Sq. 210R100, top of subsoil (view to north).", pathlib.Path("/html/images/2/210r100.gif"),
+    "/html/excavations/slid_abc.html", pathlib.Path("/figures/figure_0773.html"), figures,
     390, 390
 )
 figure_auh = Figure(
-    "156", "Vessel 1, a Uwharrie Net Impressed jar from Feature 8 (RLA catalog no. 2351p2711).", pathlib.Path("/dig/html/images/d16/d_3553.jpeg"),
-    "/dig/html/excavations/slid_auh.html", pathlib.Path("/figures/figure_0156.html"), figures,
+    "156", "Vessel 1, a Uwharrie Net Impressed jar from Feature 8 (RLA catalog no. 2351p2711).", pathlib.Path("/html/images/d16/d_3553.jpeg"),
+    "/html/excavations/slid_auh.html", pathlib.Path("/figures/figure_0156.html"), figures,
     390, 364
 )
 figure_auk = Figure(
-    "134", "Vessel 2, a Fredricks Check Stamped jar from Burial 1 (RLA catalog no. 2351p255/1).", pathlib.Path("/dig/html/images/d16/d_3556.jpeg"),
-    "/dig/html/excavations/slid_auk.html", pathlib.Path("/figures/figure_0134.html"), figures,
+    "134", "Vessel 2, a Fredricks Check Stamped jar from Burial 1 (RLA catalog no. 2351p255/1).", pathlib.Path("/html/images/d16/d_3556.jpeg"),
+    "/html/excavations/slid_auk.html", pathlib.Path("/figures/figure_0134.html"), figures,
     317, 352
 )
 figures.register(figure_abc)
@@ -106,8 +106,8 @@ datatables.register_table("2", {
               " <a href=\"tab2_1.html\">2</a> Fine Sand    Check Stamped  Plain   None            Jar  Everted  Flat       -\n"
               "=====================================================================================")
 })
-datatables.register_path("/dig/html/tables/table0.html", "0")
-datatables.register_path("/dig/html/tables/table2.html", "2")
+datatables.register_path("/html/tables/table0.html", "0")
+datatables.register_path("/html/tables/table2.html", "2")
 datatables.register_image_paths({
     "tab2_0.html": "156",
     "tab2_1.html": "134"

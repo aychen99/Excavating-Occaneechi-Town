@@ -132,7 +132,7 @@ trowel_html_str = """
 
 primer01_html_extracted = {
     "image": {
-        "path": "/dig/html/images/primer/x6947.gif",
+        "path": "/html/images/primer/x6947.gif",
         "caption": ("An excavation block at Occaneechi Town with plowed soil "
                     "removed. The dark stains are archaeological features.")
     },
@@ -155,73 +155,73 @@ primer01_html_extracted = {
 }
 
 contents_html_extracted = [{
-    "path": "/dig/html/primer/primer01.html",
+    "path": "/html/primer/primer01.html",
     "shortTitle": "Introduction",
     "fullTitle": "Introduction",
     "author": None,
     "sections": [{
         "name": "An Archaeology Primer",
-        "path": "/dig/html/primer/primer01.html",
+        "path": "/html/primer/primer01.html",
         "subsections": [],
         "pageNum": "AP1"
     }, {
         "name": "Basic Excavation Steps",
-        "path": "/dig/html/primer/primer02.html",
+        "path": "/html/primer/primer02.html",
         "subsections": [],
         "pageNum": "AP2"
     }]
 }, {
-    "path": "/dig/html/primer/primer03.html",
+    "path": "/html/primer/primer03.html",
     "shortTitle": "The Site Grid",
     "fullTitle": "The Site Grid",
     "author": None,
     "sections": [{
         "name": "Establishing the Site Grid",
-        "path": "/dig/html/primer/primer03.html",
+        "path": "/html/primer/primer03.html",
         "subsections": [],
         "pageNum": "AP3"
     }, {
         "name": "The Excavation Grid",
-        "path": "/dig/html/primer/primer04.html",
+        "path": "/html/primer/primer04.html",
         "subsections": [],
         "pageNum": "AP4"
     }, {
         "name": "Excavation Units",
-        "path": "/dig/html/primer/primer05.html",
+        "path": "/html/primer/primer05.html",
         "subsections": [],
         "pageNum": "AP5"
     }]
 }, {
-    "path": "/dig/html/primer/primer24.html",
+    "path": "/html/primer/primer24.html",
     "shortTitle": "Backfilling",
     "fullTitle": "Backfilling",
     "author": None,
     "sections": [{
         "name": "Backfilling the Excavation",
-        "path": "/dig/html/primer/primer24.html",
+        "path": "/html/primer/primer24.html",
         "subsections": [],
         "pageNum": "AP24"
     }]
 }, {
-    "path": "/dig/html/primer/primer25.html",
+    "path": "/html/primer/primer25.html",
     "shortTitle": "Conclusion",
     "fullTitle": "Conclusion",
     "author": None,
     "sections": [{
         "name": "Exploring Archaeology Further",
-        "path": "/dig/html/primer/primer25.html",
+        "path": "/html/primer/primer25.html",
         "subsections": [],
         "pageNum": "AP25"
     }]
 }]
 
 plowzone_html_extracted = {
-    "path": "/dig/html/video/plowzone.mov",
+    "path": "/html/video/plowzone.mov",
     "caption": "Students digging and screening plowed soil."
 }
 
 trowel_html_extracted = {
-    "path": "/dig/html/video/trowel.mov",
+    "path": "/html/video/trowel.mov",
     "caption": "Students troweling the subsoil surface."
 }
 

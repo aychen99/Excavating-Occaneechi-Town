@@ -393,7 +393,7 @@ def test_extract_references_page(ref_reportb_html_str, expected_results):
     assert refs.extract_references_page(ref_reportb_html_str) == expected_results
 
 def test_extract_all_references():
-    assert refs.extract_all_references("C:/", mock_readfile) == all_sample_refs_extracted
+    assert refs.extract_all_references("C:/dig", mock_readfile) == all_sample_refs_extracted
 
 # TODO
 # def test_validate_ref_page():

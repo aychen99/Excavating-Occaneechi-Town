@@ -204,8 +204,7 @@ class ExcavationChapter(SiteChapter):
         excavations.add_child(structures)
 
         # Register the chapter in PathTable
-        index.pathtable.register("/dig/html/maps/exc1.html", excavations.path, excavations)
-        index.pathtable.register("/digpro/html/maps/exc1.html", excavations.path, excavations)
+        index.pathtable.register("/html/maps/exc1.html", excavations.path, excavations)
 
         return excavations
 

@@ -260,14 +260,11 @@ class TextChapter(SiteChapter):
 
         # Add sections to path table for link resolution
         # HOTFIX: hardcode two old_paths, one for dig and one for dig_pro
-        index.pathtable.register(old_path="/dig/html/part6/tab0.html", new_path=a_g_section.path, entity=a_g_section)
-        index.pathtable.register(old_path="/digpro/html/part6/tab0.html", new_path=a_g_section.path, entity=a_g_section)
+        index.pathtable.register(old_path="/html/part6/tab0.html", new_path=a_g_section.path, entity=a_g_section)
 
-        index.pathtable.register(old_path="/dig/html/part6/tab1.html", new_path=h_r_section.path, entity=h_r_section)
-        index.pathtable.register(old_path="/digpro/html/part6/tab1.html", new_path=h_r_section.path, entity=h_r_section)
+        index.pathtable.register(old_path="/html/part6/tab1.html", new_path=h_r_section.path, entity=h_r_section)
 
-        index.pathtable.register(old_path="/dig/html/part6/tab2.html", new_path=s_z_section.path, entity=s_z_section)
-        index.pathtable.register(old_path="/digpro/html/part6/tab2.html", new_path=s_z_section.path, entity=s_z_section)
+        index.pathtable.register(old_path="/html/part6/tab2.html", new_path=s_z_section.path, entity=s_z_section)
 
         # Add to page table for pagination
         index.pagetable.register(
@@ -456,16 +453,15 @@ class TextChapter(SiteChapter):
             # HOTFIX: dict of paths from names. Only 7 pages... This isn't that
             #         bad right? Definitely fix this in extract later
             oldpathtable = {
-                'Beads': "/dig/html/dbs/page0.html",
-                'Ceramics': "/dig/html/dbs/page1.html",
-                'Faunal Remains': "/dig/html/dbs/page2.html",
-                'Historic Artifacts': "/dig/html/dbs/page3.html",
-                'Historic Ceramics': "/dig/html/dbs/page4.html",
-                'Lithics': "/dig/html/dbs/page5.html",
-                'Pipes': "/dig/html/dbs/page6.html"
+                'Beads': "/html/dbs/page0.html",
+                'Ceramics': "/html/dbs/page1.html",
+                'Faunal Remains': "/html/dbs/page2.html",
+                'Historic Artifacts': "/html/dbs/page3.html",
+                'Historic Ceramics': "/html/dbs/page4.html",
+                'Lithics': "/html/dbs/page5.html",
+                'Pipes': "/html/dbs/page6.html"
             }
             index.pathtable.register(old_path=oldpathtable[apx_b_page["name"]], new_path=this_section.path, entity=this_section)
-            index.pathtable.register(old_path=oldpathtable[apx_b_page["name"]].replace("/dig/","/digpro/"), new_path=this_section.path, entity=this_section)
 
             # Add to page table for pagination
             index.pagetable.register(

@@ -10,7 +10,8 @@ def extract_page_content(html_string, folder_path_str):
     html_string : str
         The HTML content of the report*b.html page to be extracted, as a str.
     folder_path_str : str
-        Str indicating the current html str's parent folder within /dig/html.
+        Str indicating the current html str's parent folder within /dig/html
+        or /digpro/html, e.g. "/html/split".
 
     Returns
     -------
@@ -126,7 +127,8 @@ def extract_sidebar(html_string, folder_path_str, parent_body_page_name):
     html_string : str
         The HTML content of the index*_*.html page to be extracted, as a str.
     folder_path_str : str
-        Str indicating the current html str's parent folder within /dig/html.
+        Str indicating the current html str's parent folder within /dig/html
+        or /digpro/html, e.g. "/html/split".
     parent_body_page_name: str
         The name of the body*_*.html page that loads this sidebar as a frame.
 
@@ -279,16 +281,16 @@ def extract_topbar(html_string, folder_path_str, parent_tab_page_name):
         "currentModule": current_module
     }
 
-def extract_frames(html_string, full_current_dir_path, readfile):
+def extract_frames(html_string, full_current_dir_path_obj, readfile):
     """Read in data from the contained frames in a report#.html page."""
     soup = BeautifulSoup(html_string, 'html.parser')
     data = []
     frames = soup.frameset.find_all(['frame'])
     for frame in frames:
-        data.append(readfile(frame['src'], full_current_dir_path))
+        data.append(readfile(frame['src'], full_current_dir_path_obj))
     return data
 
-def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile, has_page_num=True):
+def get_body_page_html_contents(html_string, current_dir_path, dig_dir_path, readfile, has_page_num=True):
     """Extract all parts of a body*_*.html page and its contained frames.
 
     Parameters
@@ -297,18 +299,20 @@ def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_pa
         Result of reading a body*_*.html file
     current_dir_path : str
         Directory of the body*_*.html file in Posix Path format
-        (e.g. "/dig/html/part2").
-    dig_parent_dir_path : Path
-        Containing directory of the /dig folder as a Path object, e.g.
+        (e.g. "/html/part2").
+    dig_dir_path : Path
+        Directory of the /dig or /digpro folder as a Path object, e.g.
         if body0_1.html is found in "C:\\Users\\Dev\\dig\\html\\part2",
-        then dig_parent_dir_path is a WindowsPath('C:/Users/Dev').
+        then dig_dir_path is a WindowsPath('C:/Users/Dev/dig').
+        If instead it's found in "C:\\Users\\Dev\\digpro\\html\\part2",
+        then dig_dir_path is a WindowPath('C:/Users/Dev/digpro').
     readfile : function
         Function to read any file based on the file name or folder path.
     """
 
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
-    full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
+    full_current_dir_path = dig_dir_path / ("." + current_dir_path)
     sidebar_html_string = readfile(frames[0]['src'], full_current_dir_path)
     report_html_string = readfile(frames[1]['src'], full_current_dir_path)
     report_folder_path = (full_current_dir_path / frames[1]['src']).parent
@@ -323,16 +327,16 @@ def get_body_page_html_contents(html_string, current_dir_path, dig_parent_dir_pa
         extracted_html_strs['reportc_html'] = report_abc_content[2]
     return extracted_html_strs
 
-def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_path, readfile, has_page_num=True):
+def get_tab_page_html_contents(html_string, current_dir_path, dig_dir_path, readfile, has_page_num=True):
     """Extract all parts of a tab*.html or tab*_*.html page and its frames."""
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
-    full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
+    full_current_dir_path = dig_dir_path / ("." + current_dir_path)
     topbar_html_string = readfile(frames[0]['src'], full_current_dir_path)
     body_html_content = get_body_page_html_contents(
         readfile(frames[1]['src'], full_current_dir_path),
         current_dir_path,
-        dig_parent_dir_path,
+        dig_dir_path,
         readfile,
         has_page_num=has_page_num
     )
@@ -350,7 +354,7 @@ def get_tab_page_html_contents(html_string, current_dir_path, dig_parent_dir_pat
 
 def process_tab_html_contents(
     html_strings, current_tab_page_name,
-    current_dir_path, dig_parent_dir_path, readfile
+    current_dir_path, readfile
 ):
     """Turn the raw html_strings from reading a tab.html file into a dict."""
     title = extract_page_title(html_strings['reporta_html'])
@@ -396,20 +400,20 @@ def validate_tab_html_extraction_results(results):
 
     return noError
 
-def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path, readfile):
+def extract_full_module(module_file_names, current_dir_path, dig_dir_path, readfile):
     """Extract content from one module in a chapter and store in a dict."""
     extracted = {
         "module": {},
         "pages": {}
     }
-    full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
+    full_current_dir_path = dig_dir_path / ("." + current_dir_path)
     processed_pages = []
     for filename in module_file_names:
         tab_html_str = readfile(filename, full_current_dir_path)
         extracted_contents = get_tab_page_html_contents(tab_html_str, current_dir_path,
-                                                        dig_parent_dir_path, readfile)
+                                                        dig_dir_path, readfile)
         processed_page = process_tab_html_contents(extracted_contents, filename,
-                                                   current_dir_path, dig_parent_dir_path, readfile)
+                                                   current_dir_path, readfile)
         processed_pages.append(processed_page)
 
     if not validate_tab_html_extraction_results(processed_pages):
@@ -439,7 +443,7 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
     return extracted
 
 def extract_full_chapter(
-    all_module_file_names, current_dir_path, dig_parent_path, readfile,
+    all_module_file_names, current_dir_path, dig_dir_path, readfile,
     extract_full_module=extract_full_module
 ):
     """Extract an entire chapter by going through all tab*_*.html files."""
@@ -457,7 +461,7 @@ def extract_full_chapter(
         current_module_file_names = [filename for filename in filenames
                                      if tab_name.split('.')[0] in filename]
         module_object = extract_full_module(current_module_file_names,
-                                            current_dir_path, dig_parent_path, readfile)
+                                            current_dir_path, dig_dir_path, readfile)
         extracted['modules'].append(module_object)
     for module in extracted['modules']:
         pages = module.pop('pages')
@@ -466,23 +470,23 @@ def extract_full_chapter(
 
     return extracted
 
-def extract_standard_part(part_folder_name, dig_parent_dir, readfile):
+def extract_standard_part(part_folder_name, dig_dir_path_str, readfile):
     """Extract an entire chapter based on folder name, e.g. /dig/html/part2."""
     # Get all tab*.html or tab*_*.html files, which are starting points for
     # the extraction process
-    folder_to_extract_full_path = Path(dig_parent_dir) / "./dig/html" / part_folder_name
+    folder_to_extract_full_path = Path(dig_dir_path_str) / "html" / part_folder_name
     tab_filenames = []
     for filepath in folder_to_extract_full_path.iterdir():
         if "tab" in filepath.name and "tabs" not in filepath.name:
             tab_filenames.append(filepath.name)
     return extract_full_chapter(tab_filenames,
-                                "/dig/html/" + part_folder_name,
-                                Path(dig_parent_dir),
+                                "/html/" + part_folder_name,
+                                Path(dig_dir_path_str),
                                 readfile)
 
-def reextract_title_page(part_0_data, dig_parent_dir, readfile):
+def reextract_title_page(part_0_data, dig_dir_path_str, readfile):
     """Extract the actual title page from part 0 and put it in the dict."""
-    title_page_html_str = readfile("report0b.html", Path(dig_parent_dir) / "./dig/html/split")
+    title_page_html_str = readfile("report0b.html", Path(dig_dir_path_str) / "html/split")
     soup = BeautifulSoup(title_page_html_str, 'html5lib')
     part_0_data["pages"]["i"]["content"].append({
         "type": "paragraph",

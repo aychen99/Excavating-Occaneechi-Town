@@ -15,18 +15,18 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
         old_path = a['href']
         if a.has_attr('data-is-primer') and a['data-is-primer'] == 'yes':
             del a['data-is-primer']
-            old_path = pathlib.Path('/dig/html/primer') / old_path
+            old_path = pathlib.Path('/html/primer') / old_path
             old_path = os.path.normpath(old_path)
             old_path = str(pathlib.Path(old_path).as_posix())
             a['href'] = '#genModal'
             a['data-toggle'] = 'modal'
             a['data-target'] = '#genModal'
             a['class'] = 'a-video'
-            a['data-figure-path'] = old_path.replace('/dig/html/video/', '../../video/')
+            a['data-figure-path'] = old_path.replace('/html/video/', '../../video/')
         elif 'slid' in old_path:
             # Set up image modal
             if 'mov.html' in old_path or 'mpg.html' in old_path:
-                old_path = pathlib.Path('/dig/html/someDir') / old_path
+                old_path = pathlib.Path('/html/someDir') / old_path
                 old_path = os.path.normpath(old_path)
                 old_path = str(pathlib.Path(old_path).as_posix())
                 lookup = index.figuretable
@@ -43,11 +43,11 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
                 a['data-figure-path'] = (
                     figure.img_orig_path.as_posix()
                     .split('.')[0]
-                    .replace('/dig/html/video/', '../../video/')
+                    .replace('/html/video/', '../../video/')
                     + '.mp4'
                 )
             else:
-                old_path = pathlib.Path('/dig/html/someDir') / old_path
+                old_path = pathlib.Path('/html/someDir') / old_path
                 old_path = os.path.normpath(old_path)
                 old_path = str(pathlib.Path(old_path).as_posix())
                 lookup = index.figuretable
@@ -63,11 +63,11 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
                 )
                 a['data-src'] = (
                     figure.img_orig_path.as_posix()
-                    .replace('/dig/html/images/', '../../imgs/')
+                    .replace('/html/images/', '../../imgs/')
                 )
                 a['href'] = (
                     figure.img_orig_path.as_posix()
-                    .replace('/dig/html/images/', '../../imgs/')
+                    .replace('/html/images/', '../../imgs/')
                 )
         elif 'ref' in old_path:
             # Set up reference modal
@@ -92,7 +92,7 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             a['data-toggle'] = 'modal'
             a['data-target'] = '#genModal'
             a['class'] = 'a-table'
-            old_path = pathlib.Path('/dig/html/someDir') / old_path
+            old_path = pathlib.Path('/html/someDir') / old_path
             old_path = os.path.normpath(old_path)
             old_path = str(pathlib.Path(old_path).as_posix())
             lookup = index.datatables
@@ -118,7 +118,7 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
                 )
                 table_a['data-figure-path'] = (
                     figure.img_orig_path.as_posix()
-                    .replace('/dig/html/images/', '../../imgs/')
+                    .replace('/html/images/', '../../imgs/')
                 )
             new_table_str = (
                 str(table_soup.body).replace('<body>', '')
@@ -146,7 +146,7 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             a['href'] = new_link
         elif 'video' in old_path:
             # Deal with video files
-            a['href'] = old_path.replace('/dig/html/video/', '../../video/')
+            a['href'] = old_path.replace('/html/video/', '../../video/')
         elif 'version.html' in old_path:
             a['href'] = "#versionModal"
             a['data-toggle'] = "modal"

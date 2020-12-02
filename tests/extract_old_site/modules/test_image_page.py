@@ -38,27 +38,27 @@ slid_bet_html_str = """
 
 # Expected results
 slid_azt_extracted = {
-    "path": "/dig/html/images/s/str1.gif",
-    "htmlPagePath": "/dig/html/excavations/slid_azt.html",
+    "path": "/html/images/s/str1.gif",
+    "htmlPagePath": "/html/excavations/slid_azt.html",
     "figureNum": "1039",
     "caption": "Structure 1, plan view (view to north).",
     "clickableAreas": [
         {"x1": 144, "y1": 140, "x2": 224, "y2": 214,
-            "path": "/dig/html/excavations/exc_cl.html"},
+            "path": "/html/excavations/exc_cl.html"},
         {"x1": 38, "y1": 78, "x2": 80, "y2": 127,
-            "path": "/dig/html/excavations/exc_au.html"},
+            "path": "/html/excavations/exc_au.html"},
         {"x1": 359, "y1": 292, "x2": 388, "y2": 361,
-            "path": "/dig/html/excavations/exc_am.html"},
+            "path": "/html/excavations/exc_am.html"},
         {"x1": 364, "y1": 134, "x2": 389, "y2": 198,
-            "path": "/dig/html/excavations/exc_iy.html"},
+            "path": "/html/excavations/exc_iy.html"},
         {"x1": 326, "y1": 155, "x2": 363, "y2": 190,
-            "path": "/dig/html/excavations/exc_iy.html"},
+            "path": "/html/excavations/exc_iy.html"},
         {"x1": 305, "y1": 3, "x2": 363, "y2": 154,
-            "path": "/dig/html/excavations/exc_iy.html"},
+            "path": "/html/excavations/exc_iy.html"},
         {"x1": 364, "y1": 90, "x2": 388, "y2": 133,
-            "path": "/dig/html/excavations/exc_ae.html"},
+            "path": "/html/excavations/exc_ae.html"},
         {"x1": 364, "y1": 3, "x2": 389, "y2": 89,
-            "path": "/dig/html/excavations/exc_iy.html"}
+            "path": "/html/excavations/exc_iy.html"}
     ],
     "originalDimensions": {
         "width": 390,
@@ -67,21 +67,21 @@ slid_azt_extracted = {
 }
 
 slid_bdo_extracted = {
-    "path": "/dig/html/images/x16/x6801.jpeg",
-    "htmlPagePath": "/dig/html/excavations/slid_bdo.html",
+    "path": "/html/images/x16/x6801.jpeg",
+    "htmlPagePath": "/html/excavations/slid_bdo.html",
     "figureNum": "1038",
     "caption": "Structure 1 at top of subsoil (view to southwest).",
     "clickableAreas": [
         {"x1": 43, "y1": 102, "x2": 193, "y2": 152,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 22, "y1": 151, "x2": 113, "y2": 219,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 194, "y1": 118, "x2": 243, "y2": 220,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 16, "y1": 220, "x2": 237, "y2": 298,
-            "path": "/dig/html/excavations/exc_is.html"},
+            "path": "/html/excavations/exc_is.html"},
         {"x1": 114, "y1": 152, "x2": 196, "y2": 223,
-            "path": "/dig/html/excavations/exc_cl.html"}
+            "path": "/html/excavations/exc_cl.html"}
     ],
     "originalDimensions": {
         "width": 251,
@@ -90,8 +90,8 @@ slid_bdo_extracted = {
 }
 
 slid_bet_extracted = {
-    "path": "/dig/html/images/x16/x6968.jpeg",
-    "htmlPagePath": "/dig/html/excavations/slid_bet.html",
+    "path": "/html/images/x16/x6968.jpeg",
+    "htmlPagePath": "/html/excavations/slid_bet.html",
     "figureNum": "1037",
     "caption": "Structure 1 after excavation (view to southwest).",
     "clickableAreas": [],
@@ -114,9 +114,9 @@ def mock_readfile(orig_filename, parent_dir_path_obj):
 
 
 @pytest.mark.parametrize("html_string,img_page_parent_dir,current_page_name,expected", [
-    (slid_azt_html_str, "/dig/html/excavations", "slid_azt.html", slid_azt_extracted),
-    (slid_bdo_html_str, "/dig/html/excavations", "slid_bdo.html", slid_bdo_extracted),
-    (slid_bet_html_str, "/dig/html/excavations", "slid_bet.html", slid_bet_extracted)
+    (slid_azt_html_str, "/html/excavations", "slid_azt.html", slid_azt_extracted),
+    (slid_bdo_html_str, "/html/excavations", "slid_bdo.html", slid_bdo_extracted),
+    (slid_bet_html_str, "/html/excavations", "slid_bet.html", slid_bet_extracted)
 ])
 def test_extract_image_page(html_string, img_page_parent_dir, current_page_name, expected):
     with mock.patch.object(Image, "open") as mock_PIL_Image:
@@ -134,7 +134,7 @@ def test_extract_image_page(html_string, img_page_parent_dir, current_page_name,
                  
         mock_PIL_Image.side_effect = mock_create_image_with_proper_size
         assert image_page.extract_image_page(
-            html_string, img_page_parent_dir, "C:/", current_page_name
+            html_string, img_page_parent_dir, "C:/dig", current_page_name
         ) == expected
 
 # TODO
@@ -167,7 +167,7 @@ def test_extract_all_images():
 
             mock_PIL_Image.side_effect = mock_create_image_with_proper_size
 
-            assert image_page.extract_all_images("C:/", mock_readfile) == {
+            assert image_page.extract_all_images("C:/dig", mock_readfile) == {
                 slid_azt_extracted["path"]: slid_azt_extracted,
                 slid_bdo_extracted["path"]: slid_bdo_extracted,
                 slid_bet_extracted["path"]: slid_bet_extracted

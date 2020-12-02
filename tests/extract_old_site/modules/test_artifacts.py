@@ -255,13 +255,13 @@ db6_1_html_str = """
 
 # Expected results of extraction
 img_aa0_extracted = {
-    "path": "/dig/html/images/d16/d_3535.jpeg",
+    "path": "/html/images/d16/d_3535.jpeg",
     "figureNum": "183",
     "caption": "Plain and check-stamped potsherds from Burial 1 (RLA catalog no. 2351p255)."
 }
 
 img_aj0_extracted = {
-    "path": "/dig/html/images/d16/d_3351.jpeg",
+    "path": "/html/images/d16/d_3351.jpeg",
     "figureNum": "245",
     "caption": "Chipped-stone projectile point from Feature 15 (RLA catalog no. 2351a6165)."
 }
@@ -269,7 +269,7 @@ img_aj0_extracted = {
 ctrl_aj_extracted = {
     "appendixAPageNum": "10",
     "excavationElement": "Feature 15",
-    "parentExcPage": "/dig/html/excavations/exc_aj.html",
+    "parentExcPage": "/html/excavations/exc_aj.html",
     "zones": [{
         "name": "Troweling Top of Pit",
         "pageName": "info_aj0.html"
@@ -291,7 +291,7 @@ ctrl_aj_extracted = {
 ctrl_fg_extracted = {
     "appendixAPageNum": "135",
     "excavationElement": "Sq. 240R60",
-    "parentExcPage": "/dig/html/excavations/exc_fg.html",
+    "parentExcPage": "/html/excavations/exc_fg.html",
     "zones": [{
         "name": "Plow Zone",
         "pageName": "info_fg0.html"
@@ -327,14 +327,14 @@ info_fg0_extracted = [{
     "Count": "1",
     "Cat. No.": "2351a3397",
     "Photo": None,
-    "More": "/dig/html/dbs/page5.html"
+    "More": "/html/dbs/page5.html"
 }, {
     "Artifacts": "Bifaces",
     "Size": '1/2"',
     "Count": "2",
     "Cat. No.": "2351a646",
     "Photo": None,
-    "More": "/dig/html/dbs/page5.html"
+    "More": "/html/dbs/page5.html"
 }]
 
 info_fg1_extracted = [{
@@ -350,7 +350,7 @@ info_fg1_extracted = [{
     "Count": "1",
     "Cat. No.": "2351a666",
     "Photo": None,
-    "More": "/dig/html/dbs/page3.html"
+    "More": "/html/dbs/page3.html"
 }, {
     "Artifacts": "Daub",
     "Size": '1/2"',
@@ -366,7 +366,7 @@ info_fg2_extracted = [{
     "Count": "3",
     "Cat. No.": "2351m679",
     "Photo": None,
-    "More": "/dig/html/dbs/page3.html"
+    "More": "/html/dbs/page3.html"
 }]
 
 info_fg3_extracted = [{
@@ -375,7 +375,7 @@ info_fg3_extracted = [{
     "Count": "1",
     "Cat. No.": "2351p682",
     "Photo": None,
-    "More": "/dig/html/dbs/page1.html"
+    "More": "/html/dbs/page1.html"
 }]
 
 info_aj0_extracted = [{
@@ -384,7 +384,7 @@ info_aj0_extracted = [{
     "Count": "1",
     "Cat. No.": "2351m6164",
     "Photo": None,
-    "More": "/dig/html/dbs/page5.html"
+    "More": "/html/dbs/page5.html"
 }]
 
 info_aj1_extracted = [{
@@ -393,7 +393,7 @@ info_aj1_extracted = [{
     "Count": "1",
     "Cat. No.": "2351p6181",
     "Photo": None,
-    "More": "/dig/html/dbs/page1.html"
+    "More": "/html/dbs/page1.html"
 }]
 
 info_aj2_extracted = [{
@@ -408,8 +408,8 @@ info_aj2_extracted = [{
     "Size": '1/2"',
     "Count": "1",
     "Cat. No.": "2351a6165",
-    "Photo": "/dig/html/artifacts/img_aj0.html",
-    "More": "/dig/html/dbs/page5.html"
+    "Photo": "/html/artifacts/img_aj0.html",
+    "More": "/html/dbs/page5.html"
 }, {
     "Artifacts": "Daub",
     "Size": '1/4"',
@@ -440,7 +440,7 @@ info_aj4_extracted = [{
 art_aj0_or_feature_15_fully_extracted = {
     "appendixAPageNum": "10",
     "excavationElement": "Feature 15",
-    "parentExcPage": "/dig/html/excavations/exc_aj.html",
+    "parentExcPage": "/html/excavations/exc_aj.html",
     "zones": [{
         "name": "Troweling Top of Pit",
         "pageName": "info_aj0.html",
@@ -467,7 +467,7 @@ art_aj0_or_feature_15_fully_extracted = {
 art_fg0_or_sq240r60_fully_extracted = {
     "appendixAPageNum": "135",
     "excavationElement": "Sq. 240R60",
-    "parentExcPage": "/dig/html/excavations/exc_fg.html",
+    "parentExcPage": "/html/excavations/exc_fg.html",
     "zones": [{
         "name": "Plow Zone",
         "pageName": "info_fg0.html",
@@ -780,7 +780,7 @@ def test_extract_all_artifacts_images():
         iterdir_path_objs = [(pathlib.Path("C:/dig/html/artifacts") / filename)
                              for filename in ["img_aa0.html", "img_aj0.html"]]
         mock_iterdir.return_value = iterdir_path_objs
-        assert artifacts.extract_all_artifacts_images("C:/", mock_readfile) == {
+        assert artifacts.extract_all_artifacts_images("C:/dig", mock_readfile) == {
             "img_aa0.html": img_aa0_extracted,
             "img_aj0.html": img_aj0_extracted
         }
@@ -790,7 +790,7 @@ def test_extract_all_artifacts_images():
     (ctrl_fg_html_str, ctrl_fg_extracted)
 ])
 def test_extract_excavation_zones(ctrl_html_string, expected_result):
-    assert artifacts.extract_excavation_zones(ctrl_html_string, "C:/") == expected_result
+    assert artifacts.extract_excavation_zones(ctrl_html_string) == expected_result
 
 @pytest.mark.parametrize("info_html_string,expected_result", [
     (info_aj0_html_str, info_aj0_extracted),
@@ -804,7 +804,7 @@ def test_extract_excavation_zones(ctrl_html_string, expected_result):
     (info_fg3_html_str, info_fg3_extracted),
 ])
 def test_extract_artifacts_list(info_html_string, expected_result):
-    assert artifacts.extract_artifacts_list(info_html_string, "C:/") == expected_result
+    assert artifacts.extract_artifacts_list(info_html_string) == expected_result
 
 @pytest.mark.parametrize("art_html_string,expected_result", [
     (art_aj0_html_str, art_aj0_or_feature_15_fully_extracted),
@@ -813,7 +813,7 @@ def test_extract_artifacts_list(info_html_string, expected_result):
 ])
 def test_extract_art_html_page(art_html_string, expected_result):
     assert artifacts.extract_art_html_page(
-        art_html_string, "C:/", mock_readfile
+        art_html_string, "C:/dig", mock_readfile
     ) == expected_result
 
 def test_extract_all_of_artifacts_dir():
@@ -825,10 +825,10 @@ def test_extract_all_of_artifacts_dir():
             "info_fg0.html", "info_fg1.html", "info_fg2.html", "info_fg3.html",
             "img_aa0.html", "img_aj0.html"
         ]
-        iterdir_path_objs = [(pathlib.Path("C:/") / filename)
+        iterdir_path_objs = [(pathlib.Path("C:/dig/html/artifacts") / filename)
                              for filename in filenames_list]
         mock_iterdir.return_value = iterdir_path_objs
-        assert artifacts.extract_all_of_artifacts_dir("C:/", mock_readfile) == {
+        assert artifacts.extract_all_of_artifacts_dir("C:/dig", mock_readfile) == {
             ctrl_aj_extracted["parentExcPage"]: art_aj0_or_feature_15_fully_extracted,
             ctrl_fg_extracted["parentExcPage"]: art_fg0_or_sq240r60_fully_extracted
         }
@@ -871,7 +871,7 @@ def test_extract_appendix_b_page(page_num, expected_result):
                              for filename in filenames_list]
         mock_iterdir.return_value = iterdir_path_objs
 
-        assert artifacts.extract_appendix_b_page(page_num, "C:/", mock_readfile) == expected_result
+        assert artifacts.extract_appendix_b_page(page_num, "C:/dig", mock_readfile) == expected_result
 
 # TODO
 # def test_extract_appendix_b():
@@ -935,7 +935,7 @@ def test_generate_cat_num_to_artifacts_dict():
                 "Count": "1",
                 "Cat. No.": "2351a3397",
                 "Photo": None,
-                "More": "/dig/html/dbs/page5.html"
+                "More": "/html/dbs/page5.html"
             }
         },
         "2351a646": {
@@ -950,7 +950,7 @@ def test_generate_cat_num_to_artifacts_dict():
                 "Count": "2",
                 "Cat. No.": "2351a646",
                 "Photo": None,
-                "More": "/dig/html/dbs/page5.html"
+                "More": "/html/dbs/page5.html"
             }
         },
         "2351b668": {
@@ -980,7 +980,7 @@ def test_generate_cat_num_to_artifacts_dict():
                 "Count": "1",
                 "Cat. No.": "2351a666",
                 "Photo": None,
-                "More": "/dig/html/dbs/page3.html"
+                "More": "/html/dbs/page3.html"
             }
         },
         "2351m664": {
@@ -1010,7 +1010,7 @@ def test_generate_cat_num_to_artifacts_dict():
                 "Count": "3",
                 "Cat. No.": "2351m679",
                 "Photo": None,
-                "More": "/dig/html/dbs/page3.html"
+                "More": "/html/dbs/page3.html"
             }
         },
         "2351p682": {
@@ -1025,7 +1025,7 @@ def test_generate_cat_num_to_artifacts_dict():
                 "Count": "1",
                 "Cat. No.": "2351p682",
                 "Photo": None,
-                "More": "/dig/html/dbs/page1.html"
+                "More": "/html/dbs/page1.html"
             }
         },
         "2351a1038/a": {
@@ -1178,9 +1178,9 @@ def test_insert_details_into_summary_dict():
     # From info_fg1.html
     exc_page_name = art_fg0_or_sq240r60_fully_extracted["parentExcPage"]
     summary_dict = {
-        "/dig/html/excavations/exc_fg.html": {
+        "/html/excavations/exc_fg.html": {
             "excavationElement": "Sq. 240R60",
-            "parentExcPage": "/dig/html/excavations/exc_fg.html",
+            "parentExcPage": "/html/excavations/exc_fg.html",
             "zones": [{
                 "name": "Plow Zone",
                 "pageName": "info_fg0.html",
@@ -1208,7 +1208,7 @@ def test_insert_details_into_summary_dict():
                     "Count": "1",
                     "Cat. No.": "2351a666",
                     "Photo": None,
-                    "More": "/dig/html/dbs/page3.html"
+                    "More": "/html/dbs/page3.html"
                 }, {
                     "Artifacts": "Daub",
                     "Size": '1/2"',
@@ -1268,7 +1268,7 @@ def test_insert_details_into_summary_dict():
                 "Count": "1",
                 "Cat. No.": "2351a666",
                 "Photo": None,
-                "More": "/dig/html/dbs/page3.html"
+                "More": "/html/dbs/page3.html"
             }
         },
         "2351m664": {
@@ -1288,9 +1288,9 @@ def test_insert_details_into_summary_dict():
         },
     }
     assert artifacts.insert_details_into_summary_dict(summary_dict, artifacts_by_cat_no_dict) == {
-        "/dig/html/excavations/exc_fg.html": {
+        "/html/excavations/exc_fg.html": {
             "excavationElement": "Sq. 240R60",
-            "parentExcPage": "/dig/html/excavations/exc_fg.html",
+            "parentExcPage": "/html/excavations/exc_fg.html",
             "zones": [{
                 "name": "Plow Zone",
                 "pageName": "info_fg0.html",
@@ -1322,7 +1322,7 @@ def test_insert_details_into_summary_dict():
                     "Count": "1",
                     "Cat. No.": "2351a666",
                     "Photo": None,
-                    "More": "/dig/html/dbs/page3.html",
+                    "More": "/html/dbs/page3.html",
                     "details": [{
                         "Catalog No.": "2351a666",
                         "Context": "S240R60"

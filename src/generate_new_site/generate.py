@@ -7,11 +7,20 @@ from . import utilities
 
 def generate_site(
         dig_dir, input_dir, output_dir,
-        overwrite_out=False, copy_images=False, copy_videos=False, copy_data=True):
+        overwrite_out=False, copy_images=False, copy_videos=False, copy_data=True,
+        version="dig"):
 
     DIG_DIR = Path(dig_dir)
-    INPUT_DIR = Path(input_dir)
-    OUTPUT_DIR = Path(output_dir)
+    INPUT_DIR = None
+    OUTPUT_DIR = None
+    if input_dir == "Default":
+        INPUT_DIR = Path("jsons") / version
+    else:
+        INPUT_DIR = Path(input_dir)
+    if output_dir == "Default":
+        OUTPUT_DIR = Path("new" + version)
+    else:
+        OUTPUT_DIR = Path(output_dir)
 
     # Terminate execution if dig_dir or input_dir don't exist
     if not INPUT_DIR.exists():
@@ -82,8 +91,6 @@ def generate_site(
         TABLES_IMAGE_PATHS_TO_NUMS_PATH,
         index
     )
-    with ARTIFACTS_PATH.open("r") as f:
-        artifacts = json.load(f)
 
     index.add_figures(figures)
     index.add_references(references)

@@ -10,15 +10,11 @@ if __name__ == "__main__":
     with open((script_root_dir / "config.json")) as f:
         config = json.load(f)
 
-    # Resolve any default config values
-    if config["extractionOutputDirPath"] == "Default":
-        config["extractionOutputDirPath"] = str(script_root_dir / "jsons")
-    if config["generationOutputDirPath"] == "Default":
-        config["generationOutputDirPath"] = str(script_root_dir / "newdig")
-        (script_root_dir / "newdig").mkdir(parents=True, exist_ok=True)
+    # Leave resolving of default config values to extract.py and generate.py
 
     # Set up for generating the site
-    dig_dir = str((pathlib.Path(config["digParentDirPath"]) / "dig").as_posix())
+    dig_dir = (pathlib.Path(config["digParentDirPath"]) / "dig").as_posix()
+    digpro_dir = (pathlib.Path(config["digParentDirPath"]) / "digpro").as_posix()
     input_dir = config["extractionOutputDirPath"]
     output_dir = config["generationOutputDirPath"]
     overwrite_out = config["overwriteExistingGeneratedFiles"]
@@ -30,18 +26,18 @@ if __name__ == "__main__":
     if config['runExtraction']:
         print("\n-----------------------------------\n"
               "Extracting old site data.\n")
-        run_extraction(config)
+        run_extraction(config, version="dig")
+        if config['runDigPro']:
+            run_extraction(config, version="digpro")
     else:
         print("\n-----------------------------------\n"
               "SKIPPING extracting old site data.\n")
     if config['runGeneration']:
         print("\n-----------------------------------\n"
               "Generating new site files.\n")
-        generate_site(dig_dir, input_dir, output_dir, overwrite_out, copy_images, copy_videos, copy_data)
+        generate_site(dig_dir, input_dir, output_dir, overwrite_out, copy_images, copy_videos, copy_data, version="dig")
+        if config['runDigPro']:
+            generate_site(digpro_dir, input_dir, output_dir, overwrite_out, copy_images, copy_videos, copy_data, version="digpro")
     else:
         print("\n-----------------------------------\n"
               "SKIPPING generating new site files.\n")
-
-    # if config['runDigPro']:
-        # TODO
-        # pass

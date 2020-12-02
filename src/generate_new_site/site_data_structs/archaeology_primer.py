@@ -194,7 +194,7 @@ class PrimerPage(SitePage):
                 pageToImgMap = content_obj["pageToImgMap"]
                 for a in soup.find_all('a'):
                     image = pageToImgMap[a['href']]
-                    a['data-image-path'] = image['src'].replace('/dig/html/images/', '../../imgs/')
+                    a['data-image-path'] = image['src'].replace('/html/images/', '../../imgs/')
                     a['data-image-caption'] = image['caption']
                     a['href'] = 'javascript:void(0);' # del a['href']
                 content_obj['content'] = str(soup.body).replace('<body>', '').replace('</body>', '')
@@ -205,13 +205,13 @@ class PrimerPage(SitePage):
                     self.path
                 )
             if 'image' in content_obj:
-                content_obj['image']['path'] = content_obj['image']['path'].replace('/dig/html/images/', '../../imgs/')
+                content_obj['image']['path'] = content_obj['image']['path'].replace('/html/images/', '../../imgs/')
             if 'mapImg' in content_obj:
-                content_obj['mapImg'] = content_obj['mapImg'].replace('/dig/html/images/', '../../imgs/')
+                content_obj['mapImg'] = content_obj['mapImg'].replace('/html/images/', '../../imgs/')
 
         # Update image paths
         if self.image:
-            self.image["path"] = self.image["path"].replace("/dig/html/images/", "../../imgs/")
+            self.image["path"] = self.image["path"].replace("/html/images/", "../../imgs/")
         # TODO
 
         # Open using wb and encode('utf-8') to resolve encoding issues

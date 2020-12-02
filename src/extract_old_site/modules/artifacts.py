@@ -6,7 +6,7 @@ import os
 def extract_artifacts_image(html_string):
     """Get all information from an img.html in the artifacts folder."""
     soup = BeautifulSoup(html_string, 'html5lib')
-    path = pathlib.Path("/dig/html/artifacts") / soup.body.img['src']
+    path = pathlib.Path("/html/artifacts") / soup.body.img['src']
     path = str(pathlib.Path(os.path.normpath(path)).as_posix())
     soup.body.center.a.decompose()
     figure_num_and_caption = soup.body.center.text.strip().split('.', 1)
@@ -19,9 +19,9 @@ def extract_artifacts_image(html_string):
         "caption": caption
     }
 
-def extract_all_artifacts_images(dig_parent_dir, readfile):
+def extract_all_artifacts_images(dig_dir_str, readfile):
     """Get info from all img.html pages in the artifacts folder."""
-    artifacts_dir = pathlib.Path(dig_parent_dir) / "dig/html/artifacts"
+    artifacts_dir = pathlib.Path(dig_dir_str) / "html/artifacts"
     images = {}
     for filename in artifacts_dir.iterdir():
         if 'img' in filename.name:
@@ -30,7 +30,7 @@ def extract_all_artifacts_images(dig_parent_dir, readfile):
             images[filename.name] = image
     return images
 
-def extract_excavation_zones(html_string, dig_parent_dir):
+def extract_excavation_zones(html_string):
     """Extract the list of zones with artifacts from the ctrl_**.html page."""
     # TODO: Get the Appendix A page number
 
@@ -41,7 +41,7 @@ def extract_excavation_zones(html_string, dig_parent_dir):
         # Hotfix for art_ir0.html, associated with /dig/html/excavations/exc_ir.html
         appendix_a_page_num = "224"
     links = soup.table.find_all('tr')
-    artifacts_dir = pathlib.Path("/dig/html/artifacts")
+    artifacts_dir = pathlib.Path("/html/artifacts")
     parent_exc_page = str(pathlib.Path(os.path.normpath(artifacts_dir / links[0].a['href'])).as_posix())
 
     soup.table.clear()
@@ -60,7 +60,7 @@ def extract_excavation_zones(html_string, dig_parent_dir):
         "zones": zones
     }
 
-def extract_artifacts_list(html_string, dig_parent_dir):
+def extract_artifacts_list(html_string):
     """Extract a list of artifacts from a info_***.html page."""
     soup = BeautifulSoup(html_string, 'html5lib')
     artifact_trs = soup.table.find_all('tr')
@@ -69,7 +69,7 @@ def extract_artifacts_list(html_string, dig_parent_dir):
     for th in ths:
         fields.append(th.text.strip())
 
-    artifacts_dir = pathlib.Path("/dig/html/artifacts")
+    artifacts_dir = pathlib.Path("/html/artifacts")
     artifacts = []
     for tr in artifact_trs:
         tds = tr.find_all('td')
@@ -85,29 +85,29 @@ def extract_artifacts_list(html_string, dig_parent_dir):
 
     return artifacts
 
-def extract_art_html_page(html_string, dig_parent_dir, readfile):
+def extract_art_html_page(html_string, dig_dir_str, readfile):
     """Extract all info from a art_***.html page."""
-    artifacts_dir = pathlib.Path(dig_parent_dir) / "dig/html/artifacts"
+    artifacts_dir = pathlib.Path(dig_dir_str) / "html/artifacts"
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
     ctrl_html_string = readfile(frames[0]['src'], artifacts_dir)
 
-    ctrl_extracted = extract_excavation_zones(ctrl_html_string, dig_parent_dir)
+    ctrl_extracted = extract_excavation_zones(ctrl_html_string)
     for zone in ctrl_extracted['zones']:
         zone_artifacts_html_string = readfile(zone['pageName'], artifacts_dir)
-        artifacts = extract_artifacts_list(zone_artifacts_html_string, dig_parent_dir)
+        artifacts = extract_artifacts_list(zone_artifacts_html_string)
         zone['artifacts'] = artifacts
 
     return ctrl_extracted
 
-def extract_all_of_artifacts_dir(dig_parent_dir, readfile):
+def extract_all_of_artifacts_dir(dig_dir_str, readfile):
     """Extract all artifacts info (but not images) from /dig/html/artifacts.
 
     Returns a dictionary of excavation elements' old home pages (e.g.
     /dig/html/excavations/exc_aa.html) to the summary info for the
     artifacts contained in them."""
     artifacts = {}
-    artifacts_dir = pathlib.Path(dig_parent_dir) / "dig/html/artifacts"
+    artifacts_dir = pathlib.Path(dig_dir_str) / "html/artifacts"
 
     # Ensure that similarly named files like art_aa0.html or art_aa1.html
     # and art_ab0.html or art_ab2.html are extracted only once.
@@ -120,7 +120,7 @@ def extract_all_of_artifacts_dir(dig_parent_dir, readfile):
 
     for filename in dict_by_letters.values():
         html_string = readfile(filename, artifacts_dir)
-        extracted = extract_art_html_page(html_string, dig_parent_dir, readfile)
+        extracted = extract_art_html_page(html_string, dig_dir_str, readfile)
         artifacts[extracted['parentExcPage']] = extracted
     return artifacts
 
@@ -146,11 +146,11 @@ def extract_db_frame(html_string):
         artifacts["artifacts"].append(artifact)
     return artifacts
 
-def extract_appendix_b_page(page_num, dig_parent_dir, readfile):
+def extract_appendix_b_page(page_num, dig_dir_str, readfile):
     """Extract the detailed list of artifacts for a given appendix B page."""
     # Makes an assumption, already tested elsewhere, that for a given number x,
     # dbx_*.html all belong to the same page in Appendix B.
-    dbs_path_obj = pathlib.Path(dig_parent_dir) / "dig/html/dbs"
+    dbs_path_obj = pathlib.Path(dig_dir_str) / "html/dbs"
     name = BeautifulSoup(readfile("head" + str(page_num) + ".html", dbs_path_obj),
                          'html5lib').i.string
     artifacts = []
@@ -168,13 +168,13 @@ def extract_appendix_b_page(page_num, dig_parent_dir, readfile):
         "fields": fields
     }
 
-def extract_appendix_b(dig_parent_dir, readfile):
+def extract_appendix_b(dig_dir_str, readfile):
     """Extract all artifact details from all page*.html files."""
     artifacts = {}
     # Hard-coded total of 7 appendix B pages.
     for i in range(0,7):
         print("    Extracting appendix B pg. " + str(i+1))
-        extracted_page = extract_appendix_b_page(i, dig_parent_dir, readfile)
+        extracted_page = extract_appendix_b_page(i, dig_dir_str, readfile)
         artifacts[extracted_page['name']] = extracted_page
     return artifacts
 

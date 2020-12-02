@@ -536,7 +536,7 @@ report40a_extracted = "The Invisible Invaders"
 # as are all "target" attributes of <a> tags.
 report33b_extracted = [{
     "type": "paragraph",
-    "content": ('Bacon then attacked the Occaneechis (<a href="/dig/html/part6/ref_ac.html">'
+    "content": ('Bacon then attacked the Occaneechis (<a href="/html/part6/ref_ac.html">'
                 '<u>Billings 1975</u></a>:267-269).')
 }]
 
@@ -560,10 +560,10 @@ report36b_extracted = [{
                'relatively brief. A limited excavation of 800 sq ft '
                'revealed a portion of a cemetery lying just outside the '
                'village (see '
-               '<a href="/dig/html/excavations/slid_bbd.html">'
+               '<a href="/html/excavations/slid_bbd.html">'
                '<u>photo</u></a>) and a segment of the '
                'village palisade '
-               '(see <a href="/dig/html/excavations/slid_bba.html">'
+               '(see <a href="/html/excavations/slid_bba.html">'
                '<u>photo</u></a>). Three human burials '
                'within the cemetery were excavated. All three pits were '
                'rectangular with sharp corners (indicating that they '
@@ -571,9 +571,9 @@ report36b_extracted = [{
                'numerous artifacts of Euroamerican manufacture. A fourth '
                'pit excavated within the cemetery contained neither human '
                'remains nor grave associations (see photos of '
-               '<a href="/dig/html/excavations/slid_bbv.html">'
+               '<a href="/html/excavations/slid_bbv.html">'
                '<u>sifting plowed soil</u></a>, '
-               '<a href="/dig/html/excavations/slid_bbf.html">'
+               '<a href="/html/excavations/slid_bbf.html">'
                '<u>burial excavation</u></a>).'
     }, {
         "type": "italic-title",
@@ -589,7 +589,7 @@ report37b_extracted = [{
     "content": "Figures: General"
 }, {
     "type": "paragraph",
-    "content": ('<a href="/dig/html/excavations/slid_azn.html"><u>Figure 1</u></a>. '
+    "content": ('<a href="/html/excavations/slid_azn.html"><u>Figure 1</u></a>. '
                 'Distribution of Siouan-speaking peoples in eastern North America (based on Mooney 1894).')
 }]
 
@@ -624,27 +624,27 @@ index0_extracted = {
     "moduleAuthor": "by Dickens, Roy S., Jr., H. Trawick Ward, and R. P. Stephen Davis, Jr.",
     "sections": [{
         'name': 'Historical Background',
-        'path': '/dig/html/part2/body0_1.html',
+        'path': '/html/part2/body0_1.html',
         'subsections': []
     }, {
         'name': 'Siouan Archaeology',
-        'path': '/dig/html/part2/body0_2.html',
+        'path': '/html/part2/body0_2.html',
         'subsections': []
     }, {
         'name': 'Fredricks Site Discovery',
-        'path': '/dig/html/part2/body0_3.html',
+        'path': '/html/part2/body0_3.html',
         'subsections': []
     }, {
         'name': 'Fredricks Site Excavation',
-        'path': '/dig/html/part2/body0_4.html',
+        'path': '/html/part2/body0_4.html',
         'subsections': []
     }, {
         'name': 'List of Figures',
-        'path': '/dig/html/part2/body0_5.html',
+        'path': '/html/part2/body0_5.html',
         'subsections': []
     }, {
         'name': 'Sources',
-        'path': '/dig/html/part2/body0_6.html',
+        'path': '/html/part2/body0_6.html',
         'subsections': []
     }]
 }
@@ -654,32 +654,32 @@ index0_extracted_with_page_nums = {
     "moduleAuthor": "by Dickens, Roy S., Jr., H. Trawick Ward, and R. P. Stephen Davis, Jr.",
     "sections": [{
         'name': 'Historical Background',
-        'path': '/dig/html/part2/body0_1.html',
+        'path': '/html/part2/body0_1.html',
         'subsections': [],
         "pageNum": "1"
     }, {
         'name': 'Siouan Archaeology',
-        'path': '/dig/html/part2/body0_2.html',
+        'path': '/html/part2/body0_2.html',
         'subsections': [],
         "pageNum": "2"
     }, {
         'name': 'Fredricks Site Discovery',
-        'path': '/dig/html/part2/body0_3.html',
+        'path': '/html/part2/body0_3.html',
         'subsections': [],
         "pageNum": "3"
     }, {
         'name': 'Fredricks Site Excavation',
-        'path': '/dig/html/part2/body0_4.html',
+        'path': '/html/part2/body0_4.html',
         'subsections': [],
         "pageNum": "4"
     }, {
         'name': 'List of Figures',
-        'path': '/dig/html/part2/body0_5.html',
+        'path': '/html/part2/body0_5.html',
         'subsections': [],
         "pageNum": "5"
     }, {
         'name': 'Sources',
-        'path': '/dig/html/part2/body0_6.html',
+        'path': '/html/part2/body0_6.html',
         'subsections': [],
         "pageNum": "6"
     }]
@@ -690,11 +690,11 @@ index1_extracted = {
     "moduleAuthor": "by James H. Merrell",
     "sections": [{
         "name": "Introduction",
-        "path": "/dig/html/part2/body1_1.html",
+        "path": "/html/part2/body1_1.html",
         "subsections": []
     }, {
         "name": "The Invisible Invaders",
-        "path": "/dig/html/part2/body1_2.html",
+        "path": "/html/part2/body1_2.html",
         "subsections": []
     }]
 }
@@ -704,12 +704,12 @@ index1_extracted_with_page_nums = {
     "moduleAuthor": "by James H. Merrell",
     "sections": [{
         "name": "Introduction",
-        "path": "/dig/html/part2/body1_1.html",
+        "path": "/html/part2/body1_1.html",
         "subsections": [],
         "pageNum": "7"
     }, {
         "name": "The Invisible Invaders",
-        "path": "/dig/html/part2/body1_2.html",
+        "path": "/html/part2/body1_2.html",
         "subsections": [],
         "pageNum": "8"
     }]
@@ -719,10 +719,10 @@ index1_extracted_with_page_nums = {
 tabs_extracted = {
     "modules": [{
         "moduleShortName": "Archaeology",
-        "path": "/dig/html/part2/tab0.html"
+        "path": "/html/part2/tab0.html"
     }, {
         "moduleShortName": "History (1525-1725)",
-        "path": "/dig/html/part2/tab1.html"
+        "path": "/html/part2/tab1.html"
     }]
 }
 
@@ -849,11 +849,11 @@ def mock_readfile(orig_filename, parent_dir_path_obj):
         elif filename == "report40c.html":
             return report40c_html_str
 
-    raise Exception("did not find file in mock_readfile")
+    raise Exception("did not find " + str(resolved_path) + " in mock_readfile")
 
 
 @pytest.mark.parametrize("html_string,folder_path_str,expected_content", [
-    (report36b_html_str, "/dig/html/split", report36b_extracted)
+    (report36b_html_str, "/html/split", report36b_extracted)
 ])
 def test_extract_page_content(html_string, folder_path_str, expected_content):
     extracted_content = text.extract_page_content(html_string, folder_path_str)
@@ -892,30 +892,30 @@ def test_extract_sidebar():
         </body></html>"""
     test1_sections = [{
         'name': 'Historical Background',
-        'path': '/dig/html/part2/body0_1.html',
+        'path': '/html/part2/body0_1.html',
         'subsections': []
     }, {
         'name': 'Siouan Archaeology',
-        'path': '/dig/html/part2/body0_2.html',
+        'path': '/html/part2/body0_2.html',
         'subsections': []
     }, {
         'name': 'Fredricks Site Discovery',
-        'path': '/dig/html/part2/body0_3.html',
+        'path': '/html/part2/body0_3.html',
         'subsections': []
     }, {
         'name': 'Fredricks Site Excavation',
-        'path': '/dig/html/part2/body0_4.html',
+        'path': '/html/part2/body0_4.html',
         'subsections': []
     }, {
         'name': 'List of Figures',
-        'path': '/dig/html/part2/body0_5.html',
+        'path': '/html/part2/body0_5.html',
         'subsections': []
     }, {
         'name': 'Sources',
-        'path': '/dig/html/part2/body0_6.html',
+        'path': '/html/part2/body0_6.html',
         'subsections': []
     }]
-    extracted = text.extract_sidebar(test_data1, '/dig/html/part2', 'body0_2.html')
+    extracted = text.extract_sidebar(test_data1, '/html/part2', 'body0_2.html')
     assert extracted['currentModuleFullName'] == 'Archaeological Background'
     assert extracted['moduleAuthor'] == 'by Dickens, Roy S., Jr., H. Trawick Ward, and R. P. Stephen Davis, Jr.'
     assert extracted['sections'] == test1_sections
@@ -946,78 +946,78 @@ def test_extract_sidebar():
         </body></html>"""
     test2_sections = [{
         'name': 'Research Questions',
-        'path': '/dig/html/part4/body0_01.html',
+        'path': '/html/part4/body0_01.html',
         'subsections': []
     }, {
         'name': 'Ethnohistoric Accounts of Animal Use',
-        'path': '/dig/html/part4/body0_02.html',
+        'path': '/html/part4/body0_02.html',
         'subsections': [{
             'name': 'Mammals',
-            'path': '/dig/html/part4/body0_03.html',
+            'path': '/html/part4/body0_03.html',
             'subsections': []
         }, {
             'name': 'Birds',
-            'path': '/dig/html/part4/body0_04.html',
+            'path': '/html/part4/body0_04.html',
             'subsections': []
         }, {
             'name': 'Reptiles',
-            'path': '/dig/html/part4/body0_05.html',
+            'path': '/html/part4/body0_05.html',
             'subsections': []
         }, {
             'name': 'Amphibians',
-            'path': '/dig/html/part4/body0_06.html',
+            'path': '/html/part4/body0_06.html',
             'subsections': []
         }, {
             'name': 'Fish',
-            'path': '/dig/html/part4/body0_07.html',
+            'path': '/html/part4/body0_07.html',
             'subsections': []
         }, {
             'name': 'Summary',
-            'path': '/dig/html/part4/body0_08.html',
+            'path': '/html/part4/body0_08.html',
             'subsections': []
         }]
     }, {
         'name': 'Recovery Techniques',
-        'path': '/dig/html/part4/body0_09.html',
+        'path': '/html/part4/body0_09.html',
         'subsections': []
     }, {
         'name': 'Analytical Procedures',
-        'path': '/dig/html/part4/body0_10.html',
+        'path': '/html/part4/body0_10.html',
         'subsections': []
     }, {
         'name': 'Animals from the Wall Site',
-        'path': '/dig/html/part4/body0_11.html',
+        'path': '/html/part4/body0_11.html',
         'subsections': []
     }, {
         'name': 'Animals from the Fredricks Site',
-        'path': '/dig/html/part4/body0_12.html',
+        'path': '/html/part4/body0_12.html',
         'subsections': []
     }, {
         'name': 'Comparison of the Sites',
-        'path': '/dig/html/part4/body0_13.html',
+        'path': '/html/part4/body0_13.html',
         'subsections': []
     }, {
         'name': 'Habitat Preference and Seasonality',
-        'path': '/dig/html/part4/body0_14.html',
+        'path': '/html/part4/body0_14.html',
         'subsections': []
     }, {
         'name': 'Species Diversity',
-        'path': '/dig/html/part4/body0_15.html',
+        'path': '/html/part4/body0_15.html',
         'subsections': []
     }, {
         'name': 'Conclusions',
-        'path': '/dig/html/part4/body0_16.html',
+        'path': '/html/part4/body0_16.html',
         'subsections': []
     }, {
         'name': 'List of Tables and Figures',
-        'path': '/dig/html/part4/body0_17.html',
+        'path': '/html/part4/body0_17.html',
         'subsections': []
     }, {
         'name': 'Source',
-        'path': '/dig/html/part4/body0_18.html',
+        'path': '/html/part4/body0_18.html',
         'subsections': []
     }]
-    extracted = text.extract_sidebar(test_data2, '/dig/html/part4', 'body0_05.html')
+    extracted = text.extract_sidebar(test_data2, '/html/part4', 'body0_05.html')
     assert extracted['currentModuleFullName'] == 'Animal Remains: 1983-1984 Excavations'
     assert extracted['moduleAuthor'] == 'by Mary Ann Holm'
     assert extracted['sections'] == test2_sections
@@ -1032,16 +1032,16 @@ def test_extract_topbar():
                    <a target="_parent" href="../index.html">Home</a> |
                    <a target="_parent" href="../copyright.html">Copyright</a>
                    </b></body></html>"""
-    results = text.extract_topbar(test_data, '/dig/html/part2', 'tab0.html')
+    results = text.extract_topbar(test_data, '/html/part2', 'tab0.html')
     assert results['modules'] == [{
         "moduleShortName": "Archaeology",
-        "path": "/dig/html/part2/tab0.html"
+        "path": "/html/part2/tab0.html"
     }, {
         "moduleShortName": "History (1525-1725)",
-        "path": "/dig/html/part2/tab1.html"
+        "path": "/html/part2/tab1.html"
     }, {
         "moduleShortName": "History (1725-present)",
-        "path": "/dig/html/part2/tab2.html"
+        "path": "/html/part2/tab2.html"
     }]
     assert results['currentModule'] == results['modules'][0]
 
@@ -1071,8 +1071,8 @@ def test_get_body_page_html_contents():
         </frameset></html>
         """
     results = text.get_body_page_html_contents(test_data,
-                                               '/dig/html/part2',
-                                               pathlib.Path('C:/'),
+                                               '/html/part2',
+                                               pathlib.Path('C:/dig'),
                                                mock_readfile)
     assert results == {
         'sidebar_html': index0_6_html_str,
@@ -1091,8 +1091,8 @@ def test_get_tab_page_html_contents():
     """
     
     results = text.get_tab_page_html_contents(test_data,
-                                              '/dig/html/part2',
-                                              pathlib.Path('C:/'),
+                                              '/html/part2',
+                                              pathlib.Path('C:/dig'),
                                               mock_readfile)
     assert results == {
         'topbar_html': tabs0_html_str,
@@ -1114,7 +1114,7 @@ def test_process_tab_html_contents():
     }
 
     assert text.process_tab_html_contents(
-        html_strings, "tab0_4.html", "/dig/html/part2", "C:/", mock_readfile
+        html_strings, "tab0_4.html", "/html/part2", mock_readfile
     ) == {
         "page": {
             "parentModuleShortTitle": tabs_extracted["modules"][0]['moduleShortName'],
@@ -1143,7 +1143,7 @@ def test_extract_full_module():
     # Try extracting module 1
     module_file_names = ["tab0.html", "tab0_2.html", "tab0_3.html",
                          "tab0_4.html", "tab0_5.html", "tab0_6.html"]
-    assert text.extract_full_module(module_file_names, "/dig/html/part2", pathlib.Path("C:/"), mock_readfile) == {
+    assert text.extract_full_module(module_file_names, "/html/part2", pathlib.Path("C:/dig"), mock_readfile) == {
         "module": {
             "path": tabs_extracted["modules"][0]['path'],
             "shortTitle": tabs_extracted["modules"][0]['moduleShortName'],
@@ -1204,8 +1204,8 @@ def test_extract_standard_part():
         ]
         iterdir_filename_paths = [pathlib.Path(filename) for filename in iterdir_filename_paths]
         mock_iterdir.return_value = iterdir_filename_paths
-        assert text.extract_standard_part("part2", "C:/", mock_readfile) == {
-            "path": "/dig/html/part2",
+        assert text.extract_standard_part("part2", "C:/dig", mock_readfile) == {
+            "path": "/html/part2",
             "modules": [{
                 "module": {
                     "path": tabs_extracted["modules"][0]['path'],

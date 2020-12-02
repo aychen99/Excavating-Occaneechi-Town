@@ -151,19 +151,19 @@ head6_extracted = {
 }
 
 tab2_4_extracted = {
-    "path": "/dig/html/images/d/d_3559.gif",
+    "path": "/html/images/d/d_3559.gif",
     "figureNum": "121",
     "caption": "Vessel 5, a Fredricks Plain bowl from Burial 3 (RLA catalog no. 2351p441/2)."
 }
 
 tab2_6_extracted = {
-    "path": "/dig/html/images/d/d_3166.gif",
+    "path": "/html/images/d/d_3166.gif",
     "figureNum": "107",
     "caption": "Vessel 7, a Fredricks Check Stamped pot from Burial 6 (RLA catalog no. 2351p2240)."
 }
 
 tab3_6_extracted = {
-    "path": "/dig/html/images/d/d_3166.gif",
+    "path": "/html/images/d/d_3166.gif",
     "figureNum": "107",
     "caption": "Vessel 7, a Fredricks Check Stamped pot from Burial 6 (RLA catalog no. 2351p2240)."
 }
@@ -231,7 +231,7 @@ def test_extract_table_header(head_html_str, expected_header_info):
 def test_extract_top_level_table_html(
     table_html_file_str, head_extracted, body_extracted
 ):
-    assert tables.extract_top_level_table_html(table_html_file_str, "C:/", mock_readfile) == {
+    assert tables.extract_top_level_table_html(table_html_file_str, "C:/dig", mock_readfile) == {
         "tableNum": head_extracted["tableNum"],
         "caption": head_extracted["caption"],
         "table": body_extracted
@@ -248,7 +248,7 @@ def test_extract_all_tables():
         iterdir_paths = [(Path("C:/dig/html/tables") / filename)
                          for filename in filenames]
         mock_iterdir.return_value = iterdir_paths
-        assert tables.extract_all_tables("C:/", mock_readfile) == {
+        assert tables.extract_all_tables("C:/dig", mock_readfile) == {
             "tables": {
                 "3": {
                     "tableNum": head3_extracted["tableNum"],
@@ -262,8 +262,8 @@ def test_extract_all_tables():
                 }
             },
             "htmlPathsToTableFileNums": {
-                "/dig/html/tables/table3.html": "3",
-                "/dig/html/tables/table6.html": "6"
+                "/html/tables/table3.html": "3",
+                "/html/tables/table6.html": "6"
             }
         }
 
@@ -284,7 +284,7 @@ def test_extract_all_table_image_htmls():
         iterdir_paths = [(Path("C:/dig/html/tables") / filename)
                          for filename in filenames]
         mock_iterdir.return_value = iterdir_paths
-        assert tables.extract_all_table_image_htmls("C:/", mock_readfile) == {
+        assert tables.extract_all_table_image_htmls("C:/dig", mock_readfile) == {
             "tab2_4.html": "121",
             "tab2_6.html": "107",
             "tab3_6.html": "107"

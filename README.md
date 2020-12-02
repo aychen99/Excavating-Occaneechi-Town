@@ -29,7 +29,13 @@ or make a copy named "config.json". Change the value in quotes after
 saved to. For example, if the "dig" directory was saved in
 "C:\Users\EOT\Old Site", so that the full path to the dig directory itself is
 "C:\Users\EOT\Old Site\dig", then put "C:\Users\EOT\Old Site" as the value for
-"digParentDirPath.
+"digParentDirPath. This codebase also offers the option of extracting the
+"digpro" version of the site; if the user wants to do that, then the value for
+"runDigPro" in the "config.json" file must be set to true, and the "digpro"
+directory (which is mostly identical to the "dig" directory mentioned above)
+must be stored in the same location. Thus, if the path to the dig directory is
+"C:\Users\EOT\Old Site\dig", then the path to the digpro directory must be
+"C:\Users\EOT\Old Site\digpro".
 5. After ensuring that "config.json" has been updated properly in step 4,
 although one can navigate on the command line/terminal to the folder
 containing the repo, then run `pip install -r requirements.txt` and then

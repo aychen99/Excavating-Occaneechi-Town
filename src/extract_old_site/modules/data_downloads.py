@@ -5,7 +5,7 @@ import os
 
 def process_tab_html_contents(
     html_strings, current_tab_page_name,
-    current_dir_path, dig_parent_dir_path, readfile, current_body_page_name
+    current_dir_path, readfile, current_body_page_name
 ):
     """Turn the raw html_strings from reading a tab.html file into a dict."""
     title = standard_text_chapter.extract_page_title(html_strings['contenta_html'])
@@ -63,31 +63,31 @@ def process_tab_html_contents(
     }
     return processed
 
-def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path, readfile):
+def extract_full_module(module_file_names, current_dir_path, dig_dir_path, readfile):
     """Extract content from one module in a chapter and store in a dict."""
     extracted = {
         "module": {},
         "pages": {}
     }
-    full_current_dir_path = dig_parent_dir_path / ("." + current_dir_path)
+    full_current_dir_path = dig_dir_path / ("." + current_dir_path)
     processed_pages = []
     tab_html_str = readfile(module_file_names[0], full_current_dir_path)
     associated_body_page_names = []
-    for filename in (Path(dig_parent_dir_path) / ('.' + current_dir_path)).iterdir():
+    for filename in (dig_dir_path / ('.' + current_dir_path)).iterdir():
         if filename.name.replace('body', '')[0] == module_file_names[0].replace('tab', '')[0]:
             associated_body_page_names.append(filename)
     for filename in associated_body_page_names:
         body_html_contents = standard_text_chapter.get_body_page_html_contents(
             readfile(filename.name, filename.parent),
             current_dir_path,
-            dig_parent_dir_path,
+            dig_dir_path,
             readfile,
             has_page_num=False
         )
         extracted_contents = standard_text_chapter.get_tab_page_html_contents(
             tab_html_str,
             current_dir_path,
-            dig_parent_dir_path,
+            dig_dir_path,
             readfile,
             has_page_num=False
         )
@@ -97,7 +97,7 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
         extracted_contents['body_page_name'] = filename.name
 
         processed_page = process_tab_html_contents(extracted_contents, module_file_names[0],
-                                                    current_dir_path, dig_parent_dir_path, readfile, filename.name)
+                                                    current_dir_path, readfile, filename.name)
         processed_pages.append(processed_page)
     
     if not standard_text_chapter.validate_tab_html_extraction_results(processed_pages):
@@ -126,16 +126,16 @@ def extract_full_module(module_file_names, current_dir_path, dig_parent_dir_path
     
     return extracted
 
-def extract_data_downloads(dig_parent_dir, readfile):
-    started_dir_path_obj = Path(dig_parent_dir) / "./dig/html/data"
+def extract_data_downloads(dig_dir_str, readfile):
+    started_dir_path_obj = Path(dig_dir_str) / "html/data"
     tab_filenames = []
     for filepath in started_dir_path_obj.iterdir():
         if "tab" in filepath.name and "tabs" not in filepath.name:
             tab_filenames.append(filepath.name)
     return standard_text_chapter.extract_full_chapter(
         tab_filenames,
-        "/dig/html/data",
-        Path(dig_parent_dir),
+        "/html/data",
+        Path(dig_dir_str),
         readfile,
         extract_full_module=extract_full_module
     )

@@ -4,9 +4,14 @@ from pathlib import Path
 import os
 
 def extract_image_page(
-    html_string, img_page_parent_dir, dig_parent_dir, current_page_name
+    html_string, img_page_parent_dir, dig_dir_str, current_page_name
 ):
-    """Extract an image and its clickable map from a slid_***.html file."""
+    """Extract an image and its clickable map from a slid_***.html file.
+    
+    img_page_parent_dir : str
+        Directory within /dig or /digpro of the image page, e.g.
+        "/html/excavations".
+    """
     soup = BeautifulSoup(html_string, 'html5lib')
 
     # Assumes no symlinks in any file path found in an <a> tag,
@@ -14,7 +19,7 @@ def extract_image_page(
     path = Path(img_page_parent_dir) / soup.body.img['src']
     path = Path(os.path.normpath(path)).as_posix()
     html_page_path = (Path(img_page_parent_dir) / current_page_name).as_posix()
-    full_path = (Path(dig_parent_dir) / ("." + path)).as_posix()
+    full_path = (Path(dig_dir_str) / ("." + path)).as_posix()
     figure_num_and_caption = soup.body.center.text.strip().split('.', 1)
     figure_num = figure_num_and_caption[0].replace("Figure", "").strip()
     caption = figure_num_and_caption[1].strip()
@@ -74,18 +79,18 @@ def extract_video_image_page(html_string, img_page_parent_dir, current_page_name
         }
     }
 
-def extract_all_images(dig_parent_dir, readfile):
+def extract_all_images(dig_dir_str, readfile):
     """Return a dictionary of images and their metadata by file path."""
     extracted_images = {}
-    for filepath in (Path(dig_parent_dir) / "dig/html/excavations").iterdir():
+    for filepath in (Path(dig_dir_str) / "html/excavations").iterdir():
         if 'slid' in filepath.name and '.mpg' not in filepath.name and '.mov' not in filepath.name:
             html_string = readfile(filepath.name, filepath.parent)
-            image_details = extract_image_page(html_string, "/dig/html/excavations", dig_parent_dir, filepath.name)
+            image_details = extract_image_page(html_string, "/html/excavations", dig_dir_str, filepath.name)
             extracted_images[image_details['path']] = image_details
         elif 'slid' in filepath.name and '.mpg' in filepath.name or '.mov' in filepath.name:
             # Just slid_agr and slid_ags.mov.html and .mpg.html
             html_string = readfile(filepath.name, filepath.parent)
-            image_details = extract_video_image_page(html_string, "/dig/html/excavations", filepath.name)
+            image_details = extract_video_image_page(html_string, "/html/excavations", filepath.name)
             extracted_images[image_details['path']] = image_details
     return extracted_images
 

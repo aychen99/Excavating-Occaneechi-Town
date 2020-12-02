@@ -14,19 +14,19 @@ def extract_zoom_to(html_string):
     for link in links:
         related_elements.append({
             "name": str(link.string).strip(),
-            "path": (Path("/dig/html/excavations") / link['href']).as_posix()
+            "path": (Path("/html/excavations") / link['href']).as_posix()
         })
     return related_elements
 
 def extract_info_page(
-    html_string, current_dir_path, dig_parent_dir_path, readfile
+    html_string, current_dir_path, dig_dir_str, readfile
 ):
     """Extract info from a info_**.html file."""
     # Assumes set structure of the document, particularly 
     # the main paragraph and td cells
 
     def remove_dots_and_make_posix(filename):
-        path = os.path.normpath(Path('/dig/html/excavations') / filename)
+        path = os.path.normpath(Path('/html/excavations') / filename)
         return Path(path).as_posix()
 
     soup = BeautifulSoup(html_string, 'html5lib')
@@ -52,7 +52,7 @@ def extract_info_page(
         i += 1
     td_cells = soup.body.table.tbody.find_all('td')
     images = []
-    full_current_dir_path = Path(dig_parent_dir_path) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path)
     for link in td_cells[0].find_all('a'):
         if '.mov.html' in link['href'] or '.mpg.html' in link['href']:
             print("Found mov/mpg link in " + name)
@@ -60,7 +60,7 @@ def extract_info_page(
         else:
             image_page_html = readfile(link['href'], full_current_dir_path)
             image = extract_image_page(image_page_html, current_dir_path,
-                                       dig_parent_dir_path, link['href'])
+                                       dig_dir_str, link['href'])
             images.append(image)
     
     artifacts_path = None
@@ -79,9 +79,9 @@ def extract_info_page(
         "descriptionPath": description_path
     }
 
-def get_ctrl_page_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
+def get_ctrl_page_contents(html_string, current_dir_path, dig_dir_str, readfile):
     """Extract the html contents linked to from within a ctrl_**.html file."""
-    full_current_dir_path = Path(dig_parent_dir_path) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path)
     
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
@@ -89,26 +89,26 @@ def get_ctrl_page_contents(html_string, current_dir_path, dig_parent_dir_path, r
     info_page_html = readfile(frames[0]['src'], full_current_dir_path)
     zoom_page_html = readfile(frames[1]['src'], full_current_dir_path)
 
-    extracted = extract_info_page(info_page_html, current_dir_path, dig_parent_dir_path, readfile)
+    extracted = extract_info_page(info_page_html, current_dir_path, dig_dir_str, readfile)
     extracted['relatedElements'] = extract_zoom_to(zoom_page_html)
     return extracted
 
-def get_exc_page_contents(html_string, current_dir_path, dig_parent_dir_path, readfile):
+def get_exc_page_contents(html_string, current_dir_path, dig_dir_str, readfile):
     """Extract the html contents linked to from within a exc_**.html file."""
-    full_current_dir_path = Path(dig_parent_dir_path) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path)
 
     frames = BeautifulSoup(html_string, 'html5lib').find_all('frame')
     ctrl_html_string = readfile(frames[1]['src'], full_current_dir_path)
-    return get_ctrl_page_contents(ctrl_html_string, current_dir_path, dig_parent_dir_path, readfile)
+    return get_ctrl_page_contents(ctrl_html_string, current_dir_path, dig_dir_str, readfile)
 
-def extract_all_exc_pages(dig_parent_dir, readfile):
-    excavations_dir = Path(dig_parent_dir) / "./dig/html/excavations"
+def extract_all_exc_pages(dig_dir_str, readfile):
+    excavations_dir = Path(dig_dir_str) / "html/excavations"
     excavations_pages = []
     for filepath in excavations_dir.iterdir():
         if 'exc' in filepath.name:
             html_string = readfile(filepath.name, filepath.parent)
-            page_contents = get_exc_page_contents(html_string, "/dig/html/excavations", dig_parent_dir, readfile)
-            page_contents['path'] = (Path("/dig/html/excavations") / filepath.name).as_posix()
+            page_contents = get_exc_page_contents(html_string, "/html/excavations", dig_dir_str, readfile)
+            page_contents['path'] = (Path("/html/excavations") / filepath.name).as_posix()
             excavations_pages.append(page_contents)
 
     return excavations_pages

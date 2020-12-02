@@ -65,12 +65,12 @@ def extract_references_page(html_string):
 
     return {"refs": references, "hrefsToRefs": hrefs_to_refs}
 
-def extract_all_references(dig_parent_dir, readfile):
+def extract_all_references(dig_dir_str, readfile):
     """Extract all references A-Z from the site."""
-    dig_parent_path_obj = Path(dig_parent_dir)
+    dig_dir_path_obj = Path(dig_dir_str)
     extracted = {"refs": {}, "hrefsToRefs": {}}
     for split_page_num in [282, 283, 284]:
-        split_page_dir = dig_parent_path_obj / "dig/html/split"
+        split_page_dir = dig_dir_path_obj / "html/split"
         refs_html = readfile(
             "report" + str(split_page_num) + "b.html", split_page_dir
         )

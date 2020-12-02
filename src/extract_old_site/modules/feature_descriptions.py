@@ -10,7 +10,7 @@ def extract_sidebar_sections(html_string):
     section_links = soup.find_all('a')
     sections = []
     for link in section_links:
-        path = os.path.normpath(Path('/dig/html/descriptions') / link['href'])
+        path = os.path.normpath(Path('/html/descriptions') / link['href'])
         path = Path(path).as_posix()
         sections.append({
             'name': str(link.string).strip(),
@@ -25,10 +25,10 @@ def extract_page_title(html_string):
     soup = BeautifulSoup(html_string, 'html.parser')
     return str(soup.body.center.b.string)
 
-def extract_descriptions(dig_parent_dir, readfile):
-    dig_parent_dir_path = Path(dig_parent_dir)
-    current_dir_path = "/dig/html/descriptions"
-    full_current_dir_path = dig_parent_dir_path / ("dig/html/descriptions")
+def extract_descriptions(dig_dir_str, readfile):
+    dig_dir_path = Path(dig_dir_str)
+    current_dir_path = "/html/descriptions"
+    full_current_dir_path = dig_dir_path / "html/descriptions"
 
     processed_pages = []
     sections_name_changes = {}
@@ -37,11 +37,11 @@ def extract_descriptions(dig_parent_dir, readfile):
             tab_page_content = readfile(filename, full_current_dir_path)
             html_strings = standard_text_chapter.get_tab_page_html_contents(
                 tab_page_content, current_dir_path,
-                dig_parent_dir_path, readfile
+                dig_dir_path, readfile
             )
             title = extract_page_title(html_strings['reporta_html'])
             content = standard_text_chapter.extract_page_content(
-                html_strings['reportb_html'], "/dig/html/descriptions"
+                html_strings['reportb_html'], "/html/descriptions"
             )
             page_num = standard_text_chapter.extract_page_number(html_strings['reportc_html'])
             sidebar_info_sections = extract_sidebar_sections(html_strings['sidebar_html'])
@@ -73,7 +73,7 @@ def extract_descriptions(dig_parent_dir, readfile):
                     "content": content,
                 },
                 "module": {
-                    "path": "/dig/html/descriptions/tab0.html",
+                    "path": "/html/descriptions/tab0.html",
                     "shortTitle": "Feature Descriptions",
                     "fullTitle": "Feature Descriptions",
                     "author": None,
