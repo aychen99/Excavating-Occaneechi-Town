@@ -6,7 +6,7 @@ from . import utilities
 
 
 def generate_site(
-        dig_dir, input_dir, output_dir,
+        dig_dir, input_dir, output_dir, new_img_dir,
         overwrite_out=False, copy_images=False, copy_videos=False, copy_data=True,
         version="dig"):
 
@@ -43,6 +43,11 @@ def generate_site(
     IMGS_IN = DIG_DIR / "html" / "images"
     IMGS_OUT = OUTPUT_DIR / "imgs"
 
+    if new_img_dir == "Default":
+        NEW_IMG_DIR = None
+    else:
+        NEW_IMG_DIR = Path(new_img_dir)
+
     HTML_OUT_DIR = OUTPUT_DIR / "html"
     INDEX_PATH = HTML_OUT_DIR / "index.html"
 
@@ -55,9 +60,9 @@ def generate_site(
     index = site_data_structs.site.Index(INDEX_PATH)
 
     if copy_images:
-        utilities.dig_imgs.copy_images(DIG_DIR, IMGS_IN, IMGS_OUT, index)
+        utilities.dig_imgs.copy_images(DIG_DIR, IMGS_IN, IMGS_OUT, index, new_img_dir=NEW_IMG_DIR)
     else:
-        utilities.dig_imgs.register_images(DIG_DIR, IMGS_IN, IMGS_OUT, index)
+        utilities.dig_imgs.register_images(DIG_DIR, IMGS_IN, IMGS_OUT, index, new_img_dir=NEW_IMG_DIR)
 
     utilities.html_assets.copy_html_assets(ASSETS_IN, ASSETS_OUT)
 

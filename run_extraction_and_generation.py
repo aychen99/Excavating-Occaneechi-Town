@@ -21,6 +21,7 @@ if __name__ == "__main__":
     copy_images = config["copyImages"]
     copy_videos = config["copyVideos"]
     copy_data = config["copyData"]
+    new_img_dir = config["newImgDir"]
 
     # Run extraction and site generation
     if config['runExtraction']:
@@ -35,9 +36,9 @@ if __name__ == "__main__":
     if config['runGeneration']:
         print("\n-----------------------------------\n"
               "Generating new site files.\n")
-        generate_site(dig_dir, input_dir, output_dir, overwrite_out, copy_images, copy_videos, copy_data, version="dig")
+        generate_site(dig_dir, input_dir, output_dir, new_img_dir, overwrite_out, copy_images, copy_videos, copy_data, version="dig")
         if config['runDigPro']:
-            generate_site(digpro_dir, input_dir, output_dir, overwrite_out, copy_images, copy_videos, copy_data, version="digpro")
+            generate_site(digpro_dir, input_dir, output_dir, new_img_dir, overwrite_out, copy_images, copy_videos, copy_data, version="digpro")
     else:
         print("\n-----------------------------------\n"
               "SKIPPING generating new site files.\n")

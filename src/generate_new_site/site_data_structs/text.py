@@ -4,6 +4,7 @@ from ..utilities.path_ops import rel_path
 from ..utilities.str_ops import make_str_filename_safe, normalize_file_page_num
 from ..utilities.process_content import update_text_paragraph
 from .site import SiteChapter, SiteModule, SitePage
+from ..utilities.dig_imgs import high_res_images
 import json
 
 
@@ -589,7 +590,8 @@ class TextPage(SitePage):
                 this_section_name=self.name,
                 this_section=self,
                 other_info=self.other_info,
-                pagination=pagination
+                pagination=pagination,
+                high_res_images=high_res_images
             ).encode('utf-8'))
 
         super().write()  # Write children

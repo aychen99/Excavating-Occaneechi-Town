@@ -10,5 +10,6 @@
     "shrinkExtractionJsons": false,
     "runExtraction": true,
     "runGeneration": true,
-    "runDigPro": false
+    "runDigPro": false,
+    "newImgDir": "Default"
 }
