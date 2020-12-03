@@ -205,13 +205,17 @@ class PrimerPage(SitePage):
                     self.path
                 )
             if 'image' in content_obj:
-                content_obj['image']['path'] = content_obj['image']['path'].replace('/html/images/', '../../imgs/')
+                new_img_path = self.parent.parent.parent.pathtable.get_path(content_obj['image']['path'])
+                new_img_path = rel_path(new_img_path, self.path).as_posix()
+                content_obj['image']['path'] = new_img_path
             if 'mapImg' in content_obj:
                 content_obj['mapImg'] = content_obj['mapImg'].replace('/html/images/', '../../imgs/')
 
         # Update image paths
         if self.image:
-            self.image["path"] = self.image["path"].replace("/html/images/", "../../imgs/")
+            new_img_path = self.parent.parent.parent.pathtable.get_path(self.image["path"])
+            new_img_path = rel_path(new_img_path, self.path).as_posix()
+            self.image["path"] = new_img_path
         # TODO
 
         # Open using wb and encode('utf-8') to resolve encoding issues
