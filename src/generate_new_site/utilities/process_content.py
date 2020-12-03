@@ -61,14 +61,10 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
                     "<b>Figure " + str(img_num) + "</b>. "
                     + str(figure.caption)
                 )
-                a['data-src'] = (
-                    figure.img_orig_path.as_posix()
-                    .replace('/html/images/', '../../imgs/')
-                )
-                a['href'] = (
-                    figure.img_orig_path.as_posix()
-                    .replace('/html/images/', '../../imgs/')
-                )
+                new_img_path = index.pathtable.get_path(figure.img_orig_path)
+                new_img_path = rel_path(new_img_path, page_obj_path).as_posix()
+                a['data-src'] = new_img_path
+                a['href'] = new_img_path
         elif 'ref' in old_path:
             # Set up reference modal
             a['href'] = '#genModal'
