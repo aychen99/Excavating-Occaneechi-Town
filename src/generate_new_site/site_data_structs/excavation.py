@@ -121,6 +121,40 @@ class ExcavationChapter(SiteChapter):
             'content': desc_data['pages'][desc['pageNum']]
         } for desc in desc_data['module']['sections']]
 
+        # Sort element names from the loaded JSON data before using it.
+        # For Features:
+        # Order is Burial 1, 2, and 3; then Features 1, 2, ..., 9, 10, 11, ...
+        # For Squares:
+        # Order is 180R30, 180R40, ... 210L10, 210R0, 210R10, ...,
+        # 210R90, 210R100, ...
+        # For Structures:
+        # Order is numerical, i.e. Structures 1, 2, 3, ..., 9, 10, 11, ...
+
+        # Workaround for sorting: assign an integer to each excavation element.
+        # Larger integers will be sorted towards the end of the list.
+        def exc_sorter(elem):
+            elem_name_parts = elem['name'].split(' ')
+            elem_type = elem_name_parts[0]
+            elem_num = elem_name_parts[1]
+            if elem_type == 'Burial':
+                return -1000 + int(elem_num)
+            elif elem_type == 'Feature':
+                return int(elem_num)
+            elif elem_type == 'Structure':
+                return 1000 + int(elem_num)
+            elif elem_type == 'Sq.':
+                sq_num = elem_num
+                if 'L' in sq_num:
+                    sq_num_parts = [int(part) for part in sq_num.split('L')]
+                    return (sq_num_parts[0] * 100) + (-1 * sq_num_parts[1])
+                elif 'R' in sq_num:
+                    sq_num_parts = [int(part) for part in sq_num.split('R')]
+                    return (sq_num_parts[0] * 100) + sq_num_parts[1]
+            else:
+                raise Exception('Unknown Exc Context found: ' + elem['name'])
+
+        exc_data = sorted(exc_data, key=exc_sorter)
+
         # Parse out each element
         for element in exc_data:
             # Find description if it exists

@@ -184,10 +184,22 @@ class TextChapter(SiteChapter):
 
         # Sort reference keys
 
-        # Only one module in References
-        module = TextModule(
-            short_name="References",
-            long_name="References",
+        # Add one module for each of A-G, H-R, and S-Z in References
+        a_g_module = TextModule(
+            short_name="A-G",
+            long_name="A-G",
+            parent=chapter,
+            author=None
+        )
+        h_r_module = TextModule(
+            short_name="H-R",
+            long_name="H-R",
+            parent=chapter,
+            author=None
+        )
+        s_z_module = TextModule(
+            short_name="S-Z",
+            long_name="S-Z",
             parent=chapter,
             author=None
         )
@@ -233,7 +245,7 @@ class TextChapter(SiteChapter):
                 make_str_filename_safe("A-G")
             ),
             content=a_g_content,
-            parent=module,
+            parent=a_g_module,
             page_num=first_page_num
         )
 
@@ -244,7 +256,7 @@ class TextChapter(SiteChapter):
                 make_str_filename_safe("H-R")
             ),
             content=h_r_content,
-            parent=module,
+            parent=h_r_module,
             page_num=second_page_num
         )
 
@@ -255,16 +267,13 @@ class TextChapter(SiteChapter):
                 make_str_filename_safe("S-Z")
             ),
             content=s_z_content,
-            parent=module,
+            parent=s_z_module,
             page_num=third_page_num
         )
 
         # Add sections to path table for link resolution
-        # HOTFIX: hardcode two old_paths, one for dig and one for dig_pro
         index.pathtable.register(old_path="/html/part6/tab0.html", new_path=a_g_section.path, entity=a_g_section)
-
         index.pathtable.register(old_path="/html/part6/tab1.html", new_path=h_r_section.path, entity=h_r_section)
-
         index.pathtable.register(old_path="/html/part6/tab2.html", new_path=s_z_section.path, entity=s_z_section)
 
         # Add to page table for pagination
@@ -279,14 +288,16 @@ class TextChapter(SiteChapter):
         )
 
         # No subsections, can safely ignore
-        module.add_child(a_g_section)
-        module.add_child(h_r_section)
-        module.add_child(s_z_section)
+        a_g_module.add_child(a_g_section)
+        h_r_module.add_child(h_r_section)
+        s_z_module.add_child(s_z_section)
 
         # TODO: Add module to path table for link resolution
 
-        # Add the module subtree as child of the chapter
-        chapter.add_child(module)
+        # Add the modules as children of the chapter
+        chapter.add_child(a_g_module)
+        chapter.add_child(h_r_module)
+        chapter.add_child(s_z_module)
 
         # TODO: Add chapter to path table for link resolution
 
