@@ -5,7 +5,17 @@ html, body {
 .card-header {
   font-family: 'Lithos Pro';
   background-color: #202151 !important;
-  border-radius: 0;
+  border-radius: 0 !important;
+}
+
+/* Remove gap between header and top of the browser */
+#h-card {
+  border: 0;
+}
+
+/* Remove extra scrollbar that appears when opening a modal */
+body.modal-open {
+  padding-right: 0 !important;
 }
 
 .mb-0 {

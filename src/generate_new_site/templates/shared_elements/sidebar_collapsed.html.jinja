@@ -11,6 +11,13 @@
 ## -----------------------------------------------------------------------------
 #}
 <div class="col-md-3 eot-sidebar collapse" id="eot-sidebar">
+  <script>
+    // Collapse sidebar by default on mobile screens
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      sidebar = document.getElementById("eot-sidebar");
+      sidebar.classList.remove("show");
+    }
+  </script>
   <nav id="toc" data-toggle="toc" class="nav flex-column">
   {% for chapter in chapters %}
     {% if chapter.name == this_chapter_name %}
