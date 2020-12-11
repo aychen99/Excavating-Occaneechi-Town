@@ -1,3 +1,7 @@
+/* JavaScript that enables typing in a page number and navigating to that page.
+ * Filled out with a map of page numbers to page paths during site generation.
+ */
+
 let pageNumJson = 'placeholderForJinjaGeneration';
 
 function setUpPageNumNavigation() {

@@ -9,8 +9,9 @@ def process_tab_html_contents(
 ):
     """Turn the raw html_strings from reading a tab.html file into a dict."""
     title = standard_text_chapter.extract_page_title(html_strings['contenta_html'])
+    # TODO: Implement more permanent fix than adding "/content" onto current_dir_path
     content = standard_text_chapter.extract_page_content(
-        html_strings['contentb_html'], current_dir_path
+        html_strings['contentb_html'], current_dir_path + '/content'
     )
     page_num_map = {
         "body0_1.html": "Data 1",

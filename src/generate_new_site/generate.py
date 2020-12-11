@@ -64,13 +64,20 @@ def generate_site(
     else:
         utilities.dig_imgs.register_images(DIG_DIR, IMGS_IN, IMGS_OUT, index, new_img_dir=NEW_IMG_DIR)
 
-    utilities.html_assets.copy_html_assets(ASSETS_IN, ASSETS_OUT)
-
-    if copy_videos:
-        utilities.html_assets.copy_videos(DIG_DIR / "html/video", OUTPUT_DIR / "video")
-
-    if copy_data:
-        utilities.html_assets.copy_data(DIG_DIR / 'html/data/content/files', OUTPUT_DIR / 'dataForDownload')
+    # Copy CSS, JS, home page images, and other assets
+    utilities.html_assets.copy_html_assets(
+        ASSETS_IN, ASSETS_OUT, index, dig_dir
+    )
+    # Copy videos
+    utilities.html_assets.copy_videos(
+        DIG_DIR / "html/video", OUTPUT_DIR / "video",
+        index, dig_dir, copy_files=copy_videos
+    )
+    # Copy downloadable data
+    utilities.html_assets.copy_html_assets(
+        DIG_DIR / 'html/data/content/files', OUTPUT_DIR / 'dataForDownload',
+        index, dig_dir, copy_files=copy_data, register=True
+    )
 
     DESCRIPTIONS_PATH = INPUT_DIR / "descriptions.json"
     EXCAVATIONS_PATH = INPUT_DIR / "excavationsElements.json"

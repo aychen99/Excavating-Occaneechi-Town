@@ -6,6 +6,17 @@ from .path_ops import rel_path
 
 def update_text_paragraph(paragraph_string, index, page_obj_path):
     """Update the <a> tags in a textpage/feature description paragraph."""
+    # Map of video names to YouTube links, placed here for now
+    mapToYouTube = {
+        "plowzone": "https://www.youtube.com/embed/fXlnTa9_k90",
+        "pits": "https://www.youtube.com/embed/Hj4lMnb6Q0s",
+        "discover": "https://www.youtube.com/embed/P_dqJEv6Vds",
+        "disease": "https://www.youtube.com/embed/Hx7EIN8tMh8",
+        "feature": "https://www.youtube.com/embed/_XsDY8Po_I8",
+        "trowel": "https://www.youtube.com/embed/8kkF2YceTd4",
+        "wtrscrn": "https://www.youtube.com/embed/UJIQ3XuX8EA"
+    }
+
     # Change innerHTML content of each section/paragraph
     # so that links (e.g. image and references) are updated.
     # TODO: if there is time, find a less redundant way of storing the info
@@ -17,39 +28,37 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             del a['data-is-primer']
             old_path = pathlib.Path('/html/primer') / old_path
             old_path = os.path.normpath(old_path)
-            old_path = str(pathlib.Path(old_path).as_posix())
+            old_path = pathlib.Path(old_path).as_posix()
+            video_name = old_path.split('/')[-1].split('.')[0]
             a['href'] = '#genModal'
             a['data-toggle'] = 'modal'
             a['data-target'] = '#genModal'
             a['class'] = 'a-video'
-            a['data-figure-path'] = old_path.replace('/html/video/', '../../video/')
+            a['data-figure-path'] = mapToYouTube[video_name]
         elif 'slid' in old_path:
             # Set up image modal
             if 'mov.html' in old_path or 'mpg.html' in old_path:
                 old_path = pathlib.Path('/html/someDir') / old_path
                 old_path = os.path.normpath(old_path)
-                old_path = str(pathlib.Path(old_path).as_posix())
+                old_path = pathlib.Path(old_path).as_posix()
                 lookup = index.figuretable
                 img_num = lookup.get_figure_num(old_path)
                 figure = lookup.get_figure(img_num)
+                video_name = figure.img_orig_path.as_posix()
+                video_name = video_name.split('/')[-1].split('.')[0]
                 a['href'] = '#genModal'
                 a['data-toggle'] = 'modal'
                 a['data-target'] = '#genModal'
+                a['data-figure-path'] = mapToYouTube[video_name]
                 a['class'] = 'a-video'
                 a['data-figure-caption'] = (
                     "<b>Figure " + str(img_num) + "</b>. "
                     + str(figure.caption)
                 )
-                a['data-figure-path'] = (
-                    figure.img_orig_path.as_posix()
-                    .split('.')[0]
-                    .replace('/html/video/', '../../video/')
-                    + '.mp4'
-                )
             else:
                 old_path = pathlib.Path('/html/someDir') / old_path
                 old_path = os.path.normpath(old_path)
-                old_path = str(pathlib.Path(old_path).as_posix())
+                old_path = pathlib.Path(old_path).as_posix()
                 lookup = index.figuretable
                 img_num = lookup.get_figure_num(old_path)
                 figure = lookup.get_figure(img_num)
@@ -90,7 +99,7 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             a['class'] = 'a-table'
             old_path = pathlib.Path('/html/someDir') / old_path
             old_path = os.path.normpath(old_path)
-            old_path = str(pathlib.Path(old_path).as_posix())
+            old_path = pathlib.Path(old_path).as_posix()
             lookup = index.datatables
             table = lookup.get_table_by_old_path(old_path)
             a['data-table-header'] = (

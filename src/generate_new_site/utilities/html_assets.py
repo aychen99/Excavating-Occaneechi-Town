@@ -5,7 +5,8 @@ import pathlib
 import json
 
 
-def copy_html_assets(assets_in, assets_out):
+def copy_html_assets(assets_in, assets_out, index, dig_dir, copy_files=True, register=False):
+    # TODO: Fix a bug so that it can copy files in the root, rather than only in subdirectories
     all_dirs = [os.path.relpath(x[0], assets_in.as_posix())
                 for x in os.walk(assets_in)]
     # Remove the top level directory itself
@@ -35,17 +36,23 @@ def copy_html_assets(assets_in, assets_out):
                     shutil.copy(name, unmin_js_path)
                 else:
                     new_path = os.path.relpath(name, assets_in.as_posix())
-                    shutil.copy(name, assets_out / new_path)
+                    if copy_files:
+                        shutil.copy(name, assets_out / new_path)
+                    if register:
+                        old_path = pathlib.Path('/') / os.path.relpath(filepath, dig_dir)
+                        new_path_to_register = assets_out / new_path
+                        index.pathtable.register(old_path.as_posix(), new_path_to_register)
 
     return
 
 
-def copy_videos(videos_in, videos_out):
+def copy_videos(videos_in, videos_out, index, dig_dir, copy_files=True):
     if not videos_out.is_dir():
         videos_out.mkdir(parents=True, exist_ok=True)
     for filepath in videos_in.iterdir():
-        shutil.copy(filepath, videos_out / filepath.name)
-
-
-def copy_data(data_in, data_out):
-    copy_html_assets(data_in, data_out)
+        if (copy_files):
+            shutil.copy(filepath, videos_out / filepath.name)
+        # Register the video in the pathtable
+        old_video_path = pathlib.Path('/') / os.path.relpath(filepath, dig_dir)
+        new_video_path = videos_out / filepath.name
+        index.pathtable.register(old_video_path, new_video_path)
