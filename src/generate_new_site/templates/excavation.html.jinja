@@ -39,39 +39,42 @@
                         </svg>
                     </div>
                 </div>
-                <div class="col-md col-lg-7 order-first order-md-last">
+                <div class="col-md col-lg-7 pl-4 order-first order-md-last">
                     <div class="row">
                         <h1>Archaeological Map of the Excavation at Occaneechi Town</h1>
                         <p>This map shows the pits, postholes, houses, and palisade that define early eighteenth-century Occaneechi Town. The 150-ft (north-south) by 130-ft (east-west) excavation grid is shown in blue. Select a context type below and then click on a specific context on the map to view it in greater detail. </p>
                     </div>
-                    <div class="row align-items-center justify-content-center py-4">
-                        <div class="col">
-                            <button id="ph-toggle" type="button" class="btn btn-primary btn-sm" data-toggle="button" aria-pressed="false">Toggle Postholes</button>
-                        </div>
-                        <div class="col align-items-center justify-content-center">
+                    <div class="row pt-2">
+                        <div class="col-lg">
                             <p>Choose Context:</p>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col-lg pb-4">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-primary btn-sm active">
+                                <label style="white-space:nowrap;" class="btn btn-primary btn-sm active">
                                     <input type="radio" name="focus" id="focus-none" checked>None
                                 </label>
-                                <label class="btn btn-primary btn-sm">
+                                <label style="white-space:nowrap;" class="btn btn-primary btn-sm">
                                     <input type="radio" name="focus" id="focus-grid">Squares (Blue)
                                 </label>
-                                <label class="btn btn-primary btn-sm">
+                                <label style="white-space:nowrap;" class="btn btn-primary btn-sm">
                                     <input type="radio" name="focus" id="focus-features">Features (Red)
                                 </label>
-                                <label class="btn btn-primary btn-sm">
+                                <label style="white-space:nowrap;" class="btn btn-primary btn-sm">
                                     <input type="radio" name="focus" id="focus-structures">Structures (Brown)
                                 </label>
                             </div>
                         </div>
+                        <div class="col-lg pb-4">
+                            <button style="white-space:nowrap;" id="ph-toggle" type="button" class="btn btn-primary btn-sm" data-toggle="button" aria-pressed="false">Toggle Postholes</button>
+                        </div>
                     </div>
                     <div class="row border">
                         <div class="col">
-                            <div class="row">
+                            <div class="row p-1">
                                 <h3>Selected Context:&nbsp;</h3><h3 id="context_name">None</h3>
                             </div>
-                            <div class="row">
+                            <div class="row p-1">
                                 <p>Click <a id="context_href" href="#">here</a> to view in more detail.</p>
                             </div>
                         </div>
