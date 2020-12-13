@@ -173,7 +173,7 @@ def generate_site(
     ))
     index.add_child(site_data_structs.text.TextChapter.appendix_a_from_json(
         json_path = ARTIFACTS_PATH,
-        name="Appendix A: Artifacts by Excavation Element",
+        name="Appendix A: Artifacts by Excavation Context",
         dir=HTML_OUT_DIR / "appendixa",
         index=index
     ))
