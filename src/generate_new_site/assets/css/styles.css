@@ -23,7 +23,7 @@ body.modal-open {
   font-size: 1.5rem;
 }
 /* iPads (portrait and landscape) and above ----------- */
-@media only screen and (max-device-width : 991px) {
+@media only screen and (max-width : 991px) {
   /* Styles */
   #home-pot-pics {
     display: none;
@@ -216,21 +216,6 @@ a.nav-link.active {
 .carousel {
   width: 100% !important;
 }
-ol.carousel-indicators li,
-ol.carousel-indicators li.active {
-   width: 1rem !important;
-   height: .2rem !important;
-   margin: 0;
-   border-radius: 0% !important;
-   border: 0;
-   background: transparent;
-}
-
-ol.carousel-indicators li {
-   background: rgba(255,255,255,0.39);
-   margin-left: .5rem;
-   margin-right: .5rem;
-}
 .row > .col > p {
   padding-left: inherit;
   font-family: sans-serif;
@@ -265,12 +250,13 @@ li.sidebar-subsection > a:hover {
 }
 
 .mx-auto.d-block.img-fluid {
-  min-height: 400px !important;
+  height: 400px !important;
 }
 
 .text-light {
   font-family: 'Lithos Pro';
 }
+
 div#text-chapter-contents img {
   padding-block-start: 1em;
   padding-block-end: 2em;
