@@ -246,7 +246,7 @@ li.sidebar-subsection > a:hover {
 }
 
 .carousel-inner {
-  height: 450px !important;
+  max-height: 450px !important;
 }
 
 .mx-auto.d-block.img-fluid {
