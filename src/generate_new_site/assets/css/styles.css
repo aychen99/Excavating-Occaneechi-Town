@@ -97,7 +97,7 @@ footer {
 }
 
 #toc .nav {
-  display: table;
+  display: block;
 }
 
 .col-md-3 {
@@ -190,7 +190,7 @@ a.nav-link.active {
 @media only screen and (max-width : 767px) {
   /* Styles */
   #toc {
-    display: table;
+    display: block;
   }
   div#eot-sidebar.col-md-3 {
     max-width: 60% !important;

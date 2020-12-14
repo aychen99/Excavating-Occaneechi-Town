@@ -35,7 +35,7 @@
             <li class="{% if section.name == this_section_name %}sidebar-active {% endif %}sidebar-section">
               <a href="{{ section.href }}">{{ section.name }}</a>
               {% if section.children %}
-                <ul>
+                <ul class="nav">
                 {% for subsection in section.children %}
                   <li class="{% if subsection.name == this_section_name %}sidebar-active {% endif %}sidebar-subsection">
                     <a href="{{ subsection.href }}">{{ subsection.name }}</a>
