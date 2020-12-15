@@ -58,8 +58,12 @@ $(document).ready(function() {
   $("[id^=carousel-zoom]").lightGallery({
     selector: 'a'
   });
-  // Initialize any images in Archaeology Primer chapter
+  // Initialize any images in Archaeology Primer chapter text
   $("[id^=archaeology-images]").lightGallery({
+    selector: 'a'
+  });
+  // Initialize images on pages 13, 14, and 23 of the Primer
+  $("#changeable-image-table").lightGallery({
     selector: 'a'
   });
   // Initialize any image links in paragraphs of text

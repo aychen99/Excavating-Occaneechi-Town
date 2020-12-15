@@ -166,6 +166,11 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             raise Exception('found path ' + old_path + ' in this paragraph: \n'
                             + paragraph_string)
 
+    # If content is a table in Data Downloads, add classes for styling
+    if len(soup.body.contents) == 1 and soup.body.contents[0].name == 'table':
+        # print('confirming this is in Data Downloads')
+        soup.body.table['class'] = ['table', 'table-bordered']
+
     # Get rid of extra <html>, <head>, and <body> tags in soup
     new_paragraph = str(soup.body).replace('<body>', '').replace('</body>', '')
     return new_paragraph

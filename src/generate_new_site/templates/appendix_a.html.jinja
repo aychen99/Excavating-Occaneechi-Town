@@ -53,7 +53,7 @@
     <div class="container-fluid">
       <div class="row">
         {% include "shared_elements/sidebar.html.jinja" %}
-        <div class="col-md" id="text-chapter-contents" style="overflow-y: scroll;">
+        <div class="col-md" id="text-chapter-contents">
           <h1>{{ this_section.name }}</h1>
           {% for content in this_section.content %}
             {% if content.type == "paragraph" %}
@@ -66,48 +66,50 @@
             <div>
             {% for zone in content.content %}
               <h3>{{ zone.name }}</h3>
-              <table class="table table-striped table-bordered table-sm">
-              <thead class="thead-light">
-                <tr>
-                  <th>Name</th>
-                  <th>Cat. No.</th>
-                  <th>Count</th>
-                  <th>Size</th>
-                  <th>Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for artifact in zone["artifacts"] %}
-                <tr>
-                  {% if artifact.Photo %}
-                  {% set caption="<b>Figure " ~ artifact["Photo"].figure_num ~ "</b>. " ~ artifact["Photo"].caption %}
-                  {% set figurePath = artifact["Photo"].img_orig_path.as_posix().replace('/html/images/', '../../imgs/') %}
-                      {% if artifact["Photo"].img_orig_path.name in high_res_images %}
-                      {% set figurePath = figurePath.replace(artifact["Photo"].img_orig_path.name, high_res_images[artifact["Photo"].img_orig_path.name]) %}
-                      {% endif %}
-                  <td>
-                  {# <a data-toggle="popover" class="figure-popover" data-figure-caption="{{ caption }}" data-figure-path="{{ figurePath }}"> #}
-                  <a class="a-img" data-src="{{ figurePath }}" data-sub-html="{{ caption }}" href="{{ figurePath }}">
-                  {{ artifact["Artifacts"] }}
-                  </a>
-                  </td>
-                  {% else %}
-                  <td>{{ artifact["Artifacts"] }}</td>
-                  {% endif %}
-                  <td>{{ artifact["Cat. No."] }}</td>
-                  <td>{{ artifact["Count"] }}</td>
-                  <td>{{ artifact["Size"] }}</td>
-                  <td>
-                  {% if artifact["details"] %}
-                  <a class="a-table" data-table-header="<strong>Details</strong>" data-target="#genModal" data-toggle="modal" href="#genModal" data-table-string="{{
-                    makeDetailsPopoverTable(artifact['details'], artifact['detailsFieldOrder'])
-                  }}">Yes</a>
-                  {% endif %}
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              </table>
+              <div class="table-container-div">
+                <table class="table table-striped table-bordered table-sm appendix-a-table">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Cat. No.</th>
+                    <th>Count</th>
+                    <th>Size</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for artifact in zone["artifacts"] %}
+                  <tr>
+                    {% if artifact.Photo %}
+                    {% set caption="<b>Figure " ~ artifact["Photo"].figure_num ~ "</b>. " ~ artifact["Photo"].caption %}
+                    {% set figurePath = artifact["Photo"].img_orig_path.as_posix().replace('/html/images/', '../../imgs/') %}
+                        {% if artifact["Photo"].img_orig_path.name in high_res_images %}
+                        {% set figurePath = figurePath.replace(artifact["Photo"].img_orig_path.name, high_res_images[artifact["Photo"].img_orig_path.name]) %}
+                        {% endif %}
+                    <td>
+                    {# <a data-toggle="popover" class="figure-popover" data-figure-caption="{{ caption }}" data-figure-path="{{ figurePath }}"> #}
+                    <a class="a-img" data-src="{{ figurePath }}" data-sub-html="{{ caption }}" href="{{ figurePath }}">
+                    {{ artifact["Artifacts"] }}
+                    </a>
+                    </td>
+                    {% else %}
+                    <td>{{ artifact["Artifacts"] }}</td>
+                    {% endif %}
+                    <td>{{ artifact["Cat. No."] }}</td>
+                    <td>{{ artifact["Count"] }}</td>
+                    <td>{{ artifact["Size"] }}</td>
+                    <td>
+                    {% if artifact["details"] %}
+                    <a class="a-table" data-table-header="<strong>Details</strong>" data-target="#genModal" data-toggle="modal" href="#genModal" data-table-string="{{
+                      makeDetailsPopoverTable(artifact['details'], artifact['detailsFieldOrder'])
+                    }}">Yes</a>
+                    {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+              </div>
             {% endfor %}
             </div>
             {% endif %}

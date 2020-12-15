@@ -49,7 +49,7 @@ def extract_page_content(html_string, folder_path_str):
                     # Paragraph tag contains a section title in italics
                     extracted_paragraphs.append({
                         'type': 'italic-title',
-                        'content': str(p_contents[0].string)
+                        'content': str(p_contents[0]).replace('<i>', '').replace('</i>', '')
                     })
                 else:
                     # Paragraph tag contains a normal paragraph and text.

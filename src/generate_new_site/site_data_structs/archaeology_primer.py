@@ -194,9 +194,11 @@ class PrimerPage(SitePage):
                 pageToImgMap = content_obj["pageToImgMap"]
                 for a in soup.find_all('a'):
                     image = pageToImgMap[a['href']]
-                    a['data-image-path'] = image['src'].replace('/html/images/', '../../imgs/')
+                    new_img_path = self.parent.parent.parent.pathtable.get_path(image['src'])
+                    new_img_path = rel_path(new_img_path, self.path).as_posix()
+                    a['data-image-path'] = new_img_path
                     a['data-image-caption'] = image['caption']
-                    a['href'] = 'javascript:void(0);' # del a['href']
+                    a['href'] = 'javascript:void(0);'
                 content_obj['content'] = str(soup.body).replace('<body>', '').replace('</body>', '')
             elif 'content' in content_obj:
                 content_obj['content'] = update_text_paragraph(

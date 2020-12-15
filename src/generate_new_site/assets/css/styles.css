@@ -102,10 +102,9 @@ footer {
 
 .col-md-3 {
   padding: 1rem !important;
-  max-width: 20% !important;
 }
 
-.col-md {
+.col-md, .col-md-9 {
   padding: 1rem;
 }
 
@@ -161,9 +160,6 @@ nav[data-toggle=toc] .nav>li>a {
 .col-md > p {
   color: black;
 }
-.container-fluid {
-  padding-right: 0px !important;
-}
 
 .pagination .page-item .page-link {
     border: 1px solid #dee2e6 !important;
@@ -192,12 +188,8 @@ a.nav-link.active {
   #toc {
     display: block;
   }
-  div#eot-sidebar.col-md-3 {
-    max-width: 60% !important;
-  }
   .sidebar-chapter > a {
     color: #828282;
-    white-space: nowrap;
   }
   footer {
     left: 0;
@@ -257,7 +249,62 @@ li.sidebar-subsection > a:hover {
   font-family: 'Lithos Pro';
 }
 
-div#text-chapter-contents img {
-  padding-block-start: 1em;
-  padding-block-end: 2em;
+/* For displaying images alongside text, i.e. in the Archaeology Primer */
+#archaeology-images .in-text-figure {
+  padding-block-start: 0.5em;
+  padding-block-end: 0.5em;
+}
+
+.in-text-img {
+  max-width: calc(100% - 2rem);
+}
+
+#archaeology-images .figure-caption {
+  white-space: normal; /* needs to be off or columns will not re-size
+  properly, as the no-wrap on a long figcaption forces the column to
+  expand in size accordingly. */
+}
+
+/* For page 5 of the Archaeology Primer specifically */
+#site-grid-img {
+  margin-block-start: 0.5em; /* Padding messes with the <map> tag on this page */
+  margin-block-end: 0.5em;
+}
+
+/* For displaying images on pages 13, 14, and 23 in the Archaeology Primer*/
+#changeable-image-table {
+  text-align: center;
+  vertical-align: middle;
+  border: gray solid 2px;
+  height: 500px;
+  width: 100%;
+}
+
+#changeable-image-table img {
+  max-width: calc(100% - 2rem);
+  max-height: 450px;
+}
+
+#changeable-image-table .figure-caption {
+  white-space: normal;
+  font-size: 100%;
+  color: black;
+}
+
+/* For making the page navigation div look better */
+.page-navigation {
+  padding-top: 0.5rem;
+}
+
+/* For displaying tables in Appendices A and B */
+.table-container-div {
+  overflow-x: auto;
+}
+
+/* Reduce the number of tables that overflow in Appendix A.
+   Should produce decent results on screens ~360-400px in size. */
+@media only screen and (max-width: 400px) {
+  .appendix-a-table {
+    font-size: 85%;
+  }
 }

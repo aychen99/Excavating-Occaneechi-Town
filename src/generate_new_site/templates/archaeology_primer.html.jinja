@@ -26,57 +26,80 @@
     <div class="container-fluid">
       <div class="row">
         {% include "shared_elements/sidebar.html.jinja" %}
-        <div class="col-md" id="text-chapter-contents" style="overflow-y: scroll;">
+        <div class="col-md" id="text-chapter-contents">
           <h1>{{ this_section.name }}</h1>
           {% for content in this_section.content %}
-            {% if content.type == "paragraph" %}
+            {% if content.type == "paragraph" %} {# Regular paragraph #}
             <p>{{ content.content }}</p>
-            {% elif content.type == "map" %}
+            {% elif content.type == "map" %} {# Page 5 of the Primer #}
+            {# The div and image classes are added to horizontally center the content on the page. #}
+            <div class="text-center">
             {{ content.form }}
             {{ content.mapJs }}
             {{ content.map }}
-            <img src="{{ content.mapImg }}" usemap="#squares">
-            {% elif content.type == "ul" %}
+            <img src="{{ content.mapImg }}" usemap="#squares" class="mx-auto d-block in-text-img" id="site-grid-img">
+            </div>
+            {% elif content.type == "ul" %} {# Pages 13, 14, and 23 #}
             {{ content.content }}
-            <table style="align:right;" id="changeable-image"><td>{{ content.noImageCaption }}</td></table>
+            <table id="changeable-image-table">
+            <td id="changeable-image-td">
+            <div id="no-image-caption">{{ content.noImageCaption }}</div>
+            </td>
+            </table>
             <script>
               function activateList() {
-                changeableImageTable = document.getElementById('changeable-image');
+                changeableImageTable = document.getElementById('changeable-image-table');
+                changeableImageTd = document.getElementById('changeable-image-td');
                 ul = document.getElementById('text-chapter-contents').getElementsByTagName('ul')[0];
                 aTags = ul.getElementsByTagName('a');
-                console.log(aTags)
+                // Insert <figure> tags for each clickable item
                 for (let a of aTags) {
-                    a.onclick = function(e) {
-                        console.log('happening');
-                        changeableImageTable.innerHTML = `<img src="${a.getAttribute('data-image-path')}"><br><p>${a.getAttribute('data-image-caption')}</p>`;
-                    }
+                  imgFilePath = a.getAttribute('data-image-path');
+                  imgCaption = a.getAttribute('data-image-caption');
+
+                  figureA = document.createElement('a');
+                  figureA.innerHTML = `
+                    <figure class="figure d-block">
+                      <img src="${imgFilePath}">
+                      <figcaption class="figure-caption">${imgCaption}</figcaption>
+                    </figure>
+                  `;
+                  figureA.classList.add("d-none");
+                  figureA.classList.add("a-img");
+                  figureA.setAttribute("href", imgFilePath);
+                  figureA.setAttribute("data-src", imgFilePath);
+                  figureA.setAttribute("data-sub-html", imgCaption);
+                  figureA.id = "figure" + a.innerHTML;
+                  changeableImageTd.appendChild(figureA);
                 }
-                console.log('activated');
+                // Ensure the displayed figure updates upon clicking a list item
+                figureAs = changeableImageTd.getElementsByTagName("a");
+                noImageCaption = document.getElementById("no-image-caption");
+                for (let a of aTags) {
+                  a.onclick = function() {
+                    noImageCaption.classList.add("d-none");
+                    figureA = document.getElementById("figure" + a.innerHTML);
+                    for (let otherFigureA of figureAs) {
+                      otherFigureA.classList.add("d-none");
+                    }
+                    figureA.classList.remove("d-none");
+                  }
+                }
               }
 
               activateList();
             </script>
             {% endif %}
           {% endfor %}
-          {% if this_section.map %}
-          {{ this_section.form }}
-          {{ this_section.mapJs}}
-          {{ this_section.map }}
-          <img src="{{ this_section.mapImg }}" usemap="#squares">
-          {% endif %}
-          {% if this_section.image %}
-          {# <img src="{{ this_section.image.path }}">
-          <p>{{ this_section.image.caption }}</p> #}
+          {% if this_section.image %} {# In-text images that are on most Primer pages #}
           <div id="archaeology-images">
-          <a href="{{ this_section.image.path }}">
-            <figure class="figure d-block">
-              <img src="{{ this_section.image.path }}" style="padding-block-start: 1em;" class="mx-auto d-block img" alt="{{ this_section.image.caption }}">
-              <figcaption class="figure-caption">{{ this_section.image.caption }}</figcaption>
-            </figure></a></div>
-          {% endif %}
-          {% if this_section.content.image %}
-          <img src="{{ this_section.content.image.path }}">
-          {{ this_section.content.image.caption }}
+            <a href="{{ this_section.image.path }}">
+              <figure class="figure d-block in-text-figure">
+                <img src="{{ this_section.image.path }}" class="mx-auto d-block img in-text-img" alt="{{ this_section.image.caption }}">
+                <figcaption class="figure-caption">{{ this_section.image.caption }}</figcaption>
+              </figure>
+            </a>
+          </div>
           {% endif %}
           {% include "shared_elements/pagination.html.jinja" %}
         </div>

@@ -39,7 +39,7 @@
     <div class="container-fluid">
       <div class="row">
         {% include "shared_elements/sidebar_collapsed.html.jinja" %}
-        <div class="col-md" style="overflow-y: scroll;">
+        <div class="col-md">
           <div class="row">
             <div class="col-md align-items-center">
               {# Generate first figure on left panel #}
@@ -120,5 +120,4 @@
 {% endblock %}
 {% block site_interactivity %}
   {% include "shared_elements/generic_textpage_modal.html.jinja" %}
-  <script src="../../assets/js/page-num-navigation.js"></script>
 {% endblock %}
