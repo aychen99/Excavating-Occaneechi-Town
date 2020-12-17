@@ -114,17 +114,15 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
                     table_a['href']
                 )
                 figure = index.figuretable.get_figure(figure_num)
-                table_a['href'] = '#tableImgModal'
-                table_a['data-toggle'] = 'modal'
-                table_a['data-target'] = '#tableImgModal'
-                table_a['data-figure-caption'] = (
+                table_a['data-sub-html'] = (
                     "<b>Figure " + str(figure_num) + "</b>. "
                     + str(figure.caption)
                 )
-                table_a['data-figure-path'] = (
-                    figure.img_orig_path.as_posix()
-                    .replace('/html/images/', '../../imgs/')
-                )
+                new_img_path = index.pathtable.get_path(figure.img_orig_path)
+                new_img_path = rel_path(new_img_path, page_obj_path).as_posix()
+                table_a['data-src'] = new_img_path
+                table_a['href'] = table_a['data-src']
+                table_a['data-thumbnail'] = table_a['data-src']
             new_table_str = (
                 str(table_soup.body).replace('<body>', '')
             )

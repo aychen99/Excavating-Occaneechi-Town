@@ -1,5 +1,6 @@
 /* Script that loads table, reference, and video modals while also initializing
  * a LightGallery for each image.
+ * Requires jQuery due to use of LightGallery.
  */
 
 function setUpModals() {
@@ -21,22 +22,21 @@ function setUpModals() {
     }
   }
   for (let anchor of tableAnchors) {
+    // Insert table and set it to "display:none;" so LightGallery can work on any image links in a table
+    let hiddenDiv = document.createElement("div");
+    let tablePre = document.createElement("pre");
+    tablePre.innerHTML = anchor.getAttribute("data-table-string");
+    hiddenDiv.appendChild(tablePre);
+    hiddenDiv.style.display = "none";
+    document.body.appendChild(hiddenDiv);
     anchor.onclick = function(e) {
-      modalBody.innerHTML = (`<p>${anchor.getAttribute("data-table-header")}</p>`
-                             + `<pre>${anchor.getAttribute("data-table-string")}</pre>`);
-      for (let tableImgAnchor of modalBody.getElementsByTagName("a")) {
-        tableImgAnchor.onclick = function() {
-          tableImgModalBody.innerHTML = `
-          <img src="${tableImgAnchor.getAttribute("data-figure-path")}"></img>
-          <br>
-          <br>
-          ${tableImgAnchor.getAttribute("data-figure-caption")}`;
-        }
-      }
+      modalBody.innerHTML = "";
+      modalBody.innerHTML = `<p>${anchor.getAttribute("data-table-header")}</p>`;
+      modalBody.appendChild(tablePre);
       modalBody.classList.add('table-modal-body');
       modalBody.classList.remove('img-modal-body');
       modalBody.classList.remove('ref-modal-body');
-    }
+    };
   }
   for (let anchor of videoAnchors) {
     youTubeLink = anchor.getAttribute("data-figure-path");
@@ -48,8 +48,8 @@ function setUpModals() {
       </div>
       <br>
       <p class="text-center">${anchor.getAttribute("data-figure-caption")}</p>
-      `
-    }
+      `;
+    };
   }
 };
 
@@ -72,4 +72,16 @@ $(document).ready(function() {
   });
 
   setUpModals();
+  // Set up LightGallery for images in tables 3 and 4
+  $("pre").lightGallery({
+    selector: "a",
+    exThumbImage: "data-thumbnail"
+  });
+  // Make LightGallery's opening hide the table modal
+  $("pre").on("onBeforeOpen.lg", function(e) {
+    $("#genModal").css("z-index", 1000);
+  });
+  $("pre").on("onCloseAfter.lg", function(e) {
+    $("#genModal").css("z-index", "");
+  });
 });
