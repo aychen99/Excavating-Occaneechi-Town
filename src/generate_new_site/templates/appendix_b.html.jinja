@@ -11,12 +11,13 @@
 ## -----------------------------------------------------------------------------
 #}
 
+{% import 'shared_elements/sidebar.html.jinja' as sidebar %}
+
 {% extends "base.html.jinja" %}
 {% block title %}{{ this_section['name'] }}{% endblock %}
 {% block styles %}
     <link href="../../assets/css/textpage.css" rel="stylesheet">
     <link href="../../assets/css/modals.css" rel="stylesheet">
-    {% include "shared_elements/common_css_and_fonts.html.jinja" %}
     {{ super() }}
 {% endblock %}
 {% block header %}
@@ -25,7 +26,7 @@
 {% block page_body %}
     <div class="container-fluid">
       <div class="row">
-        {% include "shared_elements/sidebar.html.jinja" %}
+        {{ sidebar.sidebar(chapters, this_chapter_name, this_module_name, this_section_name, True) }}
         <div class="col-md" id="text-chapter-contents">
           <script>
           // Part of workaround to make table display consistent
@@ -34,7 +35,8 @@
           sidebar = document.getElementById("eot-sidebar");
           if (sidebar.classList.contains("show")) {
             mainContentCol.classList.remove("col-md");
-            mainContentCol.classList.add("col-md-9");
+            mainContentCol.classList.add("col-md-8");
+            mainContentCol.classList.add("col-lg-9");
           }
           </script>
           <h1>{{ this_section.name }}</h1>
@@ -67,12 +69,14 @@
   mainContentCol = document.getElementById("text-chapter-contents");
   sidebar = $("#eot-sidebar"); //jQuery should have loaded already
   sidebar.on("hidden.bs.collapse", function() {
-    mainContentCol.classList.remove("col-md-9");
+    mainContentCol.classList.remove("col-md-8");
+    mainContentCol.classList.remove("col-lg-9");
     mainContentCol.classList.add("col-md");
   });
   sidebar.on("show.bs.collapse", function() {
     mainContentCol.classList.remove("col-md");
-    mainContentCol.classList.add("col-md-9");
+    mainContentCol.classList.add("col-md-8");
+    mainContentCol.classList.add("col-lg-9");
   });
   </script>
   {% include "shared_elements/generic_textpage_modal.html.jinja" %}

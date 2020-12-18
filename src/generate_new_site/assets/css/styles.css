@@ -87,11 +87,7 @@ footer {
   background-color: #202151 !important;
 }
 
-#toc .nav {
-  display: block;
-}
-
-.col-md-3 {
+.col-md-4 {
   padding: 1rem !important;
 }
 
@@ -113,6 +109,7 @@ footer {
   font-family: 'Ubuntu';
   font-size: small;
   margin-left: 10%;
+  margin-bottom: 0;
   font-style: italic;
   color: #828282;
 }
@@ -124,8 +121,17 @@ footer {
   font-size: larger;
 }
 
+.sidebar-module {
+  width: 100%;
+}
+
 .sidebar-section {
   margin-left: 5%;
+  width: 100%;
+}
+
+.sidebar-subsection {
+  width: 100%;
 }
 
 .sidebar-active > a {

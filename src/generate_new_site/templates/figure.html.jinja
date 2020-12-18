@@ -10,6 +10,9 @@
 ##  figure : Figure, defined in figure.py
 ## -----------------------------------------------------------------------------
 #}
+
+{% import 'shared_elements/sidebar.html.jinja' as sidebar %}
+
 {% extends "base.html.jinja" %}
 {% block title %}Figure {{ figure['figure_num'] }}{% endblock %}
 {% block styles %}
@@ -20,7 +23,7 @@
 {% block page_body %}
     <div class="container-fluid">
       <div class="row">
-        {% include "shared_elements/sidebar.html.jinja" %}
+        {{ sidebar.sidebar(chapters, this_chapter_name, this_module_name, this_section_name, True) }}
         <div class="col-md">
           ## !!TODO!! image map resizing
           <figure class="figure">

@@ -10,6 +10,9 @@
 ##  excavation_element : ExcavationElement, defined in excavation.py
 ## -----------------------------------------------------------------------------
 #}
+
+{% import 'shared_elements/sidebar.html.jinja' as sidebar %}
+
 {% extends "base.html.jinja" %}
 {% block title %}{{ excavation_element['name'] }}{% endblock %}
 {% block styles %}
@@ -39,7 +42,7 @@
 {% block page_body %}
     <div class="container-fluid">
       <div class="row">
-        {% include "shared_elements/sidebar_collapsed.html.jinja" %}
+        {{ sidebar.sidebar(chapters, this_chapter_name, this_module_name, this_section_name, False) }}
         <div class="col-md">
           <div class="row">
             <div class="col-md align-items-center">
@@ -64,7 +67,7 @@
                   <img src="{{ excavation_element.mini_map_path }}" class="img-fluid" alt="Excavation minimap">
                 </div>
                 <div class="col">
-                  <p>Related Elements:</p>
+                  <p>Related Contexts:</p>
                   {% for e in excavation_element.related_elements %}
                   <p><a href="{{ e.href }}">{{ e.name }}</a></p>
                   {% endfor %}

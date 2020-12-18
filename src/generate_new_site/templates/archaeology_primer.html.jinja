@@ -10,13 +10,15 @@
 ##  this_section : Section, defined in text_classes.py
 ## -----------------------------------------------------------------------------
 #}
+
+{% import 'shared_elements/sidebar.html.jinja' as sidebar %}
+
 {% extends "base.html.jinja" %}
 {% block title %}{{ this_section['name'] }}{% endblock %}
 {% block styles %}
     <link href="../../assets/css/lightgallery.min.css" rel="stylesheet">
     <link href="../../assets/css/textpage.css" rel="stylesheet">
     <link href="../../assets/css/modals.css" rel="stylesheet">
-    {% include "shared_elements/common_css_and_fonts.html.jinja" %}
     {{ super() }}
 {% endblock %}
 {% block header %}
@@ -25,7 +27,7 @@
 {% block page_body %}
     <div class="container-fluid">
       <div class="row">
-        {% include "shared_elements/sidebar.html.jinja" %}
+        {{ sidebar.sidebar(chapters, this_chapter_name, this_module_name, this_section_name, True) }}
         <div class="col-md" id="text-chapter-contents">
           <h1>{{ this_section.name }}</h1>
           {% for content in this_section.content %}
