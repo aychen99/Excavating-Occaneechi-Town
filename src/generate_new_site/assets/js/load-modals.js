@@ -12,9 +12,12 @@ function setUpModals() {
   let tableAnchors = contents.getElementsByClassName("a-table");
   let videoAnchors = contents.getElementsByClassName("a-video");
   let modalBody = document.getElementById("modal-body");
-  let tableImgModalBody = document.getElementById("table-img-modal-body");
+  let modalDialog = document.getElementById("genModal").getElementsByClassName("modal-dialog")[0];
   for (let anchor of refAnchors) {
     anchor.onclick = function(e) {
+      // Revert style rules applied when opening a table
+      modalDialog.style.width = "";
+      modalDialog.style.maxWidth = "";
       modalBody.innerHTML = `${anchor.getAttribute("data-author")}<br><p>${anchor.getAttribute("data-ref-text")}</p>`;
       modalBody.classList.add('ref-modal-body');
       modalBody.classList.remove('img-modal-body');
@@ -24,15 +27,19 @@ function setUpModals() {
   for (let anchor of tableAnchors) {
     // Insert table and set it to "display:none;" so LightGallery can work on any image links in a table
     let hiddenDiv = document.createElement("div");
-    let tablePre = document.createElement("pre");
-    tablePre.innerHTML = anchor.getAttribute("data-table-string");
-    hiddenDiv.appendChild(tablePre);
+    let tablePreContainer = document.createElement("div");
+    tablePreContainer.innerHTML = `<pre>${anchor.getAttribute("data-table-string")}</pre>`;
+    tablePreContainer.classList.add("modal-pre-container-div");
+    hiddenDiv.appendChild(tablePreContainer);
     hiddenDiv.style.display = "none";
     document.body.appendChild(hiddenDiv);
     anchor.onclick = function(e) {
+      // Adjust modal width according to table size
+      modalDialog.style.width = "fit-content";
+      modalDialog.style.maxWidth = "95%";
       modalBody.innerHTML = "";
       modalBody.innerHTML = `<p>${anchor.getAttribute("data-table-header")}</p>`;
-      modalBody.appendChild(tablePre);
+      modalBody.appendChild(tablePreContainer);
       modalBody.classList.add('table-modal-body');
       modalBody.classList.remove('img-modal-body');
       modalBody.classList.remove('ref-modal-body');
@@ -41,6 +48,9 @@ function setUpModals() {
   for (let anchor of videoAnchors) {
     youTubeLink = anchor.getAttribute("data-figure-path");
     anchor.onclick = function(e) {
+      // Revert style rules applied when opening a table
+      modalDialog.style.width = "";
+      modalDialog.style.maxWidth = "";
       modalBody.innerHTML = `
       <div class="embed-responsive embed-responsive-4by3">
         <iframe class="embed-responsive-item" src="${anchor.getAttribute("data-figure-path")}"

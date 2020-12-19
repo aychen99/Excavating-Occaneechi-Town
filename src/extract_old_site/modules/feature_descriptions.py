@@ -27,7 +27,7 @@ def extract_page_title(html_string):
 
 def extract_descriptions(dig_dir_str, readfile):
     dig_dir_path = Path(dig_dir_str)
-    current_dir_path = "/html/descriptions"
+    current_dir_path_str = "/html/descriptions"
     full_current_dir_path = dig_dir_path / "html/descriptions"
 
     processed_pages = []
@@ -36,7 +36,7 @@ def extract_descriptions(dig_dir_str, readfile):
         if 'tab' in filename.name and 'tabs' not in filename.name:
             tab_page_content = readfile(filename, full_current_dir_path)
             html_strings = standard_text_chapter.get_tab_page_html_contents(
-                tab_page_content, current_dir_path,
+                tab_page_content, current_dir_path_str,
                 dig_dir_path, readfile
             )
             title = extract_page_title(html_strings['reporta_html'])

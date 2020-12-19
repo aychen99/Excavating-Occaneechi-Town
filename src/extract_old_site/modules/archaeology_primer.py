@@ -23,12 +23,15 @@ def extract_primer_page(html_string, dig_dir_str, current_page_name, readfile):
         del form.input['size']
         form_str = str(form)
         map_img = Path(os.path.normpath(Path('/html/primer') / soup.img['src'])).as_posix()
+        image_caption = soup.font.decode_contents().replace('<font>', '').replace('</font>', '').replace("\n", " ")
+        image_caption = " ".join(image_caption.split('<br/>')).replace('<b>', '').replace('</b>', '')
         non_paragraph_content = {
             "type": "map",
             "form": form_str,
             "mapJs": map_js,
             "map": square_map,
-            "mapImg": map_img
+            "mapImg": map_img,
+            "mapImgCaption": image_caption
         }
     elif soup.ul:
         # Primer 13, 14, or 23
@@ -77,7 +80,7 @@ def extract_primer_page(html_string, dig_dir_str, current_page_name, readfile):
                 caption_for_no_image = "Click on a stage of the excavation process to view it."
                 image_src = Path(os.path.normpath(Path('/html/primer') / new_soup.img['src'])).as_posix()
                 image_caption = new_soup.font.decode_contents().replace('<font>', '').replace('</font>', '').replace("\n", " ")
-                image_caption = " ".join(image_caption.split('<br/>'))
+                image_caption = " ".join(image_caption.split('<br/>')).replace('<b>', '').replace('</b>', '')
                 non_paragraph_content["pageToImgMap"][filename] = {
                     "src": image_src,
                     "caption": image_caption
@@ -92,7 +95,7 @@ def extract_primer_page(html_string, dig_dir_str, current_page_name, readfile):
             # Note: If no soup.img, is primer 25
             image_path = Path(os.path.normpath(Path('/html/primer') / soup.img['src'])).as_posix()
             image_caption = soup.font.decode_contents().replace('<font>', '').replace('</font>', '').replace("\n", " ")
-            image_caption = " ".join(image_caption.split('<br/>'))
+            image_caption = " ".join(image_caption.split('<br/>')).replace('<b>', '').replace('</b>', '')
             image = {
                 "path": image_path,
                 "caption": image_caption

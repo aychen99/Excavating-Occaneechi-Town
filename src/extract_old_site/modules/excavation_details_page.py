@@ -19,7 +19,7 @@ def extract_zoom_to(html_string):
     return related_elements
 
 def extract_info_page(
-    html_string, current_dir_path, dig_dir_str, readfile
+    html_string, current_dir_path_str, dig_dir_str, readfile
 ):
     """Extract info from a info_**.html file."""
     # Assumes set structure of the document, particularly 
@@ -52,14 +52,14 @@ def extract_info_page(
         i += 1
     td_cells = soup.body.table.tbody.find_all('td')
     images = []
-    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path_str)
     for link in td_cells[0].find_all('a'):
         if '.mov.html' in link['href'] or '.mpg.html' in link['href']:
             print("Found mov/mpg link in " + name)
             return
         else:
             image_page_html = readfile(link['href'], full_current_dir_path)
-            image = extract_image_page(image_page_html, current_dir_path,
+            image = extract_image_page(image_page_html, current_dir_path_str,
                                        dig_dir_str, link['href'])
             images.append(image)
     
@@ -79,9 +79,9 @@ def extract_info_page(
         "descriptionPath": description_path
     }
 
-def get_ctrl_page_contents(html_string, current_dir_path, dig_dir_str, readfile):
+def get_ctrl_page_contents(html_string, current_dir_path_str, dig_dir_str, readfile):
     """Extract the html contents linked to from within a ctrl_**.html file."""
-    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path_str)
     
     soup = BeautifulSoup(html_string, 'html5lib')
     frames = soup.find_all('frame')
@@ -89,17 +89,17 @@ def get_ctrl_page_contents(html_string, current_dir_path, dig_dir_str, readfile)
     info_page_html = readfile(frames[0]['src'], full_current_dir_path)
     zoom_page_html = readfile(frames[1]['src'], full_current_dir_path)
 
-    extracted = extract_info_page(info_page_html, current_dir_path, dig_dir_str, readfile)
+    extracted = extract_info_page(info_page_html, current_dir_path_str, dig_dir_str, readfile)
     extracted['relatedElements'] = extract_zoom_to(zoom_page_html)
     return extracted
 
-def get_exc_page_contents(html_string, current_dir_path, dig_dir_str, readfile):
+def get_exc_page_contents(html_string, current_dir_path_str, dig_dir_str, readfile):
     """Extract the html contents linked to from within a exc_**.html file."""
-    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path)
+    full_current_dir_path = Path(dig_dir_str) / ("." + current_dir_path_str)
 
     frames = BeautifulSoup(html_string, 'html5lib').find_all('frame')
     ctrl_html_string = readfile(frames[1]['src'], full_current_dir_path)
-    return get_ctrl_page_contents(ctrl_html_string, current_dir_path, dig_dir_str, readfile)
+    return get_ctrl_page_contents(ctrl_html_string, current_dir_path_str, dig_dir_str, readfile)
 
 def extract_all_exc_pages(dig_dir_str, readfile):
     excavations_dir = Path(dig_dir_str) / "html/excavations"

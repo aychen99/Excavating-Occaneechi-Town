@@ -5,13 +5,13 @@ import os
 
 def process_tab_html_contents(
     html_strings, current_tab_page_name,
-    current_dir_path, readfile, current_body_page_name
+    current_dir_path_str, readfile, current_body_page_name
 ):
     """Turn the raw html_strings from reading a tab.html file into a dict."""
     title = standard_text_chapter.extract_page_title(html_strings['contenta_html'])
-    # TODO: Implement more permanent fix than adding "/content" onto current_dir_path
+    # TODO: Implement more permanent fix than adding "/content" onto current_dir_path_str
     content = standard_text_chapter.extract_page_content(
-        html_strings['contentb_html'], current_dir_path + '/content'
+        html_strings['contentb_html'], current_dir_path_str + '/content'
     )
     page_num_map = {
         "body0_1.html": "Data 1",
@@ -34,12 +34,12 @@ def process_tab_html_contents(
     page_num = page_num_map[current_body_page_name]
     sidebar_info = standard_text_chapter.extract_sidebar(
         html_strings['sidebar_html'],
-        current_dir_path,
+        current_dir_path_str,
         html_strings['body_page_name']
     )
     topbar_info = standard_text_chapter.extract_topbar(
         html_strings['topbar_html'],
-        current_dir_path,
+        current_dir_path_str,
         current_tab_page_name
     )
 
@@ -64,30 +64,30 @@ def process_tab_html_contents(
     }
     return processed
 
-def extract_full_module(module_file_names, current_dir_path, dig_dir_path, readfile):
+def extract_full_module(module_file_names, current_dir_path_str, dig_dir_path, readfile):
     """Extract content from one module in a chapter and store in a dict."""
     extracted = {
         "module": {},
         "pages": {}
     }
-    full_current_dir_path = dig_dir_path / ("." + current_dir_path)
+    full_current_dir_path = dig_dir_path / ("." + current_dir_path_str)
     processed_pages = []
     tab_html_str = readfile(module_file_names[0], full_current_dir_path)
     associated_body_page_names = []
-    for filename in (dig_dir_path / ('.' + current_dir_path)).iterdir():
+    for filename in (dig_dir_path / ('.' + current_dir_path_str)).iterdir():
         if filename.name.replace('body', '')[0] == module_file_names[0].replace('tab', '')[0]:
             associated_body_page_names.append(filename)
     for filename in associated_body_page_names:
         body_html_contents = standard_text_chapter.get_body_page_html_contents(
             readfile(filename.name, filename.parent),
-            current_dir_path,
+            current_dir_path_str,
             dig_dir_path,
             readfile,
             has_page_num=False
         )
         extracted_contents = standard_text_chapter.get_tab_page_html_contents(
             tab_html_str,
-            current_dir_path,
+            current_dir_path_str,
             dig_dir_path,
             readfile,
             has_page_num=False
@@ -98,7 +98,7 @@ def extract_full_module(module_file_names, current_dir_path, dig_dir_path, readf
         extracted_contents['body_page_name'] = filename.name
 
         processed_page = process_tab_html_contents(extracted_contents, module_file_names[0],
-                                                    current_dir_path, readfile, filename.name)
+                                                    current_dir_path_str, readfile, filename.name)
         processed_pages.append(processed_page)
     
     if not standard_text_chapter.validate_tab_html_extraction_results(processed_pages):

@@ -171,7 +171,12 @@ a.nav-link.active {
 /*border TOC*/
 @media only screen and (min-width : 768px) {
   /* Styles */
-  .row>[class*='col-md']:nth-child(1):before {
+  /* Display a vertical border line between sidebar/content and between
+   * both halves of an Excavation Context page only.
+   * NOTE: May need to be fine-tuned by adding IDs for HTML tags
+   * into the templates later on. */
+  .container-fluid > .row>[class*='col-md']:nth-child(1):before,
+  .container-fluid > .row > .col-md > .row >[class*='col-md']:nth-child(1):before {
     content: "";
     border-left: 2px solid #DDD;
     position: absolute;
@@ -244,6 +249,17 @@ li.sidebar-subsection > a:hover {
 
 .text-light {
   font-family: 'Lithos Pro';
+}
+
+/* For centering tables in modals */
+.table-modal-body .modal-pre-container-div {
+  text-align: center;
+  overflow-x: auto;
+}
+
+.table-modal-body pre {
+  display: inline-block;
+  text-align: left;
 }
 
 /* For displaying images alongside text, i.e. in the Archaeology Primer */
