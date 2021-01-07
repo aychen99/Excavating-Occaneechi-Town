@@ -94,4 +94,14 @@ $(document).ready(function() {
   $("pre").on("onCloseAfter.lg", function(e) {
     $("#genModal").css("z-index", "");
   });
+  $('.modal').each(function(){
+		var src = $(this).find('iframe').attr('src');
+
+	$(this).on('click', function(){
+
+		$(this).find('iframe').attr('src', '');
+		$(this).find('iframe').attr('src', src);
+
+	});
+  });
 });
