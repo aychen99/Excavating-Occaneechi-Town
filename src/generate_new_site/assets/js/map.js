@@ -184,10 +184,6 @@ function runmap() {
 
     /* Handler functions for the tooltip when hovering over the map */
     let mouseoverHandler = function(e) {
-      // Prevent tooltip from displaying on touchscreens
-      if (matchMedia("(hover: none) and (pointer: coarse)").matches) {
-        return;
-      }
       let name = hrefs[e.target.id]["name"];
       let lowercaseName = name.toLowerCase();
       let textColor = "";
@@ -261,6 +257,10 @@ function runmap() {
       g.select("#structures-internal").raise();
       g.select("#structures-external").raise();
       g.select("#features").raise();
+      // Prevent tooltip from displaying on touchscreens
+      if (matchMedia("(hover: none) and (pointer: coarse)").matches) {
+        return;
+      }
       removeTooltipHandlers(structures_external);
       removeTooltipHandlers(features);
       removeTooltipHandlers(grid);
@@ -277,6 +277,9 @@ function runmap() {
       g.select("#structures-external").raise();
       g.select("#features").raise();
       g.select("#grid").raise();
+      if (matchMedia("(hover: none) and (pointer: coarse)").matches) {
+        return;
+      }
       removeTooltipHandlers(d3.select("svg").selectAll("path"));
       removeTooltipHandlers(structures_external);
       removeTooltipHandlers(features);
@@ -291,6 +294,9 @@ function runmap() {
       g.select("#structures-internal").raise();
       g.select("#structures-external").raise();
       g.select("#features").raise();
+      if (matchMedia("(hover: none) and (pointer: coarse)").matches) {
+        return;
+      }
       removeTooltipHandlers(d3.select("svg").selectAll("path"));
       removeTooltipHandlers(structures_external);
       removeTooltipHandlers(grid);
@@ -305,6 +311,9 @@ function runmap() {
       g.select("#grid").raise();
       g.select("#structures-internal").raise();
       g.select("#structures-external").raise();
+      if (matchMedia("(hover: none) and (pointer: coarse)").matches) {
+        return;
+      }
       removeTooltipHandlers(d3.select("svg").selectAll("path"));
       removeTooltipHandlers(features);
       removeTooltipHandlers(grid);
