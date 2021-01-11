@@ -162,6 +162,14 @@ nav[data-toggle=toc] .nav>li>a {
     border: 1px solid #dee2e6 !important;
 }
 
+#pageNumClickable {
+  cursor: pointer;
+}
+
+#pageNumClickable:hover {
+  background-color: #0056b3;
+}
+
 a.nav-link.active {
     display: none !important;
 }

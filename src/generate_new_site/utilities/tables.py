@@ -69,7 +69,7 @@ class PathTable:
 
 
 class PageTable:
-    def __init__(self):
+    def __init__(self, link_chapters=True):
         self.pages = {}
         self.prelim_pages = {}
         self.roman_nums_to_prelim_pages = {}
@@ -83,6 +83,7 @@ class PageTable:
         self.strings_to_appendix_b_pages = {}
         self.data_pages = {}
         self.strings_to_data_pages = {}
+        self.link_chapters = link_chapters
 
     def register(self, page_num, path):
         int_page_num = None
@@ -151,22 +152,32 @@ class PageTable:
     def get_next_page_path(self, page_num):
         if page_num.isdigit() and int(page_num)+1 in self.pages:
             return self.pages[int(page_num)+1]
+        elif page_num.isdigit() and self.link_chapters:
+            return self.appendix_a_pages[1]
         elif "GS" in page_num:
             page_num = int(page_num.replace("GS", ""))
             if int(page_num)+1 in self.getting_started_pages:
                 return self.getting_started_pages[int(page_num)+1]
+            elif self.link_chapters:
+                return self.archaeology_primer_pages[1]
         elif "AP" in page_num:
             page_num = int(page_num.replace("AP", ""))
             if int(page_num)+1 in self.archaeology_primer_pages:
                 return self.archaeology_primer_pages[int(page_num)+1]
+            elif self.link_chapters:
+                return self.prelim_pages[1]
         elif "Appendix A " in page_num:
             page_num = int(page_num.replace("Appendix A ", ""))
             if int(page_num)+1 in self.appendix_a_pages:
                 return self.appendix_a_pages[int(page_num)+1]
+            elif self.link_chapters:
+                return self.appendix_b_pages[1]
         elif "Appendix B " in page_num:
             page_num = int(page_num.replace("Appendix B ", ""))
             if int(page_num)+1 in self.appendix_b_pages:
                 return self.appendix_b_pages[int(page_num)+1]
+            elif self.link_chapters:
+                return self.data_pages[1]
         elif "Data " in page_num:
             page_num = int(page_num.replace("Data ", ""))
             if int(page_num)+1 in self.data_pages:
@@ -178,11 +189,18 @@ class PageTable:
                 return self.prelim_pages[6]
             if int(page_num)+1 in self.prelim_pages:
                 return self.prelim_pages[int(page_num)+1]
+            elif self.link_chapters:
+                return self.pages[1]
         return None
 
     def get_prev_page_path(self, page_num):
+        def get_max_page_of_chapter(pages):
+            return pages[max(pages.keys())]
+
         if page_num.isdigit() and int(page_num)-1 in self.pages:
             return self.pages[int(page_num)-1]
+        elif self.link_chapters and page_num.isdigit():
+            return get_max_page_of_chapter(self.prelim_pages)
         elif "GS" in page_num:
             page_num = int(page_num.replace("GS", ""))
             if int(page_num)-1 in self.getting_started_pages:
@@ -191,18 +209,26 @@ class PageTable:
             page_num = int(page_num.replace("AP", ""))
             if int(page_num)-1 in self.archaeology_primer_pages:
                 return self.archaeology_primer_pages[int(page_num)-1]
+            elif self.link_chapters:
+                return get_max_page_of_chapter(self.getting_started_pages)
         elif "Appendix A " in page_num:
             page_num = int(page_num.replace("Appendix A ", ""))
             if int(page_num)-1 in self.appendix_a_pages:
                 return self.appendix_a_pages[int(page_num)-1]
+            elif self.link_chapters:
+                return get_max_page_of_chapter(self.pages)
         elif "Appendix B " in page_num:
             page_num = int(page_num.replace("Appendix B ", ""))
             if int(page_num)-1 in self.appendix_b_pages:
                 return self.appendix_b_pages[int(page_num)-1]
+            elif self.link_chapters:
+                return get_max_page_of_chapter(self.appendix_a_pages)
         elif "Data " in page_num:
             page_num = int(page_num.replace("Data ", ""))
             if int(page_num)-1 in self.data_pages:
                 return self.data_pages[int(page_num)-1]
+            elif self.link_chapters:
+                return get_max_page_of_chapter(self.appendix_b_pages)
         elif not page_num.isdigit():
             page_num = page_num_to_arabic(page_num)
             # Special case for 4 to account for missing 5 in prelims
@@ -210,6 +236,8 @@ class PageTable:
                 return self.prelim_pages[4]
             if int(page_num)-1 in self.prelim_pages:
                 return self.prelim_pages[int(page_num)-1]
+            elif self.link_chapters:
+                return get_max_page_of_chapter(self.archaeology_primer_pages)
         return None
 
 

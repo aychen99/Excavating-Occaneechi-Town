@@ -329,6 +329,7 @@ class TextChapter(SiteChapter):
         with json_path.open() as f:
             data = json.load(f)
 
+        '''
         # Sort modules by page number in appendix A
         def sorter_helper(elem):
             # print(elem[0])
@@ -336,16 +337,55 @@ class TextChapter(SiteChapter):
             # print(page_num)
             return page_num
         sorted_data = {k: v for k, v in sorted(data.items(), key=sorter_helper)}#lambda item: int(item[1]["appendixAPageNum"]))#lambda elem: int(elem[1]["appendixAPageNum"]))# int(operator.itemgetter(1)["appendixAPageNum"]))
+        '''
 
-        # Add a module for each excavation element
+        # Similar to what's in excavation.py
+        # Sort appendix A pages by feature/square/structure numbers before
+        # adding them in, in order to make the sidebar display
+        # Feature 1, 2, 3, ..., etc. rather than Feature 1, 10, 11, ...
+        # while keeping the old page numbers for pagination purposes.
+        def exc_sorter(elem):
+            elem_name_parts = elem[1]['excavationElement'].split(' ')
+            elem_type = elem_name_parts[0]
+            elem_num = elem_name_parts[1]
+            if elem_type == 'Burial':
+                return -1000 + int(elem_num)
+            elif elem_type == 'Feature':
+                return int(elem_num)
+            elif elem_type == 'Sq.':
+                sq_num = elem_num
+                if 'L' in sq_num:
+                    sq_num_parts = [int(part) for part in sq_num.split('L')]
+                    return (sq_num_parts[0] * 100) + (-1 * sq_num_parts[1])
+                elif 'R' in sq_num:
+                    sq_num_parts = [int(part) for part in sq_num.split('R')]
+                    return (sq_num_parts[0] * 100) + sq_num_parts[1]
+            elif elem_type == 'Structure':
+                return 1000000 + int(elem_num)
+            else:
+                raise Exception('Unknown Exc Context found: ' + elem['name'])
+
+        sorted_data = {k: v for k, v in sorted(data.items(), key=exc_sorter)}
+
+        # Add a module for Features, Squares, and Structures
+        features = TextModule(
+            short_name="Features",
+            long_name="Features",
+            parent=chapter
+        )
+        squares = TextModule(
+            short_name="Squares",
+            long_name="Squares",
+            parent=chapter
+        )
+        structures = TextModule(
+            short_name="Structures",
+            long_name="Structures",
+            parent=chapter
+        )
+        
+        # Add a section for each excavation element and insert into the modules
         for artifacts_obj in sorted_data.values():
-            module = TextModule(
-                short_name=artifacts_obj["excavationElement"],
-                long_name=artifacts_obj["excavationElement"],
-                parent=chapter,
-                author=None
-            )
-            # Only one section per module in appendix A
             name = make_str_filename_safe(artifacts_obj["excavationElement"])
             path = dir / '{}_{}.html'.format(
                 normalize_file_page_num(artifacts_obj["appendixAPageNum"]), name)
@@ -363,12 +403,20 @@ class TextChapter(SiteChapter):
                         figure = lookup.get_figure(figure_num)
                         artifact["Photo"] = figure
 
+            if ("feature" in name.lower()
+                    or "burial" in name.lower()):
+                parent = features
+            elif "structure" in name.lower():
+                parent = structures
+            else:
+                parent = squares
+
             exc_element = index.pathtable.get_entity(artifacts_obj["parentExcPage"])
             this_section = TextPage(
                 name=artifacts_obj["excavationElement"],
                 path=path,
                 content=content,
-                parent=module,
+                parent=parent,
                 page_num="Appendix A " + artifacts_obj["appendixAPageNum"],
                 other_info={
                     # "parentExcElem": exc_element,
@@ -389,14 +437,16 @@ class TextChapter(SiteChapter):
                 this_section.page_num, this_section.path)
 
             # No subsections
-            module.add_child(this_section)
+            parent.add_child(this_section)
 
             # TODO: Add module to path table for link resolution
 
-            # Add the module subtree as child of the chapter
-            chapter.add_child(module)
+        # Add the module subtree as child of the chapter
+        chapter.add_child(features)
+        chapter.add_child(squares)
+        chapter.add_child(structures)
 
-            # TODO: Add chapter to path table for link resolution
+        # TODO: Add chapter to path table for link resolution
 
         return chapter
 
