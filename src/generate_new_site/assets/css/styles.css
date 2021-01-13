@@ -209,9 +209,12 @@ a.nav-link.active {
     bottom: 0;
   }
 }
+div#carouselFigures {
+  display: grid !important;
+}
 .carousel-item {
   transition: transform .6s ease-in-out !important;
-  height: 650px !important;
+  /* height: 650px !important; */
 }
 .carousel-indicators {
   margin: auto !important;
@@ -225,11 +228,13 @@ a.nav-link.active {
 }
 
 .figure-caption {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   text-align: center;
   padding-top: 1%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   color: #000 !important;
 }
 
@@ -250,15 +255,17 @@ li.sidebar-subsection > a:hover {
 }
 
 .carousel-inner {
-  max-height: 450px !important;
+  height: 500px;
   background-color: #EBEBEB;
   padding: inherit;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .mx-auto.d-block.img-fluid {
   max-height: 400px !important;
-  box-shadow: 0px 0px 60px 40px lightgrey;
+  /* box-shadow: 0px 0px 60px 40px lightgrey; */
 }
 
 .text-light {
@@ -334,8 +341,19 @@ li.sidebar-subsection > a:hover {
   .appendix-a-table {
     font-size: 85%;
   }
-}
 
+}
+/*Reduces the carousel size based on the browser size*/
+@media only screen and (max-width: 300px) {
+  div#carousel-zoom {
+    height: 420px;
+  }
+}
+@media only screen and (max-width: 270px) {
+  div#carousel-zoom {
+    height: 370px;
+  }
+}
 /* carousel arrows controls start*/
 .carousel-control-next-icon {
   background-image : url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%343A40' viewBox='0 0 8 8'%3E%3Cpath d='M1.5 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
