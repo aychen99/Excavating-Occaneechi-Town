@@ -233,6 +233,9 @@ class ExcavationChapter(SiteChapter):
             # Add to pathtable so this element can be looked up by its old link
             index.pathtable.register(element['path'], elem.path, elem)
 
+            # Add description path to pathtable
+            index.pathtable.register(element['descriptionPath'], elem.path, elem)
+
         excavations.add_child(features)
         excavations.add_child(squares)
         excavations.add_child(structures)

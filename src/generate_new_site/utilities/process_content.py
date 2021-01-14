@@ -134,7 +134,7 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
                              'part3', 'part4', 'part5', 'descriptions']
         ):
             # Replace link with link to new page
-            if '_' in old_path:
+            if '_' in old_path and 'descriptions' not in old_path:
                 old_path = old_path.replace('tab', 'body')
             new_link = index.pathtable.get_path(old_path)
             new_link = rel_path(new_link, page_obj_path)

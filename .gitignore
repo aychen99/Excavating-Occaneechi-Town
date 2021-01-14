@@ -9,3 +9,4 @@ config.json
 /htmlcov
 /.coverage
 /.vscode
+hyperlink_checks.log
