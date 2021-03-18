@@ -47,6 +47,7 @@
         <div class="col-md">
           <div class="row">
             <div class="col-md align-items-center">
+              <h1 class="left-title">{{ excavation_element.name }}</h1>
               {% if excavation_element.figures|length > 1 %}{# Generate a carousel if there's more than one figure #}
               <div id="carouselFigures" class="carousel slide p-3" data-ride="carousel">
                 <ol class="carousel-indicators">
@@ -105,7 +106,7 @@
               </div>
             </div>
             <div class="col-md" id='text-chapter-contents'>
-              <h1>{{ excavation_element.name }}</h1>
+              <h1 class="right-title">{{ excavation_element.name }}</h1>
               <h2>Description</h2>
             {% for c in excavation_element.content['content']['content'] %}
               {% if c['type'] == "author" %}

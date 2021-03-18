@@ -9,3 +9,15 @@ div#h-card .col-auto:nth-of-type(2) {
         padding-left: 2.8rem;
     }
 }
+
+@media (min-width : 768px) {
+    .left-title {
+        display: none;
+    }
+}
+
+@media (max-width : 767px) {
+    .right-title {
+        display: none;
+    }
+}

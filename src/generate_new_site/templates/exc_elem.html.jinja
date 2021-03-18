@@ -46,6 +46,7 @@
         <div class="col-md">
           <div class="row">
             <div class="col-md align-items-center">
+              <h1{% if excavation_element.figures|length > 1 %} class="left-title"{% endif %}>{{ excavation_element.name }}</h1>
               {# Generate first figure on left panel #}
               <div id="carousel-zoom">
               <a href="{{ excavation_element.figures[0].img_path }}">
@@ -75,7 +76,9 @@
               </div>
             </div>
             <div class="col-md">
-              <h1>{{ excavation_element.name }}</h1>
+              {% if excavation_element.figures|length > 1 %}{# Only add title to right column if there is content #}
+              <h1 class="right-title">{{ excavation_element.name }}</h1>
+              {% endif %}
               {% if excavation_element.figures|length > 2 %}{# Generate a carousel if there's more than one figure #}
               <div id="carouselFigures" class="carousel slide p-3" data-ride="carousel">
                 <ol class="carousel-indicators">
