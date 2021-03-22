@@ -155,11 +155,11 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             a['data-toggle'] = "modal"
             a['data-target'] = "#versionModal"
         elif 'javalaunch.html' in old_path or 'digquery.html' in old_path:
-            a['href'] = "https://electronicdig.sites.oasis.unc.edu"
+            a['href'] = '../electronic_dig_gateway.html'
         elif 'tutorial' in old_path:
             # TODO: Probably just remove this <li> element in the content,
             # don't have time to restructure this right now
-            a['href'] = "https://electronicdig.sites.oasis.unc.edu/views/tutorial1.html"
+            a['href'] = '../electronic_dig_gateway.html'
         else:
             raise Exception('found path ' + old_path + ' in this paragraph: \n'
                             + paragraph_string)

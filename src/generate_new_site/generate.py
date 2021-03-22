@@ -191,7 +191,7 @@ def generate_site(
     ))
     index.add_child(site_data_structs.web.WebChapter(
         name="Electronic Dig", parent=index,
-        path=Path("https://electronicdig.sites.oasis.unc.edu/")))
+        path=HTML_OUT_DIR))
 
     index.write()  # Write the site!
 

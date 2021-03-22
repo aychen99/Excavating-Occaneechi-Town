@@ -185,8 +185,8 @@ a.nav-link.active {
    * both halves of an Excavation Context page only.
    * NOTE: May need to be fine-tuned by adding IDs for HTML tags
    * into the templates later on. */
-  .container-fluid > .row>[class*='col-md']:nth-child(1):before,
-  .container-fluid > .row > .col-md > .row >[class*='col-md']:nth-child(1):before {
+  .container-fluid > .row>[class*='col-md']:not(#gateway-contents):nth-child(1):before,
+  .container-fluid > .row > .col-md > .row >[class*='col-md']:not(#gateway-contents):nth-child(1):before {
     content: "";
     border-left: 2px solid #DDD;
     position: absolute;
@@ -364,3 +364,7 @@ li.sidebar-subsection > a:hover {
   background-image : url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%343A40' viewBox='0 0 8 8'%3E%3Cpath d='M4 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
 }
 /* carousel arrows controls end*/
+
+#gateway-contents {
+  text-align: center;
+}
