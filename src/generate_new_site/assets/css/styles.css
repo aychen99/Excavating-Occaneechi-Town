@@ -374,15 +374,21 @@ li.sidebar-subsection > a:hover {
 }
 
 #bar-img-wide {
-  max-height: 25px;
-  margin: 3px;
+  max-height: 31px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 #bar-img-narrow {
   max-height: 31px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 #bar-img-wide-base {
+  max-height: 31px;
+}
+#bar-img-narrow-base {
   max-height: 31px;
 }
 
@@ -390,11 +396,19 @@ li.sidebar-subsection > a:hover {
   max-height: 31px;
 }
 
+#press-logo-index {
+  max-height: 31px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 @media only screen and (min-width : 768px) {
   #bar-img-narrow {
     display: none;
   }
-
+  #bar-img-narrow-base {
+    display: none;
+  }
 }
 
 @media only screen and (max-width : 767px) {
