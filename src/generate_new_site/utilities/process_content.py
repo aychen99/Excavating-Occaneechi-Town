@@ -35,6 +35,9 @@ def update_text_paragraph(paragraph_string, index, page_obj_path):
             a['data-target'] = '#genModal'
             a['class'] = 'a-video'
             a['data-figure-path'] = mapToYouTube[video_name]
+        elif 'creativecommons' in old_path:
+            # Do not alter license anchor tags
+            pass
         elif 'slid' in old_path:
             # Set up image modal
             if 'mov.html' in old_path or 'mpg.html' in old_path:

@@ -26,8 +26,12 @@
 
 <body style="background: url(&quot;../assets/img/bg%201.png&quot;) top / auto no-repeat;">
   <div class="card" id="h-card">
-    <div class="card-header">
-      <h5 class="mb-0"><strong>Excavating Occaneechi Town</strong><br></h5>
+    <div class="card-header d-flex">
+      <img id="bar-img-wide" class="mr-auto" src="../assets/img/title_top_long.png">
+      <img id="bar-img-narrow" class="mr-auto" src="../assets/img/title_top.png">
+      <a href="https://uncpress.org">
+        <img id="press-logo" src="../assets/img/press_logo.png">
+      </a>
     </div>
   </div>
   <div>
@@ -59,14 +63,8 @@
   </div>
   <footer>
     <nav class="navbar navbar-light navbar-expand-md order-1">
-      <div class="container-fluid"><a class="navbar-brand flex-row" href="#" style="font-size: 1rem">Copyright 1998, 2003, 2020 RLA at UNC.</a>
-        <div class="collapse navbar-collapse flex-row-reverse" id="navcol-1">
-          <ul class="nav navbar-nav" id="footer-navbar">
-            <li class="nav-item"><a class="nav-link active" href="#">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ children[12].href }}">Downloads</a></li>
-          </ul>
-        </div>
-      </div>
+      <div class="mr-auto px-2"><a class="nav-link foot-link" href="{{ children[2].children[1].href }}">How to Cite</a></div>
+      <div class="px-2"><a class="nav-link foot-link" href="{{ children[12].href }}">Downloads</a></div>
     </nav>
   </footer>
   <script src="../assets/js/jquery.min.js"></script>

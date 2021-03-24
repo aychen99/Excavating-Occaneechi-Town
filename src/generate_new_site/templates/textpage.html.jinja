@@ -29,7 +29,9 @@
       <div class="row">
         {{ sidebar.sidebar(chapters, this_chapter_name, this_module_name, this_section_name, True) }}
         <div class="col-md" id="text-chapter-contents">
+          {% if this_section.name != "Title Page"%}
           <h1>{{ this_section.name }}</h1>
+          {% endif %}
           {% for content in this_section.content %}
             {% if content.type == "paragraph" %}
             <p>{{ content.content }}</p>

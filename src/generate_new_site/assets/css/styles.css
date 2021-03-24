@@ -47,7 +47,7 @@ footer {
 
 #title-img {
   padding-top: 25px;
-  max-width: 95%;
+  max-width: 80%;
   display: block;
 }
 
@@ -367,4 +367,41 @@ li.sidebar-subsection > a:hover {
 
 #gateway-contents {
   text-align: center;
+}
+
+.foot-link {
+  color: black;
+}
+
+#bar-img-wide {
+  max-height: 25px;
+  margin: 3px;
+}
+
+#bar-img-narrow {
+  max-height: 31px;
+}
+
+#bar-img-wide-base {
+  max-height: 31px;
+}
+
+#press-logo {
+  max-height: 31px;
+}
+
+@media only screen and (min-width : 768px) {
+  #bar-img-narrow {
+    display: none;
+  }
+
+}
+
+@media only screen and (max-width : 767px) {
+  #bar-img-wide {
+    display: none;
+  }
+  #bar-img-wide-base {
+    display: none;
+  }
 }
