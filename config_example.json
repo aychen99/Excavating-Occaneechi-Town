@@ -8,6 +8,7 @@
     "copyData": true,
     "overwriteExistingExtractedData": true,
     "shrinkExtractionJsons": false,
+    "updateExtractedJsonsWithNewData": true,
     "runExtraction": true,
     "runGeneration": true,
     "runDigPro": false,

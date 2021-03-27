@@ -3,10 +3,11 @@ from pathlib import Path
 import json
 from . import site_data_structs
 from . import utilities
+from .utilities.path_ops import get_jsonpath
 
 
 def generate_site(
-        dig_dir, input_dir, output_dir, new_img_dir,
+        dig_dir, input_dir, output_dir, new_img_dir, use_updated_jsons=True,
         overwrite_out=False, copy_images=False, copy_videos=False, copy_data=True,
         version="dig"):
 
@@ -120,13 +121,13 @@ def generate_site(
         index=index
     ))
     index.add_child(site_data_structs.text.TextChapter.from_json(
-        json_path=INPUT_DIR / "part0.json",
+        json_path=get_jsonpath(INPUT_DIR, "part0.json", use_updated_jsons),
         name="Introduction",
         dir=HTML_OUT_DIR / "introduction",
         index=index
     ))
     index.add_child(site_data_structs.text.TextChapter.from_json(
-        json_path=INPUT_DIR / "part1.json",
+        json_path=get_jsonpath(INPUT_DIR, "part1.json", use_updated_jsons),
         name="Contents",
         dir=HTML_OUT_DIR / "contents",
         index=index

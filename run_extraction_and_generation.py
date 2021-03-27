@@ -2,6 +2,7 @@ import json
 import pathlib
 from src.extract_old_site.extract import run_extraction
 from src.generate_new_site.generate import generate_site
+from src.update_extracted_jsons.update import update_extracted_jsons
 
 if __name__ == "__main__":
     script_root_dir = pathlib.Path(__file__).parent
@@ -34,11 +35,26 @@ if __name__ == "__main__":
         print("\n-----------------------------------\n"
               "SKIPPING extracting old site data.\n")
     if config['runGeneration']:
+        # Update old site data if wanted
+        updateJsons = config['updateExtractedJsonsWithNewData']
+        if updateJsons:
+            print("\n-----------------------------------\n"
+                "Updating extracted old site data with new data (e.g. how to cite page)")
+            update_extracted_jsons(config, jsons_dir=input_dir, version="dig")
+            if config['runDigPro']:
+                update_extracted_jsons(config, jsons_dir=input_dir, version="digpro")
+        
         print("\n-----------------------------------\n"
               "Generating new site files.\n")
-        generate_site(dig_dir, input_dir, output_dir, new_img_dir, overwrite_out, copy_images, copy_videos, copy_data, version="dig")
+        generate_site(
+            dig_dir, input_dir, output_dir, new_img_dir, updateJsons,
+            overwrite_out, copy_images, copy_videos, copy_data, version="dig"
+        )
         if config['runDigPro']:
-            generate_site(digpro_dir, input_dir, output_dir, new_img_dir, overwrite_out, copy_images, copy_videos, copy_data, version="digpro")
+            generate_site(
+                digpro_dir, input_dir, output_dir, new_img_dir, updateJsons,
+                overwrite_out, copy_images, copy_videos, copy_data, version="digpro"
+            )
     else:
         print("\n-----------------------------------\n"
               "SKIPPING generating new site files.\n")

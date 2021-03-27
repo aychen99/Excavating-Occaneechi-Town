@@ -21,3 +21,10 @@ def rel_path(path, start):
 
     # Should be no such paths that get here, return 'path' for safety
     return path
+
+def get_jsonpath(json_dir, json_name, use_updated_jsons):
+    json_dir = pathlib.Path(json_dir)
+    if use_updated_jsons and (json_dir / "updated").exists():
+        # json exists in "updated" section, use that one instead
+        return json_dir / "updated" / json_name
+    return json_dir / json_name
