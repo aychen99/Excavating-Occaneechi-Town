@@ -186,6 +186,13 @@ class PageTable:
             page_num = page_num_to_arabic(page_num)
             if int(page_num)+1 in self.prelim_pages:
                 return self.prelim_pages[int(page_num)+1]
+            elif (
+                int(page_num) == 4
+                and 6 in self.prelim_pages
+                and 5 not in self.prelim_pages
+            ):
+                # Special case for when page v is missing in original site data
+                return self.prelim_pages[6]
             elif self.link_chapters:
                 return self.pages[1]
         return None
@@ -230,6 +237,13 @@ class PageTable:
             page_num = page_num_to_arabic(page_num)
             if int(page_num)-1 in self.prelim_pages:
                 return self.prelim_pages[int(page_num)-1]
+            elif (
+                int(page_num) == 6
+                and 4 in self.prelim_pages
+                and 5 not in self.prelim_pages
+            ):
+                # Special case for when page v is missing in original site data
+                return self.prelim_pages[4]
             elif self.link_chapters:
                 return get_max_page_of_chapter(self.archaeology_primer_pages)
         return None
