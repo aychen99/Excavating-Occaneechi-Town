@@ -110,7 +110,7 @@ def generate_site(
     index.add_tables(tables)
 
     index.add_child(site_data_structs.text.TextChapter.from_json(
-        json_path=INPUT_DIR / "started.json",
+        json_path=get_jsonpath(INPUT_DIR, "started.json", use_updated_jsons),
         name="Getting Started",
         dir=HTML_OUT_DIR / "gettingstarted",
         index=index))

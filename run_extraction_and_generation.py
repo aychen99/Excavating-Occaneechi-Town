@@ -39,7 +39,7 @@ if __name__ == "__main__":
         updateJsons = config['updateExtractedJsonsWithNewData']
         if updateJsons:
             print("\n-----------------------------------\n"
-                "Updating extracted old site data with new data (e.g. how to cite page)")
+                "Updating extracted old site data with new data.\n")
             update_extracted_jsons(config, jsons_dir=input_dir, version="dig")
             if config['runDigPro']:
                 update_extracted_jsons(config, jsons_dir=input_dir, version="digpro")

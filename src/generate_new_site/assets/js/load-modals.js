@@ -22,7 +22,7 @@ function setUpModals() {
       modalBody.classList.add('ref-modal-body');
       modalBody.classList.remove('img-modal-body');
       modalBody.classList.remove('table-modal-body');
-    }
+    };
   }
   for (let anchor of tableAnchors) {
     // Insert table and set it to "display:none;" so LightGallery can work on any image links in a table
@@ -95,13 +95,12 @@ $(document).ready(function() {
     $("#genModal").css("z-index", "");
   });
   $('.modal').each(function(){
-		var src = $(this).find('iframe').attr('src');
+		let src = $(this).find('iframe').attr('src');
 
-	$(this).on('click', function(){
-
-		$(this).find('iframe').attr('src', '');
-		$(this).find('iframe').attr('src', src);
-
-	});
+    // Stop YouTube video from playing in background once modal is closed
+    $(this).on('click', function(){
+      $(this).find('iframe').attr('src', '');
+      $(this).find('iframe').attr('src', src);
+    });
   });
 });
