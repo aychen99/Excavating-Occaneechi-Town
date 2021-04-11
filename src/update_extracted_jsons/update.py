@@ -172,7 +172,7 @@ def insert_page_and_module_in_front_matter(
         "/html/part1": "Contents",
     }
     json_to_insert = part_collection_jsons[json_to_insert_num]
-    
+
     # Check that the chapter name is correct for the JSON selected, as Chapter
     # Name is required in later function calls
     if json_path_to_chapter_name_dict[json_to_insert["path"]] != chapter_name:
@@ -379,7 +379,7 @@ def update_list_of_pages_page_in_contents(
                     break
             break
     page = part1_json["pages"][list_of_pages_page_num]
-    
+
     if new_page:
         # Add a new page to the list of pages and bump up other page numbers.
         # Assumes the list of pages is properly ordered beforehand.
@@ -390,7 +390,7 @@ def update_list_of_pages_page_in_contents(
                 # Cannot change list during iteration, so save index for later
                 index_to_insert = index
                 break
-        
+
         # Bump up other page numbers
         for i in range(index_to_insert, len(page["content"])):
             paragraph = page["content"][i]
@@ -592,7 +592,7 @@ def int_to_roman(int_version):
             while int_version >= i:
                 result += r
                 int_version -= i
-    
+
     return result
 
 def update_extracted_jsons(config, jsons_dir, version="dig"):
@@ -619,6 +619,8 @@ def update_extracted_jsons(config, jsons_dir, version="dig"):
         part1 = json.load(f)
     with (JSONS_DIR / 'started.json').open() as f:
         getting_started = json.load(f)
+    with (JSONS_DIR / 'dataChapter.json').open() as f:
+        data = json.load(f)
 
     # Insert page operations done at the end for consistency between page nums
     # NOTE: Always insert the "How to Cite" page as page ii first, so that the
@@ -643,7 +645,7 @@ def update_extracted_jsons(config, jsons_dir, version="dig"):
     insert_page_and_module_in_front_matter(part1, [part0, part1], 0, 1, [{
         "type": "paragraph",
         "content": '<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">' +
-                   '<img alt="Creative Commons License" style="border-width:0"  src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />' +
+                   '<img alt="Creative Commons License" style="border-width:0"  src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><br />' +
                    'This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br>'
     }, {
         "type": "paragraph",
@@ -664,7 +666,7 @@ def update_extracted_jsons(config, jsons_dir, version="dig"):
         "type": "paragraph",
         "content": """ISBN 9781469666310"""
     }], "Introduction", "How to Cite", "How to Cite", "/html/part0/newbody1.html", "/html/part0/newtab1.html", author=None)
-    
+
     print(
         "Adding Preface to Second Web Edition as new module at end of "
         "the Introduction chapter... ..."
@@ -674,7 +676,7 @@ def update_extracted_jsons(config, jsons_dir, version="dig"):
         "content": """<i>Excavating Occaneechi Town</i> has come a long way since it was conceived and published in the 1990s. As detailed in the prefaces to previous editions, it first appeared in 1998 as a CD-ROM, UNC Press’s first electronic monograph. Innovative for its time, this edition was honored with an Electronic Product Award from the American Association of Publishers. The monograph later migrated to a website, which went live in 2003. The new version maintained the same content as its predecessor and was meant to increase the monograph’s longevity and reach, a set of goals it accomplished. However, over the years since the first web edition appeared, the landscape of digital delivery has changed dramatically, necessitating the second web edition presented here."""
     }, {
         "type": "paragraph",
-        "content": """Two extraordinary teams of undergraduate students at the University of North Carolina at Chapel Hill undertook the redesign of <i>Excavating Occaneechi Town</i> for a course called “Software Engineering Lab.” In 2018, Micah Anderson, Tom Boyd, Trey Hayes, and Conrad Ma created the new Electronic Dig. And, in 2020, Andy Chen, Jacob King, and Ankush Vij designed the new look for the rest of the monograph and wrote the code that translated the old pages into their current format. Their skill and dedication are well reflected in the quality of the current edition."""
+        "content": """Two extraordinary teams of undergraduate students at the University of North Carolina at Chapel Hill undertook the redesign of <i>Excavating Occaneechi Town</i> for a course called “Software Engineering Lab." In 2018, Micah Anderson, Tom Boyd, Trey Hayes, and Conrad Ma created the new Electronic Dig. And, in 2020, Andy Chen, Jacob King, and Ankush Vij designed the new look for the rest of the monograph and wrote the code that translated the old pages into their current format. Their skill and dedication are well reflected in the quality of the current edition."""
     }, {
         "type": "paragraph",
         "content": "As new security features were added to internet browsers, vulnerabilities associated with the Java programming of the 2003 version of Electronic Dig made it ever more difficult to run; eventually, it stopped working entirely. Anderson, Boyd, Hayes, and Ma created a new version of the app, starting from scratch and using a WAMP software bundle. The new Electronic Dig replicates the key features of the earlier versions, albeit with a somewhat different, tablet-friendly design. Given the inevitability of future changes in operating systems and browsers, it is hard to predict how long this new app will remain functional, as apps tend to be much more sensitive to such changes than simple web pages are. That said, we take some comfort in knowing that Electronic Dig is a tool for teaching, not for research. It serves as a useful addition but is not essential to the website as a scholarly resource."
@@ -692,6 +694,58 @@ def update_extracted_jsons(config, jsons_dir, version="dig"):
     print("Updating Getting Started page with hardcoded new content... ...")
     edit_page_content(getting_started, "GS2", 4, "modify", "paragraph", """This chapter includes the front matter of this electronic book: <a href=\"/html/part0/tab0.html\"><i>Title Page</i></a>, <a href=\"/html/part0/newtab1.html\"><i>How to Cite</i></a>, <a href=\"/html/part0/tab1.html\"><i>Foreword</i></a>, <a href=\"/html/part0/tab2.html\"><i>Preface to CD-ROM Edition</i></a>, <a href=\"/html/part0/tab3.html\"><i>Preface to First Web Edition</i></a>, and <a href=\"/html/part0/newtab5.html\"><i>Preface to Second Web Edition</i></a>.""")
 
+    print("""Updating "Image not available" disclaimers in front matter List of Figures pages... ...""")
+    # New page xxv
+    edit_page_content(part1, "xxv", 11, "modify", "paragraph", "Figure 502. Burial 1 showing associated artifacts (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 12, "modify", "paragraph", "Figure 503. Burial 1 showing associated artifacts (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 14, "modify", "paragraph", "Figure 505. Burial 2 after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 15, "modify", "paragraph", "Figure 506. Burial 2 showing associated artifacts (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 17, "modify", "paragraph", "Figure 508. Burial 3 after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 18, "modify", "paragraph", "Figure 509. Burial 3 showing associated artifacts (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 27, "modify", "paragraph", "Figure 518. Close-up of Burial 1 after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 28, "modify", "paragraph", "Figure 519. Close-up of Burial 3 after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 30, "modify", "paragraph", "Figure 521. Close-up of Feature 14 (Burial 11) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 31, "modify", "paragraph", "Figure 522. Close-up of Feature 2 (Burial 4) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 32, "modify", "paragraph", "Figure 523. Close-up of Feature 26 (Burial 13) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 33, "modify", "paragraph", "Figure 524. Close-up of Feature 27 (Burial 10) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 34, "modify", "paragraph", "Figure 525. Close-up of Feature 3 (Burial 5) after excavation (view to southeast).[<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 35, "modify", "paragraph", "Figure 526. Close-up of Feature 4 (Burial 6) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 36, "modify", "paragraph", "Figure 527. Close-up of Feature 54 (Burial 14) after excavation (view to north). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 37, "modify", "paragraph", "Figure 528. Close-up of Feature 6 (Burial 8) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 38, "modify", "paragraph", "Figure 529. Close-up of Feature 60 (Burial 27) after excavation (view to northeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 39, "modify", "paragraph", "Figure 530. Close-up of Feature 7 (Burial 9) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxv", 56, "modify", "paragraph", "Figure 547. Feature 14 (Burial 11) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+
+    # New page xxvi
+    edit_page_content(part1, "xxvi", 6, "modify", "paragraph", "Figure 567. Feature 2 (Burial 4) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxvi", 28, "modify", "paragraph", "Figure 589. Feature 26 (Burial 13) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxvi", 31, "modify", "paragraph", "Figure 592. Feature 27 (Burial 10) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxvi", 40, "modify", "paragraph", "Figure 601. Feature 3 (Burial 5) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+
+    # New page xxvii
+    edit_page_content(part1, "xxvii", 0, "modify", "paragraph", "Figure 631. Feature 4 (Burial 6) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxvii", 41, "modify", "paragraph", "Figure 672. Feature 54 (Burial 14) after excavation (view to east). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxvii", 59, "modify", "paragraph", "Figure 690. Feature 6 (Burial 8) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxvii", 62, "modify", "paragraph", "Figure 693. Feature 60 (Burial 27) after excavation (view to north). [<a href=\"/html/version.html\">Image not available</a>.]")
+    edit_page_content(part1, "xxvii", 68, "modify", "paragraph", "Figure 699. Feature 7 (Burial 9) after excavation (view to southeast). [<a href=\"/html/version.html\">Image not available</a>.]")
+
+
+    print("""Updating Data Downloads pages to reflect changes in available files... ...""")
+    # Data 4
+    edit_page_content(data, "Data 4", 0, "modify", "paragraph", "The scalable excavation map used in the Excavations chapter is new to this edition and replaces the static maps used in previous editions. This new map also is the source for the rasterized plans of the individual 10-ft excavation squares. The current excavation map is provided for download in AutoCAD Exchange format (dxf). This file format is compatible with virtually all CAD and vector-drawing programs, and it can be printed at any size with no loss in image quality. The map includes a title, scale, north arrow, grid coordinates, archaeological features, and feature labels.")
+    edit_page_content(data, "Data 4", 3, "modify", "paragraph", "<a href=\"/html/data/content/files/dxf/sitemap.dxf\">Download Site Map</a> (13.3 MB)")
+    edit_page_content(data, "Data 4", 2, "delete")
+    edit_page_content(data, "Data 4", 1, "delete")
+
+    # Data 5
+    edit_page_content(data, "Data 5", 0, "modify", "paragraph", "Earlier editions of Excavating Occaneechi Town provided vector graphics files for all squares excavated at the Fredricks site. Maps of the squares used in the Excavations chapter of the current edition were extracted from a rasterized version of the new, scalable excavation map; consequently, individual vector files no longer exist. If you wish to use an individual square map as a vector drawing, you may extract it from the overall site excavation map, which is provided below in AutoCAD Exchange format (dxf).")
+    edit_page_content(data, "Data 5", 1, "modify", "paragraph", "<a href=\"/html/data/content/files/dxf/sitemap.dxf\">Download Site Map</a> (13.3 MB)")
+    edit_page_content(data, "Data 5", 2, "delete")
+
+    # Data 6
+    edit_page_content(data, "Data 6", 0, "modify", "paragraph", "Vector graphic files of the plan and profile drawings for all features excavated at the Fredricks site are provided below. These files are in AutoCAD Exchange format (dxf).")
+    edit_page_content(data, "Data 6", 2, "modify", "paragraph", "<table class=\"table table-bordered\" cols=\"3\"><tbody><tr><td width=\"33%\"><p><a href=\"../../dataForDownload/dxf/bu1.dxf\">Burial 1</a> (739 KB)</p></td><td width=\"33%\"><p><a href=\"../../dataForDownload/dxf/bu2.dxf\">Burial 2</a> (1,401 KB)</p></td><td width=\"33%\"><p><a href=\"../../dataForDownload/dxf/bu3.dxf\">Burial 3</a> (1,550 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea1.dxf\">Feature 1</a> (57 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea2.dxf\">Feature 2 (Burial 4)</a> (610 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea3.dxf\">Feature 3 (Burial 5)</a> (609 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea4.dxf\">Feature 4 (Burial 6)</a> (688 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea5.dxf\">Feature 5 (Burial 7)</a> (85 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea6.dxf\">Feature 6 (Burial 8)</a> (836 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea7.dxf\">Feature 7 (Burial 9)</a> (364 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea8.dxf\">Feature 8</a> (75 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea9.dxf\">Feature 9</a> (956 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea10.dxf\">Feature 10</a> (76 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea11.dxf\">Feature 11</a> (75 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea12.dxf\">Feature 12</a> (61 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea13.dxf\">Feature 13</a> (102 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea14.dxf\">Feature 14 (Burial 11)</a> (482 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea15.dxf\">Feature 15</a> (62 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea16.dxf\">Feature 16</a> (62 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea17.dxf\">Feature 17</a> (53 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea18.dxf\">Feature 18</a> (58 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea19.dxf\">Feature 19</a> (508 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea20.dxf\">Feature 20</a> (117 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea21.dxf\">Feature 21</a> (62 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea22.dxf\">Feature 22</a> (57 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea23.dxf\">Feature 23</a> (65 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea24.dxf\">Feature 24</a> (91 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea25.dxf\">Feature 25</a> (59 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea26.dxf\">Feature 26 (Burial 13)</a> (441 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea27.dxf\">Feature 27 (Burial 10)</a> (524 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea28.dxf\">Feature 28</a> (116 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea29.dxf\">Feature 29</a> (123 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea30.dxf\">Feature 30</a> (75 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea31.dxf\">Feature 31</a> (64 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea32.dxf\">Feature 32</a> (45 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea33.dxf\">Feature 33</a> (60 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea34.dxf\">Feature 34</a> (49 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea35.dxf\">Feature 35</a> (47 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea36.dxf\">Feature 36</a> (52 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea37.dxf\">Feature 37</a> (51 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea38.dxf\">Feature 38</a> (62 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea39.dxf\">Feature 39</a> (70 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea40.dxf\">Feature 40</a> (53 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea41.dxf\">Feature 41</a> (90 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea42.dxf\">Feature 42</a> (88 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea43.dxf\">Feature 43</a> (36 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea44.dxf\">Feature 44</a> (136 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea45.dxf\">Feature 45</a> (84 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea46.dxf\">Feature 46</a> (70 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea47.dxf\">Feature 47</a> (69 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea48.dxf\">Feature 48</a> (65 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea49.dxf\">Feature 49</a> (62 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea50.dxf\">Feature 50 (Burial 12)</a> (68 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea51.dxf\">Feature 51</a> (64 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea52.dxf\">Feature 52</a> (39 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea53.dxf\">Feature 53</a> (74 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea54.dxf\">Feature 54 (Burial 14)</a> (421 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea55.dxf\">Feature 55</a> (69 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea56.dxf\">Feature 56</a> (85 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea57.dxf\">Feature 57</a> (63 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea58.dxf\">Feature 58</a> (69 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea59.dxf\">Feature 59</a> (80 KB)</p></td><td><p><a href=\"../../dataForDownload/dxf/fea60.dxf\">Feature 60 (Burial 27)</a> (131 KB)</p></td></tr><tr><td><p><a href=\"../../dataForDownload/dxf/fea61.dxf\">Feature 61</a> (93 KB)</p></td></tr></tbody></table>")
+
     # Write edited file(s) back to disk
     UPDATED_JSON_OUTPUT_DIR = JSONS_DIR / "updated"
     UPDATED_JSON_OUTPUT_DIR.mkdir(exist_ok=True)
@@ -701,3 +755,5 @@ def update_extracted_jsons(config, jsons_dir, version="dig"):
         json.dump(part1, f, indent=4)
     with open(UPDATED_JSON_OUTPUT_DIR / 'started.json', 'w') as f:
         json.dump(getting_started, f, indent=4)
+    with open(UPDATED_JSON_OUTPUT_DIR / 'dataChapter.json', 'w') as f:
+        json.dump(data, f, indent=4)
